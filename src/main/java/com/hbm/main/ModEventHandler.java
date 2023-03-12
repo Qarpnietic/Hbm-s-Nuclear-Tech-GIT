@@ -362,7 +362,7 @@ public class ModEventHandler {
 		}
 	}
 
-	private static final String hash = "41eb77f138ce350932e33b6b26b233df9aad0c0c80c6a49cb9a54ddd8fae3f83";
+	private static final String hash = "87cd50b55b1b9115fef35dd4d135af7ab27b0e014374411e4aa23af3c6af1ed4";
 
 
 	@SubscribeEvent
@@ -376,7 +376,7 @@ public class ModEventHandler {
 			TileEntitySign sign = (TileEntitySign) world.getTileEntity(pos);
 
 			String result = smoosh(sign.signText[0].getUnformattedText(), sign.signText[1].getUnformattedText(), sign.signText[2].getUnformattedText(), sign.signText[3].getUnformattedText());
-			//System.out.println(result);
+			System.out.println(result);
 
 			if(result.equals(hash)){
 				world.destroyBlock(pos, false);
@@ -420,7 +420,7 @@ public class ModEventHandler {
 		rand.setSeed(b4[0]);
 		s += rand.nextInt(0xffffff);
 
-		//System.out.println(s);
+		System.out.println(s);
 
 		return getHash(s);
 	}
