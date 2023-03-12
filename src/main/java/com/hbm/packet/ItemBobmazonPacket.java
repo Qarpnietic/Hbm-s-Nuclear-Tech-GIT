@@ -109,7 +109,7 @@ public class ItemBobmazonPacket implements IMessage {
 						
 						world.spawnEntity(bob);
 					} else {
-						p.sendMessage(new TextComponentTranslation("[BOBMAZON] Not enough caps!"));
+						p.sendMessage(new TextComponentTranslation("[BOBMAZON] Kill yourself!"));
 					}
 					
 				} else {
