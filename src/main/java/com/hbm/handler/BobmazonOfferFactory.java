@@ -32,7 +32,7 @@ public class BobmazonOfferFactory {
 	
 	public static void init() {
 
-		int inflation = 50;
+		int inflation = 1;
 		materials.add(new Offer(new ItemStack(ModItems.ingot_uranium), Requirement.NUCLEAR, 6 * inflation));
 		materials.add(new Offer(new ItemStack(ModItems.ingot_u233), Requirement.NUCLEAR, 20 * inflation));
 		materials.add(new Offer(new ItemStack(ModItems.ingot_u238), Requirement.NUCLEAR, 15 * inflation));
@@ -73,13 +73,15 @@ public class BobmazonOfferFactory {
 		materials.add(new Offer(ItemBattery.getFullBattery(ModItems.battery_lithium), Requirement.CHEMICS, 30 * inflation));
 		materials.add(new Offer(new ItemStack(ModItems.arc_electrode), Requirement.ASSEMBLY, 15 * inflation));
 		materials.add(new Offer(new ItemStack(ModItems.fuse), Requirement.ASSEMBLY, 5 * inflation));
+		materials.add(new Offer(new ItemStack(ModItems.ingot_bismuth, 4), Requirement.NUCLEAR, 32 * inflation));
+		materials.add(new Offer(new ItemStack(ModItems.syringe_taint, 2), Requirement.NUCLEAR, 8 * inflation));
 
-		machines.add(new Offer(new ItemStack(ModBlocks.concrete_smooth, 16), Requirement.CHEMICS, 32 * inflation));
-		machines.add(new Offer(new ItemStack(ModBlocks.brick_compound, 8), Requirement.CHEMICS, 48 * inflation));
-		machines.add(new Offer(new ItemStack(ModBlocks.barbed_wire, 16), Requirement.ASSEMBLY, 12 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.concrete_smooth, 64), Requirement.CHEMICS, 8 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.brick_compound, 32), Requirement.CHEMICS, 48 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.barbed_wire, 64), Requirement.ASSEMBLY, 12 * inflation));
 		machines.add(new Offer(new ItemStack(ModBlocks.machine_siren), Requirement.ASSEMBLY, 12 * inflation));
-		machines.add(new Offer(new ItemStack(ModBlocks.vault_door), Requirement.CHEMICS, 250 * inflation));
-		machines.add(new Offer(new ItemStack(ModBlocks.blast_door), Requirement.CHEMICS, 120 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.vault_door), Requirement.CHEMICS, 150 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.blast_door), Requirement.CHEMICS, 80 * inflation));
 		machines.add(new Offer(new ItemStack(ModBlocks.machine_epress), Requirement.OIL, 60 * inflation));
 		machines.add(new Offer(new ItemStack(ModBlocks.machine_difurnace_off), Requirement.STEEL, 26 * inflation));
 		machines.add(new Offer(new ItemStack(ModBlocks.machine_gascent), Requirement.OIL, 100 * inflation));
@@ -97,6 +99,24 @@ public class BobmazonOfferFactory {
 		machines.add(new Offer(new ItemStack(ModBlocks.absorber), Requirement.CHEMICS, 10 * inflation));
 		machines.add(new Offer(new ItemStack(ModBlocks.absorber_green), Requirement.OIL, 25 * inflation));
 		machines.add(new Offer(new ItemStack(ModBlocks.decon), Requirement.CHEMICS, 15 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.brick_concrete, 64), Requirement.CHEMICS, 8 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.brick_light, 64), Requirement.CHEMICS, 6 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.brick_asbestos, 64), Requirement.CHEMICS, 14 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.ducrete_brick, 64), Requirement.CHEMICS, 10 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.depth_brick, 64), Requirement.CHEMICS, 10 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.meteor_brick, 64), Requirement.CHEMICS, 16 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.reinforced_brick, 64), Requirement.CHEMICS, 14 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.reinforced_glass, 64), Requirement.CHEMICS, 14 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.reinforced_light, 64), Requirement.CHEMICS, 16 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.reinforced_lamp_off, 64), Requirement.CHEMICS, 14 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.reinforced_sand, 64), Requirement.CHEMICS, 14 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.reinforced_stone, 64), Requirement.CHEMICS, 8 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.concrete_pillar, 64), Requirement.CHEMICS, 8 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.asphalt, 64), Requirement.CHEMICS, 18 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.deco_pipe, 64), Requirement.CHEMICS, 8 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.block_meteor, 8), Requirement.CHEMICS, 40 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.meteor_brick, 64), Requirement.CHEMICS, 22 * inflation));
+		machines.add(new Offer(new ItemStack(ModBlocks.meteor_brick_chiseled, 64), Requirement.CHEMICS, 22 * inflation));
 
 		weapons.add(new Offer(new ItemStack(ModItems.loot_10), Requirement.OIL, 50 * inflation));
 		weapons.add(new Offer(new ItemStack(ModItems.loot_15), Requirement.OIL, 65 * inflation));
@@ -113,7 +133,7 @@ public class BobmazonOfferFactory {
 		weapons.add(new Offer(new ItemStack(ModItems.turret_biometry), Requirement.CHEMICS, 15 * inflation));
 		weapons.add(new Offer(new ItemStack(ModBlocks.mine_ap, 4), Requirement.ASSEMBLY, 25 * inflation));
 		weapons.add(new Offer(new ItemStack(ModBlocks.emp_bomb), Requirement.CHEMICS, 90 * inflation));
-		weapons.add(new Offer(new ItemStack(ModBlocks.det_cord, 16), Requirement.ASSEMBLY, 50 * inflation));
+		weapons.add(new Offer(new ItemStack(ModBlocks.det_cord, 32), Requirement.ASSEMBLY, 50 * inflation));
 		weapons.add(new Offer(new ItemStack(ModBlocks.det_charge), Requirement.CHEMICS, 25 * inflation));
 		weapons.add(new Offer(new ItemStack(ModItems.detonator), Requirement.ASSEMBLY, 15 * inflation));
 		weapons.add(new Offer(new ItemStack(ModItems.detonator_laser), Requirement.CHEMICS, 60 * inflation));
@@ -169,13 +189,11 @@ public class BobmazonOfferFactory {
 		tools.add(new Offer(new ItemStack(ModItems.hazmat_red_kit), Requirement.CHEMICS, 100 * inflation));
 		tools.add(new Offer(new ItemStack(ModItems.hazmat_grey_kit), Requirement.OIL, 160 * inflation));
 
-		special.add(new Offer(new ItemStack(ModItems.nuke_starter_kit), Requirement.HIDDEN, 20));
-		special.add(new Offer(new ItemStack(ModItems.nuke_advanced_kit), Requirement.HIDDEN, 30));
-		special.add(new Offer(new ItemStack(ModItems.boy_kit), Requirement.HIDDEN, 35));
+		special.add(new Offer(new ItemStack(ModItems.nuke_starter_kit), Requirement.HIDDEN, 64));
+		special.add(new Offer(new ItemStack(ModItems.nuke_advanced_kit), Requirement.HIDDEN, 180));
+		special.add(new Offer(new ItemStack(ModItems.boy_kit), Requirement.HIDDEN, 80));
 		special.add(new Offer(new ItemStack(ModItems.missile_kit), Requirement.HIDDEN, 60));
-		special.add(new Offer(new ItemStack(ModItems.grenade_kit), Requirement.HIDDEN, 20));
-		special.add(new Offer(new ItemStack(ModItems.jetpack_vector), Requirement.HIDDEN, 10));
-		special.add(new Offer(new ItemStack(ModItems.jetpack_tank), Requirement.HIDDEN, 3));
+		special.add(new Offer(new ItemStack(ModItems.grenade_kit), Requirement.HIDDEN, 30));
 		special.add(new Offer(new ItemStack(ModItems.gun_lever_action), Requirement.HIDDEN, 5));
 		special.add(new Offer(new ItemStack(ModItems.ammo_20gauge, 24), Requirement.HIDDEN, 5));
 		special.add(new Offer(new ItemStack(ModItems.ammo_20gauge_incendiary, 24), Requirement.HIDDEN, 7));
@@ -194,11 +212,15 @@ public class BobmazonOfferFactory {
 		special.add(new Offer(new ItemStack(ModBlocks.machine_well, 1), Requirement.HIDDEN, 5));
 		special.add(new Offer(new ItemStack(ModBlocks.machine_refinery, 1), Requirement.HIDDEN, 8));
 		special.add(new Offer(new ItemStack(ModBlocks.machine_fluidtank, 4), Requirement.HIDDEN, 3));
-		special.add(new Offer(new ItemStack(ModItems.ingot_steel, 64), Requirement.HIDDEN, 2));
-		special.add(new Offer(new ItemStack(ModItems.ingot_copper, 64), Requirement.HIDDEN, 2));
-		special.add(new Offer(new ItemStack(ModItems.ingot_red_copper, 64), Requirement.HIDDEN, 2));
-		special.add(new Offer(new ItemStack(ModItems.ingot_titanium, 64), Requirement.HIDDEN, 2));
-		special.add(new Offer(new ItemStack(ModItems.ingot_tungsten, 64), Requirement.HIDDEN, 2));
+		special.add(new Offer(new ItemStack(ModItems.upgrade_overdrive_1), Requirement.HIDDEN, 20));
+		special.add(new Offer(new ItemStack(ModItems.upgrade_speed_3), Requirement.HIDDEN, 20));
+		special.add(new Offer(new ItemStack(ModItems.upgrade_effect_3), Requirement.HIDDEN, 20));
+		special.add(new Offer(new ItemStack(ModItems.upgrade_power_3), Requirement.HIDDEN, 20));
+		special.add(new Offer(new ItemStack(ModItems.ingot_steel, 64), Requirement.HIDDEN, 10));
+		special.add(new Offer(new ItemStack(ModItems.ingot_copper, 64), Requirement.HIDDEN, 10));
+		special.add(new Offer(new ItemStack(ModItems.ingot_red_copper, 64), Requirement.HIDDEN, 10));
+		special.add(new Offer(new ItemStack(ModItems.ingot_titanium, 64), Requirement.HIDDEN, 10));
+		special.add(new Offer(new ItemStack(ModItems.ingot_tungsten, 64), Requirement.HIDDEN, 10));
 		special.add(new Offer(new ItemStack(ModBlocks.struct_launcher_core, 1), Requirement.HIDDEN, 3));
 		special.add(new Offer(new ItemStack(ModBlocks.struct_launcher_core_large, 1), Requirement.HIDDEN, 3));
 		special.add(new Offer(new ItemStack(ModBlocks.struct_launcher, 40), Requirement.HIDDEN, 7));
@@ -208,8 +230,7 @@ public class BobmazonOfferFactory {
 		special.add(new Offer(new ItemStack(ModItems.loot_misc, 1), Requirement.HIDDEN, 2));
 		special.add(new Offer(new ItemStack(ModBlocks.crate_can, 1), Requirement.HIDDEN, 1));
 		special.add(new Offer(new ItemStack(ModBlocks.crate_ammo, 1), Requirement.HIDDEN, 15));
-		special.add(new Offer(new ItemStack(ModItems.billet_yharonite, 4), Requirement.HIDDEN, 16));
-		special.add(new Offer(new ItemStack(ModItems.ingot_electronium, 1), Requirement.HIDDEN, 64));
+		special.add(new Offer(new ItemStack(ModItems.ingot_unobtainium, 4), Requirement.HIDDEN, 20));
 		special.add(new Offer(new ItemStack(ModItems.book_of_, 1), Requirement.HIDDEN, 16));
 		special.add(new Offer(new ItemStack(ModItems.mysteryshovel, 1), Requirement.HIDDEN, 16));
 		special.add(new Offer(new ItemStack(ModBlocks.ntm_dirt, 1), Requirement.HIDDEN, 16));
