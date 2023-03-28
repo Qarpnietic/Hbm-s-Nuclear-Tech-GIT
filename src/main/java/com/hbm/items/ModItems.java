@@ -861,10 +861,10 @@ public class ModItems {
 	public static final Item hat = new ArmorHat(ArmorMaterial.IRON, 7, EntityEquipmentSlot.HEAD, "nossy_hat").setMaxStackSize(1);
 	public static final Item beta = new ItemDrop("beta").setMaxStackSize(1);
 	
-	public static final Item jetpack_boost = new JetpackBooster(MainRegistry.enumArmorMaterialSteel, -1, EntityEquipmentSlot.CHEST, "jetpack_boost").setCreativeTab(CreativeTabs.COMBAT).setMaxStackSize(1);
-	public static final Item jetpack_break = new JetpackBreak(MainRegistry.enumArmorMaterialSteel, -1, EntityEquipmentSlot.CHEST, ModForgeFluids.kerosene, 8000, "jetpack_break").setCreativeTab(CreativeTabs.COMBAT).setMaxStackSize(1);
 	public static final Item jetpack_fly = new JetpackRegular(MainRegistry.enumArmorMaterialSteel, -1, EntityEquipmentSlot.CHEST, ModForgeFluids.kerosene, 12000, "jetpack_fly").setCreativeTab(CreativeTabs.COMBAT).setMaxStackSize(1);
+	public static final Item jetpack_break = new JetpackBreak(MainRegistry.enumArmorMaterialSteel, -1, EntityEquipmentSlot.CHEST, ModForgeFluids.kerosene, 12000, "jetpack_break").setCreativeTab(CreativeTabs.COMBAT).setMaxStackSize(1);
 	public static final Item jetpack_vector = new JetpackVectorized(MainRegistry.enumArmorMaterialSteel, -1, EntityEquipmentSlot.CHEST, ModForgeFluids.kerosene, 16000, "jetpack_vector").setCreativeTab(CreativeTabs.COMBAT).setMaxStackSize(1);
+	public static final Item jetpack_boost = new JetpackBooster(MainRegistry.enumArmorMaterialSteel, -1, EntityEquipmentSlot.CHEST, ModForgeFluids.balefire, 32000, "jetpack_boost").setCreativeTab(CreativeTabs.COMBAT).setMaxStackSize(1);
 	public static final Item jetpack_glider = new JetpackGlider(MainRegistry.enumArmorMaterialSteel, -1, EntityEquipmentSlot.CHEST, 20000, "jetpack_glider").setMaxStackSize(1).setCreativeTab(MainRegistry.weaponTab);
 	public static final Item wings_murk = new WingsMurk(MainRegistry.aMatCobalt, "wings_murk").setCreativeTab(CreativeTabs.COMBAT).setMaxStackSize(1);
 	public static final Item wings_limp = new WingsMurk(MainRegistry.aMatCobalt, "wings_limp").setCreativeTab(CreativeTabs.COMBAT).setMaxStackSize(1);
@@ -1052,10 +1052,10 @@ public class ModItems {
 	public static final Item ingot_mox_fuel = new ItemHazard(ItemHazard.mox, "ingot_mox_fuel").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_americium_fuel = new ItemHazard(ItemHazard.amf, "ingot_americium_fuel").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_thorium_fuel = new ItemHazard(ItemHazard.thf, "ingot_thorium_fuel").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_schrabidium_fuel = new ItemHazard(ItemHazard.saf, true, "ingot_schrabidium_fuel").setCreativeTab(MainRegistry.partsTab);
+	public static final Item ingot_schrabidium_fuel = new ItemHazard(ItemHazard.saf, false, true, "ingot_schrabidium_fuel").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_neptunium = new ItemHazard(ItemHazard.np237, "ingot_neptunium").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_tennessine = new ItemHazard(120F, "ingot_tennessine").setCreativeTab(MainRegistry.partsTab);
-	public static final Item ingot_polonium = new ItemHazard(ItemHazard.po210, "ingot_polonium").setCreativeTab(MainRegistry.partsTab);
+	public static final Item ingot_polonium = new ItemHazard(ItemHazard.po210, true, "ingot_polonium").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_solinium = new ItemHazard(ItemHazard.sa327, false, true, "ingot_solinium").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_hes = new ItemHazard(ItemHazard.hes, false, true, "ingot_hes").setCreativeTab(MainRegistry.partsTab);
 	public static final Item ingot_les = new ItemHazard(ItemHazard.les, false, true, "ingot_les").setCreativeTab(MainRegistry.partsTab);
@@ -1175,7 +1175,7 @@ public class ModItems {
 	public static final Item nugget_am_mix = new ItemHazard(ItemHazard.amrg * ItemHazard.nugget, "nugget_am_mix").setCreativeTab(MainRegistry.partsTab);
 	public static final Item nugget_technetium = new ItemHazard(ItemHazard.tc99 * ItemHazard.nugget, "nugget_technetium").setCreativeTab(MainRegistry.partsTab);
 	public static final Item nugget_neptunium = new ItemHazard(ItemHazard.np237 * ItemHazard.nugget, "nugget_neptunium").setCreativeTab(MainRegistry.partsTab);
-	public static final Item nugget_polonium = new ItemHazard(ItemHazard.po210 * ItemHazard.nugget, "nugget_polonium").setCreativeTab(MainRegistry.partsTab);
+	public static final Item nugget_polonium = new ItemHazard(ItemHazard.po210 * ItemHazard.nugget, true, "nugget_polonium").setCreativeTab(MainRegistry.partsTab);
 	public static final Item nugget_thorium_fuel = new ItemHazard(ItemHazard.thf * ItemHazard.nugget, "nugget_thorium_fuel").setCreativeTab(MainRegistry.partsTab);
 	public static final Item nugget_uranium_fuel = new ItemHazard(ItemHazard.uf * ItemHazard.nugget, "nugget_uranium_fuel").setCreativeTab(MainRegistry.partsTab);
 	public static final Item nugget_mox_fuel = new ItemHazard(ItemHazard.mox * ItemHazard.nugget, "nugget_mox_fuel").setCreativeTab(MainRegistry.partsTab).setCreativeTab(MainRegistry.partsTab);
@@ -1362,6 +1362,7 @@ public class ModItems {
 	public static final Item waste_mox_hot = new ItemContaminating(15F, true, "waste_mox_hot").setCreativeTab(MainRegistry.partsTab);
 	public static final Item waste_schrabidium_hot = new ItemContaminating(40F, true, true, "waste_schrabidium_hot").setCreativeTab(MainRegistry.partsTab);
 	public static final Item scrap = new ItemBase("scrap").setCreativeTab(MainRegistry.partsTab);
+	public static final Item scrap_oil = new ItemBase("scrap_oil").setCreativeTab(MainRegistry.partsTab);
 	public static final Item dust = new ItemBase("dust").setCreativeTab(MainRegistry.partsTab);
 	public static final Item fallout = new ItemContaminating(ItemHazard.fo, "falloutitem").setCreativeTab(MainRegistry.partsTab);
 	public static final Item containment_box = new ItemLeadBox("containment_box").setCreativeTab(null);

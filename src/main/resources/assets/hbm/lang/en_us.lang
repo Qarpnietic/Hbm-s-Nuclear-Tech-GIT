@@ -611,7 +611,7 @@ hbmfluid.cryogel=Cryogel
 hbmfluid.hydrogen=Liquid Hydrogen
 hbmfluid.oxygen=Liquid Oxygen
 hbmfluid.xenon=Xenon Gas
-hbmfluid.balefire=BF Rocket Fuel
+hbmfluid.balefire=Balefire Rocket Fuel
 hbmfluid.mercury=Mercury
 hbmfluid.plasma_dt=Deuterium-Tritium Plasma
 hbmfluid.plasma_hd=Hydrogen-Deuterium Plasma
@@ -662,7 +662,7 @@ fluid.cryogel=Cryogel
 fluid.hydrogen=Liquid Hydrogen
 fluid.oxygen=Liquid Oxygen
 fluid.xenon=Xenon Gas
-fluid.balefire=BF Rocket Fuel
+fluid.balefire=Balefire Rocket Fuel
 fluid.mercury=Mercury
 fluid.plasma_dt=Deuterium-Tritium Plasma
 fluid.plasma_hd=Hydrogen-Deuterium Plasma
@@ -812,8 +812,9 @@ chem.KEVLAR=Kevlar Compound Production
 chem.SOLID_FUEL=Solid Rocket Fuel Production
 chem.ELECTROLYSIS=Cryo-Electrolysis
 chem.XENON=Linde Xenon Cycle
+chem.XENON_OXY=Boosted Linde Xenon Cycle
 chem.SATURN=Saturnite Production
-chem.BALEFIRE=BF Rocket Fuel Mixing
+chem.BALEFIRE=Balefire Rocket Fuel Mixing
 chem.SCHRABIDATE=Ferric Schrabidate Production
 chem.SCHRABIDIC=Schrabidic Acid Mixing
 chem.COLTAN_CLEANING=Coltan Purifying
@@ -822,6 +823,30 @@ chem.COLTAN_PAIN=Pandemonium(III)tantalite Production
 chem.VIT_GAS=Gaseous Nuclear Waste Vitrification
 chem.VIT_LIQUID=Liquid Nuclear Waste Vitrification
 chem.TEL=TEL Mixing
+chem.GNEISS_GAS=Gas Shale Lab Fracking
+chem.GASOLINE=Gasoline Production
+chem.FRACKSOL=Fracking Solution Production
+
+hbmfluid.fracksol=Fracking Solution
+fluid.fracksol=Fracking Solution
+container.frackingTower=Hydraulic Fracking Tower
+item.canister_fracksol.name=Fracking Solution Canister
+item.scrap_oil.name=Oily Scraps
+
+tile.sand_dirty.name=Oily Sand
+tile.sand_dirty_red.name=Red Oily Sand
+tile.plant_dead_generic.name=Dead Plant
+tile.plant_dead_grass.name=Dead Plant
+tile.plant_dead_flower.name=Dead Plant
+tile.plant_dead_big_flower.name=Dead Plant
+tile.plant_dead_fern.name=Dead Plant
+tile.ore_bedrock_oil.name=Bedrock Oil Deposit
+tile.machine_fracking_tower.name=Hydraulic Fracking Tower
+
+tile.dirt_dead.name=Dead Dirt
+tile.dirt_oily.name=Oily Dirt
+
+tile.stone_cracked.name=Cracked Stone
 
 item.record.lc.desc=Valve - Diabolic Adrenaline Guitar/Lambda Core
 item.record.ss.desc=Valve - Sector Sweep
@@ -1408,14 +1433,14 @@ item.laser_crystal_co2.desc=Carbon Dioxide encased in Crystalline Desh
 item.laser_crystal_bismuth.name=BiSmUTh Laser Crystal
 item.laser_crystal_bismuth.desc=Bismuth-Samarium-Uranium-Thorium crystal matrix
 
-item.laser_crystal_cmb.name=Xenon-Daffergon Laser Crystal
-item.laser_crystal_cmb.desc=Xenon135 Suspended in a CMB-Daffergon Alloy Lattice
+item.laser_crystal_cmb.name=Xenon Laser Crystal
+item.laser_crystal_cmb.desc=Xenon135 Suspended in a Lead-209-Starmetal Alloy Lattice
 
 item.laser_crystal_dem.name=Demon Laser Crystal
-item.laser_crystal_dem.desc=Demon-Schrabidate-Tenessine-Tantalium Fermion Supercrystal
+item.laser_crystal_dem.desc=Demon-Ghiorsium-Combine Fermion Supercrystal
 
 item.laser_crystal_bale.name=Bale Laser Crystal
-item.laser_crystal_bale.desc=Balepellet coated in Verticium in Dineutronium Casing
+item.laser_crystal_bale.desc=Balepellet coated in Verticium in Neoveline Casing
 
 item.laser_crystal_digamma.name=Digamma Laser Crystal
 
@@ -2793,7 +2818,7 @@ item.clip_revolver_lead.name=Box of Nuclear Bullets
 item.clip_revolver_cursed.name=Britannia Military Standard Issue Pisol Magazine
 item.clip_fatman.name=Six Pack of Mini Nukes
 item.clip_mirv.name=Three-In-One Pack of Mini MIRVs
-item.clip_bf.name=BF-Shell Double Pack
+item.clip_bf.name=Balefire-Shell Double Pack
 item.clip_mp.name=Britannia Military Standard Issue Assult Rifle Magazine
 item.clip_mp40.name=9mm SMG Magazine
 item.clip_uzi.name=32rnd .22 LR Magazine
@@ -3027,7 +3052,7 @@ item.mp_warhead_15_thermo.name=Size 15 Thermonuclear Warhead
 item.mp_warhead_15_nuclear_shark.name=Size 15 Nuclear Warhead
 item.mp_warhead_15_boxcar.name=Size 15 Boxcar?
 item.mp_warhead_15_n2.name=Size 15 N² Mine
-item.mp_warhead_15_balefire.name=Size 15 BF Warhead
+item.mp_warhead_15_balefire.name=Size 15 Balefire Warhead
 item.mp_warhead_15_mirv.name=Size 15 MIRV Warhead
 
 item.mp_fuselage_10_kerosene.name=Size 10 Kerosene Fuselage
@@ -3072,7 +3097,7 @@ item.mp_fuselage_10_long_solid_bullet.name=Size 10 Long Solid Fuselage
 item.mp_fuselage_10_15_kerosene.name=Size 10/15 Kerosene Fuselage
 item.mp_fuselage_10_15_solid.name=Size 10/15 Solid Fuel Fuselage
 item.mp_fuselage_10_15_hydrogen.name=Size 10/15 Hydrogen Fuselage
-item.mp_fuselage_10_15_balefire.name=Size 10/15 BF Fuselage
+item.mp_fuselage_10_15_balefire.name=Size 10/15 Balefire Fuselage
 
 item.mp_fuselage_15_kerosene.name=Size 15 Kerosene Fuselage
 item.mp_fuselage_15_kerosene_camo.name=Size 15 Kerosene Fuselage
@@ -3101,7 +3126,7 @@ item.mp_fuselage_15_solid_panorama.name=Size 15 Solid Fuel Fuselage
 item.mp_fuselage_15_solid_roses.name=Size 15 Solid Fuel Fuselage
 item.mp_fuselage_15_hydrogen.name=Size 15 Hydrogen Fuselage
 item.mp_fuselage_15_hydrogen_cathedral.name=Size 15 Hydrogen Fuselage
-item.mp_fuselage_15_balefire.name=Size 15 BF Fuselage
+item.mp_fuselage_15_balefire.name=Size 15 Balefire Fuselage
 
 item.mp_fuselage_15_20_kerosene.name=Size 15/20 Kerosene Fuselage
 item.mp_fuselage_15_20_kerosene_magnusson.name=Size 15/20 Kerosene Fuselage
@@ -3124,10 +3149,10 @@ item.mp_thruster_15_solid.name=Size 15 Solid Fuel Thruster
 item.mp_thruster_15_solid_hexdecuple.name=Size 15 Solid Fuel Hexdecuple Thrusters
 item.mp_thruster_15_hydrogen.name=Size 15 Hydrogen Thruster
 item.mp_thruster_15_hydrogen_dual.name=Size 15 Hydrogen Twin Thrusters
-item.mp_thruster_15_balefire_short.name=Size 15 BF Thruster with Nuclear Preheater (Shortened)
-item.mp_thruster_15_balefire.name=Size 15 BF Thruster with Nuclear Preheater
-item.mp_thruster_15_balefire_large.name=Size 15 BF Thruster with Nuclear Preheater (Heavy Duty Nozzle)
-item.mp_thruster_15_balefire_large_rad.name=Size 15 BF Thruster with Nuclear Preheater (Heavy Duty Nozzle)
+item.mp_thruster_15_balefire_short.name=Size 15 Balefire Thruster with Nuclear Preheater (Shortened)
+item.mp_thruster_15_balefire.name=Size 15 Balefire Thruster with Nuclear Preheater
+item.mp_thruster_15_balefire_large.name=Size 15 Balefire Thruster with Nuclear Preheater (Heavy Duty Nozzle)
+item.mp_thruster_15_balefire_large_rad.name=Size 15 Balefire Thruster with Nuclear Preheater (Heavy Duty Nozzle)
 item.mp_thruster_20_kerosene.name=Size 20 Liquid Fuel Thruster
 item.mp_thruster_20_kerosene_dual.name=Size 20 Liquid Fuel Twin Thrusters
 item.mp_thruster_20_kerosene_triple.name=Size 20 Liquid Fuel Triple Thrusters

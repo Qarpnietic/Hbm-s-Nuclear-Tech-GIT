@@ -7,6 +7,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemLock;
 import com.hbm.lib.InventoryHelper;
+import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.machine.TileEntityLockableBase;
 import com.hbm.tileentity.machine.TileEntityCrateIron;
@@ -42,6 +43,7 @@ import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockStorageCrate extends BlockContainer {
@@ -87,6 +89,12 @@ public class BlockStorageCrate extends BlockContainer {
 		return 0;
 	}
 
+
+	@Override
+	public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player){
+		return true;
+	}
+
 	@Override
 	public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest){
 
@@ -98,7 +106,15 @@ public class BlockStorageCrate extends BlockContainer {
 			NBTTagCompound nbt = new NBTTagCompound();
 			
 			if(te != null) {
-				IItemHandler inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+				IItemHandler inventory;
+				if(te instanceof TileEntitySafe){
+
+					inventory = ((TileEntitySafe)te).getPackingCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+				}
+				else{
+					inventory = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+				}
+
 				for(int i = 0; i < inventory.getSlots(); i++) {
 					
 					ItemStack stack = inventory.getStackInSlot(i);
@@ -275,7 +291,7 @@ public class BlockStorageCrate extends BlockContainer {
 					slotCount++;
 				}
 			}
-			double percent = Math.round(Math.round(slotCount*1000L/totalSlots))*0.1D;
+			float percent = Library.roundFloat(slotCount * 100F/totalSlots, 1);
 			String color = "§e";
 			String color2 = "§6"; 
 			if(percent >= 75){

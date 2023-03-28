@@ -54,7 +54,7 @@ import com.hbm.items.gear.RedstoneSword;
 import com.hbm.items.machine.ItemAssemblyTemplate;
 import com.hbm.items.machine.ItemCassette.TrackType;
 import com.hbm.items.machine.ItemChemistryTemplate;
-import com.hbm.items.machine.ItemChemistryTemplate.EnumChemistryTemplate;
+import com.hbm.inventory.ChemplantRecipes.EnumChemistryTemplate;
 import com.hbm.items.machine.ItemFluidTank;
 import com.hbm.items.machine.ItemForgeFluidIdentifier;
 import com.hbm.items.machine.ItemRBMKPellet;
@@ -637,6 +637,9 @@ public class ModEventHandlerClient {
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/reclaimed_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/petroil_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/petroil_flowing"));
+
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/fracksol_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/fracksol_flowing"));
 
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/lubricant_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/lubricant_flowing"));
