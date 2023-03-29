@@ -57,8 +57,8 @@ public class TileEntityMachineAssembler extends TileEntityMachineBase implements
 	
 	public TileEntityMachineAssembler() {
 
-		super(64);
-		inventory = new ItemStackHandler(64){
+		super(18);
+		inventory = new ItemStackHandler(18){
 			@Override
 			protected void onContentsChanged(int slot){
 				markDirty();
@@ -68,7 +68,7 @@ public class TileEntityMachineAssembler extends TileEntityMachineBase implements
 
 			@Override
 			public int getSlotLimit(int slot) {
-				return 64;
+				return 18;
 			}
 		};
 	}
