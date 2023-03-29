@@ -208,6 +208,7 @@ public class BobmazonOfferFactory {
 		special.add(new Offer(new ItemStack(ModBlocks.machine_epress, 2), Requirement.HIDDEN, 5));
 		special.add(new Offer(new ItemStack(ModBlocks.machine_assembler, 1), Requirement.HIDDEN, 5));
 		special.add(new Offer(new ItemStack(ModBlocks.machine_chemplant, 1), Requirement.HIDDEN, 5));
+		special.add(new Offer(new ItemStack(ModBlocks.machine_crystallizer, 1), Requirement.HIDDEN, 20));
 		special.add(new Offer(new ItemStack(ModBlocks.machine_boiler_off, 1), Requirement.HIDDEN, 5));
 		special.add(new Offer(new ItemStack(ModBlocks.machine_well, 1), Requirement.HIDDEN, 5));
 		special.add(new Offer(new ItemStack(ModBlocks.machine_refinery, 1), Requirement.HIDDEN, 8));

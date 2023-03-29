@@ -77,9 +77,9 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 	private FluidTank[] detectTanks = new FluidTank[]{null, null, null, null};
 
 	public TileEntityMachineChemplant() {
-		super(21);
+		super(64);
 		// Consumer<Integer> OnContentsChanged = this::OnContentsChanged;
-		inventory = new ItemStackHandler(21) {
+		inventory = new ItemStackHandler(64) {
 			@Override
 			protected void onContentsChanged(int slot) {
 				markDirty();
@@ -89,7 +89,7 @@ public class TileEntityMachineChemplant extends TileEntityMachineBase implements
 
 			@Override
 			public int getSlotLimit(int slot) {
-				return 21;
+				return 64;
 			}
 		};
 		tanks = new FluidTank[4];
