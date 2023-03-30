@@ -153,6 +153,8 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.block_saturnite), 1), new Object[] { "###", "###", "###", '#', BIGMT.ingot() });
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.block_ra226), 1), new Object[] { "###", "###", "###", '#', RA226.ingot() });
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.block_polymer), 1), new Object[] { "###", "###", "###", '#', POLYMER.ingot() });
+		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.block_bakelite), 1), new Object[] { "###", "###", "###", '#', BAKELITE.ingot() });
+		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.block_rubber), 1), new Object[] { "###", "###", "###", '#', RUBBER.ingot() });
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.block_meteor_cobble), 1), new Object[] { "##", "##", '#', ModItems.fragment_meteorite });
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.block_meteor_broken), 1), new Object[] { "###", "###", "###", '#', ModItems.fragment_meteorite });
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.block_yellowcake), 1), new Object[] { "###", "###", "###", '#', ModItems.powder_yellowcake });
@@ -203,6 +205,8 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModItems.ingot_saturnite, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_saturnite) });
 		addRecipeAuto(new ItemStack(ModItems.ingot_ra226, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_ra226) });
 		addRecipeAuto(new ItemStack(ModItems.ingot_polymer, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_polymer) });
+		addRecipeAuto(new ItemStack(ModItems.ingot_bakelite, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_bakelite) });
+		addRecipeAuto(new ItemStack(ModItems.ingot_rubber, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_rubber) });
 		addRecipeAuto(new ItemStack(ModItems.powder_yellowcake, 9), new Object[] { "#", '#', Item.getItemFromBlock(ModBlocks.block_yellowcake) });
 		addRecipeAuto(new ItemStack(ModItems.ingot_starmetal, 9), new Object[] { "#", '#', ModBlocks.block_starmetal });
 
@@ -1537,17 +1541,8 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModItems.record_ss, 1), new Object[] { " S ", "SDS", " S ", 'S', POLYMER.ingot(), 'D', ALLOY.dust() });
 		addRecipeAuto(new ItemStack(ModItems.record_vc, 1), new Object[] { " S ", "SDS", " S ", 'S', POLYMER.ingot(), 'D', CMB.dust() });
 
-		addShapelessAuto(new ItemStack(ModItems.powder_advanced_alloy, 4), new Object[] { REDSTONE.dust(), IRON.dust(), COAL.dust(), CU.dust() });
-		addShapelessAuto(new ItemStack(ModItems.powder_advanced_alloy, 3), new Object[] { IRON.dust(), COAL.dust(), MINGRADE.dust() });
-		addShapelessAuto(new ItemStack(ModItems.powder_advanced_alloy, 3), new Object[] { REDSTONE.dust(), STEEL.dust(), CU.dust() });
-		addShapelessAuto(new ItemStack(ModItems.powder_advanced_alloy, 2), new Object[] { MINGRADE.dust(), STEEL.dust() });
-		addShapelessAuto(new ItemStack(ModItems.powder_magnetized_tungsten, 1), new Object[] { W.dust(), SA326.nugget() });
 		addShapelessAuto(new ItemStack(ModItems.powder_red_copper, 2), new Object[] { REDSTONE.dust(), CU.dust() });
 		addShapelessAuto(new ItemStack(ModItems.powder_steel, 2), new Object[] { IRON.dust(), COAL.dust() });
-		addShapelessAuto(new ItemStack(ModItems.powder_dura_steel, 2), new Object[] { STEEL.dust(), W.dust() });
-		addShapelessAuto(new ItemStack(ModItems.powder_dura_steel, 2), new Object[] { STEEL.dust(), CO.dust() });
-		addShapelessAuto(new ItemStack(ModItems.powder_dura_steel, 4), new Object[] { IRON.dust(), COAL.dust(), W.dust(), W.dust() });
-		addShapelessAuto(new ItemStack(ModItems.powder_dura_steel, 4), new Object[] { IRON.dust(), COAL.dust(), CO.dust(), CO.dust() });
 
 		addRecipeAuto(new ItemStack(ModItems.saw, 1), new Object[] { "IIL", "PP ", 'P', STEEL.plate(), 'I', STEEL.ingot(), 'L', Items.LEATHER });
 		addRecipeAuto(new ItemStack(ModItems.bat, 1), new Object[] { "P", "P", "S", 'S', STEEL.plate(), 'P', KEY_PLANKS });
@@ -2035,6 +2030,7 @@ public class CraftingManager {
 		add1To9Pair(ModItems.powder_co60, ModItems.powder_co60_tiny);
 
 		add1To9Pair(ModItems.ingot_technetium, ModItems.nugget_technetium);
+		add1To9Pair(ModItems.ingot_arsenic, ModItems.nugget_arsenic);
 		add1To9Pair(ModItems.ingot_co60, ModItems.nugget_co60);
 		add1To9Pair(ModItems.ingot_au198, ModItems.nugget_au198);
 
@@ -2058,9 +2054,10 @@ public class CraftingManager {
 		add1To9Pair(ModBlocks.block_graphite, ModItems.ingot_graphite);
 
 		add1To9Pair(ModItems.ingot_radspice, ModItems.nugget_radspice);
-		addRecipeAuto(new ItemStack(ModItems.circuit_tantalium_raw, 1), new Object[] { "RWR", "PTP", "RWR", 'R', REDSTONE.dust(), 'W', ModItems.wire_gold, 'P', CU.plate(), 'T', TA.nugget() });
 		addRecipeAuto(new ItemStack(ModItems.circuit_bismuth_raw, 1), new Object[] { "RPR", "ABA", "RPR", 'R', REDSTONE.dust(), 'P', POLYMER.ingot(), 'A', (GeneralConfig.enable528 ? ModItems.circuit_tantalium : ASBESTOS.ingot()), 'B', ANY_BISMOID.ingot() });
-
+		addRecipeAuto(new ItemStack(ModItems.circuit_arsenic_raw, 1), new Object[] { "RPR", "ABA", "RPR", 'R', REDSTONE.dust(), 'P', POLYMER.ingot(), 'A', (GeneralConfig.enable528 ? ModItems.circuit_tantalium : ASBESTOS.ingot()), 'B', AS.ingot() });
+		addRecipeAuto(new ItemStack(ModItems.circuit_tantalium_raw, 1), new Object[] { "RWR", "PTP", "RWR", 'R', REDSTONE.dust(), 'W', ModItems.wire_gold, 'P', CU.plate(), 'T', TA.nugget() });
+		
 		addRecipeAuto(new ItemStack(ModItems.inf_water_mk2, 1), new Object[] { "BPB", "PTP", "BPB", 'B', ModItems.inf_water, 'P', ModBlocks.fluid_duct_mk2, 'T', ModBlocks.barrel_steel });
 		addRecipeAuto(new ItemStack(ModItems.inf_water_mk3, 1), new Object[] { "BPB", "PTP", "BPB", 'B', ModItems.inf_water_mk2, 'P', ModBlocks.fluid_duct_mk2, 'T', ModBlocks.machine_fluidtank });
 		addRecipeAuto(new ItemStack(ModItems.inf_water_mk4, 1), new Object[] { "BPB", "PTP", "BPB", 'B', ModItems.inf_water_mk3, 'P', ModBlocks.fluid_duct_mk2, 'T', ModBlocks.machine_bat9000 });

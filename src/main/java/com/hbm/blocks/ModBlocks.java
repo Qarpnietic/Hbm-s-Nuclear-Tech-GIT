@@ -480,7 +480,7 @@ public class ModBlocks {
 	public static final Block block_sulfur = new BlockBase(Material.IRON, "block_sulfur").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.blockTab);
 	public static final Block block_thorium = new BlockHazard(Material.IRON, SoundType.METAL, "block_thorium").addRadiation(ItemHazard.th232 * ItemHazard.block).toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 	public static final Block block_thorium_fuel = new BlockHazard(Material.IRON, SoundType.METAL, "block_thorium_fuel").addRadiation(ItemHazard.thf * ItemHazard.block).toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
-	public static final Block block_neptunium = new BlockHazard(Material.IRON, SoundType.METAL, "block_neptunium").addRadiation(ItemHazard.np237 * ItemHazard.block).toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+	public static final Block block_neptunium = new BlockHazard(Material.IRON, SoundType.METAL, "block_neptunium").addRadiation(ItemHazard.np237 * ItemHazard.block).addFire(5).toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 	public static final Block block_polonium = new BlockHazard(Material.IRON, SoundType.METAL, "block_polonium").addRadiation(ItemHazard.po210 * ItemHazard.block).addFire(15).toBlock().setBlockUnbreakable().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 	public static final Block block_mox_fuel = new BlockHazard(Material.IRON, SoundType.METAL, "block_mox_fuel").addRadiation(ItemHazard.mox * ItemHazard.block).toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 	public static final Block block_plutonium = new BlockHazard(Material.IRON, SoundType.METAL, "block_plutonium").addRadiation(ItemHazard.pu * ItemHazard.block).toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
@@ -622,7 +622,7 @@ public class ModBlocks {
 	
 	public static final Block block_boron = new BlockBeaconable(Material.IRON, "block_boron").setSoundType(SoundType.METAL).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 	public static final Block block_lanthanium = new BlockBeaconable(Material.IRON, "block_lanthanium").setSoundType(SoundType.METAL).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
-	public static final Block block_ra226 = new BlockHazard(Material.IRON, "block_ra226").makeBeaconable().addRadiation(ItemHazard.ra226 * ItemHazard.block).toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
+	public static final Block block_ra226 = new BlockHazard(Material.IRON, "block_ra226").makeBeaconable().addRadiation(ItemHazard.ra226 * ItemHazard.block).addHydroReactivity().toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 	public static final Block block_actinium = new BlockBeaconable(Material.IRON, "block_actinium").setSoundType(SoundType.METAL).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 	public static final Block block_tritium = new BlockRotatablePillar(Material.GLASS, "block_tritium").setSoundType(SoundType.GLASS).setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(2.0F);
 	public static final Block block_semtex = new BlockSemtex(Material.TNT, "block_semtex").setSoundType(SoundType.METAL).setCreativeTab(MainRegistry.blockTab).setHardness(2.0F).setResistance(2.0F);
@@ -632,8 +632,8 @@ public class ModBlocks {
 	public static final Block sellafield_0 = new BlockHazard(Material.ROCK, SoundType.STONE, "sellafield_0").addRadiation(5.0F).toBlock().setHardness(5.0F).setResistance(6F).setCreativeTab(MainRegistry.resourceTab);
 	public static final Block sellafield_1 = new BlockHazard(Material.ROCK, SoundType.STONE, "sellafield_1").addRadiation(10.0F).toBlock().setHardness(5.0F).setResistance(6F).setCreativeTab(MainRegistry.resourceTab);
 	public static final Block sellafield_2 = new BlockHazard(Material.ROCK, SoundType.STONE, "sellafield_2").addRadiation(20.0F).toBlock().setHardness(5.0F).setResistance(6F).setCreativeTab(MainRegistry.resourceTab);
-	public static final Block sellafield_3 = new BlockHazard(Material.ROCK, SoundType.STONE, "sellafield_3").addRadiation(40.0F).toBlock().setHardness(5.0F).setResistance(7F).setCreativeTab(MainRegistry.resourceTab);
-	public static final Block sellafield_4 = new BlockHazard(Material.ROCK, SoundType.STONE, "sellafield_4").addRadiation(80.0F).toBlock().setHardness(5.0F).setResistance(8F).setCreativeTab(MainRegistry.resourceTab);
+	public static final Block sellafield_3 = new BlockHazard(Material.ROCK, SoundType.STONE, "sellafield_3").addRadiation(40.0F).addFire(2).toBlock().setHardness(5.0F).setResistance(7F).setCreativeTab(MainRegistry.resourceTab);
+	public static final Block sellafield_4 = new BlockHazard(Material.ROCK, SoundType.STONE, "sellafield_4").addRadiation(80.0F).addFire(10).toBlock().setHardness(5.0F).setResistance(8F).setCreativeTab(MainRegistry.resourceTab);
 	public static final Block sellafield_core = new BlockHazard(Material.ROCK, SoundType.STONE, "sellafield_core").addRadiation(4000.0F).toBlock().setHardness(10.0F).setResistance(9F).setCreativeTab(MainRegistry.resourceTab);
 	
 	public static final Block geysir_water = new BlockGeysir(Material.ROCK, "geysir_water").setSoundType(SoundType.STONE).setHardness(5.0F).setCreativeTab(MainRegistry.resourceTab);
@@ -644,6 +644,8 @@ public class ModBlocks {
 	public static final Block block_yellowcake = new BlockHazardFalling(SoundType.SAND, "block_yellowcake").addRadiation(ItemHazard.yc * ItemHazard.block).toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(600.0F);
 	public static final Block block_starmetal = new BlockBase(Material.IRON, "block_starmetal").setSoundType(SoundType.METAL).setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(600.0F);
 	public static final Block block_polymer = new BlockBeaconable(Material.ROCK, "block_polymer").setSoundType(SoundType.METAL).setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(10.0F);
+	public static final Block block_bakelite = new BlockBeaconable(Material.ROCK, "block_bakelite").setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(10.0F);
+	public static final Block block_rubber = new BlockBeaconable(Material.ROCK, "block_rubber").setCreativeTab(MainRegistry.blockTab).setHardness(3.0F).setResistance(10.0F);
 	public static final Block block_asbestos = new BlockOre(Material.CLOTH, SoundType.CLOTH, "block_asbestos").addAsbestos(50).toBlock().setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 	public static final Block block_cobalt = new BlockBase(Material.IRON, "block_cobalt").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
 	public static final Block block_lithium = new BlockLithium(Material.IRON, "block_lithium").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F);
@@ -834,8 +836,8 @@ public class ModBlocks {
 	public static final Block ash_digamma = new BlockAshes(Material.SAND, "ash_digamma").setSoundType(SoundType.SAND).setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F).setResistance(150.0F);
 	public static final Block sand_boron = new BlockFallingBase(Material.SAND, "sand_boron", SoundType.SAND).setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F);
 	public static final Block sand_lead = new BlockFallingBase(Material.SAND, "sand_lead", SoundType.SAND).setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F);
-	public static final Block sand_uranium = new BlockFallingBase(Material.SAND, "sand_uranium", SoundType.SAND).setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F);
-	public static final Block sand_polonium = new BlockFallingBase(Material.SAND, "sand_polonium", SoundType.SAND).setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F);
+	public static final Block sand_uranium = new BlockHazardFalling(Material.SAND, "sand_uranium", SoundType.SAND).addRadiation(ItemHazard.u * ItemHazard.nugget).toBlock().setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F);
+	public static final Block sand_polonium = new BlockHazardFalling(Material.SAND, "sand_polonium", SoundType.SAND).addRadiation(ItemHazard.po210 * ItemHazard.nugget).addFire(5).toBlock().setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F);
 	public static final Block sand_quartz = new BlockFallingBase(Material.SAND, "sand_quartz", SoundType.SAND).setCreativeTab(MainRegistry.resourceTab).setHardness(0.5F);
 
 	//Drillgon200: hee hoo ultrakill
@@ -941,12 +943,17 @@ public class ModBlocks {
 	public static final int guiID_machine_boiler_rtg = 127;
 	
 	public static final Block red_pylon = new PylonRedWire(Material.IRON, "red_pylon").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
-	public static final Block machine_battery_potato = new MachineBattery(Material.IRON, 10000, "machine_battery_potato").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
-	public static final Block machine_battery = new MachineBattery(Material.IRON, 1000000, "machine_battery").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
-	public static final Block machine_lithium_battery = new MachineBattery(Material.IRON, 50000000, "machine_lithium_battery").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
-	public static final Block machine_schrabidium_battery = new MachineBattery(Material.IRON, 25000000000L, "machine_schrabidium_battery").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
-	public static final Block machine_dineutronium_battery = new MachineBattery(Material.IRON, 1000000000000L, "machine_dineutronium_battery").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
-	public static final Block machine_fensu = new MachineFENSU(Material.IRON, "machine_fensu").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_battery_potato = new MachineBattery(Material.IRON, 100000L, "machine_battery_potato").setHardness(1.0F).setResistance(1.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_battery = new MachineBattery(Material.IRON, 10000000L, "machine_battery").setHardness(2.0F).setResistance(4.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_lithium_battery = new MachineBattery(Material.IRON, 100000000L, "machine_lithium_battery").setHardness(4.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_saturnite_battery = new MachineBattery(Material.IRON, 1000000000L, "machine_saturnite_battery").setHardness(5.0F).setResistance(20.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_desh_battery = new MachineBattery(Material.IRON, 10000000000L, "machine_desh_battery").setHardness(6.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_schrabidium_battery = new MachineBattery(Material.IRON, 100000000000L, "machine_schrabidium_battery").setHardness(8.0F).setResistance(500.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_euphemium_battery = new MachineBattery(Material.IRON, 1000000000000L, "machine_euphemium_battery").setHardness(10.0F).setResistance(4000.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_radspice_battery = new MachineBattery(Material.IRON, 10000000000000L, "machine_radspice_battery").setHardness(12.0F).setResistance(40000.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_dineutronium_battery = new MachineBattery(Material.IRON, 100000000000000L, "machine_dineutronium_battery").setHardness(14.0F).setResistance(600000.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_electronium_battery = new MachineBattery(Material.IRON, 1000000000000000L, "machine_electronium_battery").setHardness(16.0F).setResistance(7000000.0F).setCreativeTab(MainRegistry.machineTab);
+	public static final Block machine_fensu = new MachineFENSU(Material.IRON, "machine_fensu").setHardness(5.0F).setResistance(10000000.0F).setCreativeTab(MainRegistry.machineTab);
 	public static final int guiID_machine_battery = 21;
 	
 	@Spaghetti("What is the point of you")
@@ -1146,6 +1153,8 @@ public class ModBlocks {
 	public static final Block machine_fraction_tower = new MachineFractionTower(Material.IRON, "machine_fraction_tower").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 	public static final Block fraction_spacer = new FractionSpacer(Material.IRON, "fraction_spacer").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 	
+	public static final Block machine_catalytic_cracker = new MachineCatalyticCracker(Material.IRON, "machine_catalytic_cracker").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+
 	public static final Block machine_refinery = new MachineRefinery(Material.IRON, "machine_refinery").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab);
 	public static final int guiID_machine_refinery = 43;
 	

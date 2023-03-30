@@ -290,7 +290,7 @@ public class OreDictManager {
 		W																													.ingot(ingot_tungsten)		.dust(powder_tungsten)									.block(block_tungsten)							.crystal(crystal_tungsten)								.ore(ore_tungsten, cluster_depth_tungsten, ore_nether_tungsten, ore_meteor_tungsten)	.oreNether(ore_nether_tungsten);
 		AL																													.ingot(ingot_aluminium)		.dust(powder_aluminium)									.block(block_aluminium)							.crystal(crystal_aluminium)		.plate(plate_aluminium)	.ore(ore_aluminium, cluster_aluminium, ore_meteor_aluminium);
 		PB															.nugget(nugget_lead)									.ingot(ingot_lead)			.dust(powder_lead)										.block(block_lead)								.crystal(crystal_lead)			.plate(plate_lead)		.ore(ore_lead, ore_meteor_lead);
-		//AS														.nugget(nugget_arsenic)									.ingot(ingot_arsenic);
+		AS															.nugget(nugget_arsenic)									.ingot(ingot_arsenic);
 		TA															.nugget(nugget_tantalium)								.ingot(ingot_tantalium)		.dust(powder_tantalium)									.block(block_tantalium)		.gem(gem_tantalium);
 		COLTAN																												.ingot(fragment_coltan)		.dust(powder_coltan_ore)								.block(block_coltan)																					.ore(ore_coltan);
 		NB															.nugget(fragment_niobium)								.ingot(ingot_niobium)		.dust(powder_niobium)	.dustSmall(powder_niobium_tiny)	.block(block_niobium);
@@ -318,8 +318,8 @@ public class OreDictManager {
 		GRAPHITE																											.ingot(ingot_graphite)																.block(block_graphite);
 		DURA																												.ingot(ingot_dura_steel)	.dust(powder_dura_steel)								.block(block_dura_steel);
 		POLYMER																												.ingot(ingot_polymer)		.dust(powder_polymer)									.block(block_polymer)															.plate(plate_polymer);
-		//BAKELITE																											.ingot(ingot_bakelite)		.dust(powder_bakelite)									.block(block_bakelite);
-		//RUBBER																											.ingot(ingot_rubber)																.block(block_rubber);
+		BAKELITE																											.ingot(ingot_bakelite)		.dust(powder_bakelite)									.block(block_bakelite);
+		RUBBER																												.ingot(ingot_rubber)																.block(block_rubber);
 		MAGTUNG																												.ingot(ingot_magnetized_tungsten).dust(powder_magnetized_tungsten)					.block(block_magnetized_tungsten);
 		CMB																													.ingot(ingot_combine_steel)	.dust(powder_combine_steel)								.block(block_combine_steel)														.plate(plate_combine_steel);
 		DESH														.nugget(nugget_desh)									.ingot(ingot_desh)			.dust(powder_desh)										.block(block_desh)																.plate(plate_desh);
@@ -418,9 +418,9 @@ public class OreDictManager {
 		//OreDictionary.registerOre(KEY_TOOL_CHEMISTRYSET, new ItemStack(chemistry_set_boron, 1, OreDictionary.WILDCARD_VALUE));
 
 		OreDictionary.registerOre(KEY_CIRCUIT_BISMUTH, circuit_bismuth);
-		/*OreDictionary.registerOre(KEY_CIRCUIT_BISMUTH, circuit_arsenic);
-        if this isn't implemented when fracking tower becomes real, yell at me
-		OreDictionary.registerOre("itemRubber", ingot_rubber);*/
+		OreDictionary.registerOre(KEY_CIRCUIT_BISMUTH, circuit_arsenic);
+        //if this isn't implemented when fracking tower becomes real, yell at me
+		OreDictionary.registerOre("itemRubber", ingot_rubber);
 
 		OreDictionary.registerOre("coalCoke", fromOne(coke, EnumCokeType.COAL));
 		
@@ -472,6 +472,7 @@ public class OreDictManager {
 		OreDictionary.registerOre("blockGlassRed", glass_polonium);
 		OreDictionary.registerOre("blockGlassBlack", glass_ash);
 		
+		registerGroups();
 		//MaterialShapes.registerCompatShapes();
 	}
 	
@@ -527,7 +528,6 @@ public class OreDictManager {
 		public String gem() {			return GEM		+ mats[0]; }
 		public String crystal() {		return CRYSTAL	+ mats[0]; }
 		public String plate() {			return PLATE	+ mats[0]; }
-		public String wire() {			return WIRE 	+ mats[0]; }
 		public String billet() {		return BILLET	+ mats[0]; }
 		public String block() {			return BLOCK	+ mats[0]; }
 		public String ore() {			return ORE		+ mats[0]; }
@@ -541,7 +541,6 @@ public class OreDictManager {
 		public String[] gems() {		return appendToAll(GEM); }
 		public String[] crystals() {	return appendToAll(CRYSTAL); }
 		public String[] plates() {		return appendToAll(PLATE); }
-		public String[] wires() {		return appendToAll(WIRE); }
 		public String[] billets() {		return appendToAll(BILLET); }
 		public String[] blocks() {		return appendToAll(BLOCK); }
 		public String[] ores() {		return appendToAll(ORE); }
@@ -623,10 +622,6 @@ public class OreDictManager {
 		public DictFrame plate(Object... plate) {
 			hazMult = HazardRegistry.plate;
 			return makeObject(PLATE, plate);
-		}
-		public DictFrame wire(Object... wire) {
-			hazMult = HazardRegistry.wire;
-			return makeObject(WIRE, wire);
 		}
 		public DictFrame billet(Object... billet) {
 			hazMult = HazardRegistry.billet;
@@ -762,7 +757,6 @@ public class OreDictManager {
 		public String gem() {			return GEM		+ groupName; }
 		public String crystal() {		return CRYSTAL	+ groupName; }
 		public String plate() {			return PLATE	+ groupName; }
-		public String wire() {			return WIRE 	+ groupName; }
 		public String billet() {		return BILLET	+ groupName; }
 		public String block() {			return BLOCK	+ groupName; }
 		public String ore() {			return ORE		+ groupName; }
