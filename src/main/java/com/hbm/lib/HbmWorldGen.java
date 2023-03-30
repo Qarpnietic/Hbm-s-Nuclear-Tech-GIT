@@ -595,6 +595,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(x, y + 3, z), Blocks.REDSTONE_BLOCK.getDefaultState());
 				}
 			}
+			
 			if(biome.getTempCategory() == Biome.TempCategory.COLD){
 				int dimArcticStructure = parseInt(CompatibilityConfig.arcticStructure.get(dimID));
 				if (dimArcticStructure > 0 && rand.nextInt(dimArcticStructure) == 0) {

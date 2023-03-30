@@ -44,7 +44,7 @@ public class TileEntitySILEX extends TileEntityMachineBase implements ITickable,
 	public int currentFill;
 	public static final int maxFill = 16000;
 	public int progress;
-	public final int processTime = 80;
+	public final int processTime = 40;
 	
 	//0: Input
 	//2-3: Fluid Containers

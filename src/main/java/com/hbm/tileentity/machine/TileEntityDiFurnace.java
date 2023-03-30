@@ -21,7 +21,7 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	public int dualCookTime;
 	public int dualPower;
 	public static final int maxPower = 12800;
-	public static final int processingSpeed = 400;
+	public static final int processingSpeed = 200;
 	
 	private static final int[] slots_top = new int[] {0};
 	private static final int[] slots_bottom = new int[] {3};
@@ -56,7 +56,7 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 		
 		if(flag && isProcessing())
 		{
-			this.dualPower = this.dualPower - 1;
+			this.dualPower = this.dualPower - 2;
 			if(this.dualPower < 0)
 			{
 				this.dualPower = 0;
