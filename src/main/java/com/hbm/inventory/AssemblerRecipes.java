@@ -349,7 +349,7 @@ public class AssemblerRecipes {
 			new ComparableStack(ModItems.nugget_u238m2, 16), }, 6400);
 
 		makeRecipe(new ComparableStack(ModItems.bottle_empty, 6), new AStack[] { 
-			new ComparableStack(KEY_ANYPANE, 6), }, 20);
+			new OreDictStack(KEY_ANYPANE, 6), }, 20);
 		
 		makeRecipe(new ComparableStack(ModBlocks.machine_shredder, 1), new AStack[] { new OreDictStack(STEEL.ingot(), 2), new OreDictStack(STEEL.plate(), 4), new ComparableStack(ModItems.motor, 2), new ComparableStack(ModItems.wire_red_copper, 2), new ComparableStack(ModBlocks.steel_beam, 2), new ComparableStack(Blocks.IRON_BARS, 2), new ComparableStack(ModBlocks.red_wire_coated, 1), }, 200);
 		makeRecipe(new ComparableStack(ModBlocks.machine_well, 1), new AStack[] { new ComparableStack(ModBlocks.steel_scaffold, 20), new ComparableStack(ModBlocks.steel_beam, 8), new ComparableStack(ModItems.tank_steel, 2), new ComparableStack(ModItems.motor, 1), new ComparableStack(ModItems.pipes_steel, 3), new ComparableStack(ModItems.drill_titanium, 1), new ComparableStack(ModItems.wire_red_copper, 6), }, 250);
