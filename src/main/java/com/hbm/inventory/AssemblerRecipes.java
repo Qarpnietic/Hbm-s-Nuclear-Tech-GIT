@@ -744,6 +744,12 @@ public class AssemblerRecipes {
 				new ComparableStack(ModItems.bolt_compound, 16),
 				new ComparableStack(ModItems.pipes_steel, 3)
 			}, 600);
+
+			makeRecipe(new ComparableStack(ModBlocks.bm_power_box, 1), new AStack[] {
+				new ComparableStack(ModItems.hull_big_steel, 6),
+				new OreDictStack(STEEL.plate(), 6),
+				new OreDictStack(TI.plate(), 12),
+			}, 600);
 		
 		makeRecipe(new ComparableStack(ModBlocks.machine_silex, 1), new AStack[] {
 				new ComparableStack(Blocks.GLASS, 12),
