@@ -575,6 +575,7 @@ public class HbmWorldGen implements IWorldGenerator {
 				}
 			}
 			
+			if(biome.isHighHumidity() && biome.getTempCategory() == Biome.TempCategory.WARM){
 				int dimJungleStructure = parseInt(CompatibilityConfig.jungleStructure.get(dimID));
 				if(dimJungleStructure > 0 && rand.nextInt(dimJungleStructure) == 0) {
 					int x = i + rand.nextInt(16);
