@@ -854,7 +854,6 @@ public class AssemblerRecipes {
 					new OreDictStack(AL.plate(), 6),
 					new OreDictStack(POLYMER.plate(), 2),
 					new ComparableStack(ModItems.circuit_gold, 5),
-					new ComparableStack(ModItems.gem_tantalium, 1),
 				}, 300);
 
 			makeRecipe(new ComparableStack(ModBlocks.rbmk_console, 1), new AStack[] {
