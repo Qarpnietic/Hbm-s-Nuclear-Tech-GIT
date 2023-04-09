@@ -11,10 +11,13 @@
 		},
 		"frame": "challenge"
 	},
-	"parent": "hbm:root",
+	"parent": "hbm:digammakauaimoho",
 	"criteria": {
 		"impossible": {
 			"trigger": "minecraft:impossible"
 		}
-	}
+	},
+    "rewards": {
+        "experience": 1000
+    }
 }

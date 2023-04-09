@@ -24,6 +24,7 @@ import com.hbm.main.MainRegistry;
 
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -54,6 +55,7 @@ public class OreDictManager {
 	public static final String KEY_LEAVES = "treeLeaves";
 	public static final String KEY_SAPLING = "treeSapling";
 	public static final String KEY_SAND = "sand";
+	public static final String KEY_GRAVEL = "gravel";
 	
 	public static final String KEY_BLACK = "dyeBlack";
 	public static final String KEY_RED = "dyeRed";
@@ -402,8 +404,8 @@ public class OreDictManager {
 		//SLAG																																																	.block(block_slag);
 
 		OreDictionary.registerOre(KEY_OIL_TAR, fromOne(oil_tar, EnumTarType.CRUDE));
-		OreDictionary.registerOre(KEY_CRACK_TAR, fromOne(oil_tar, EnumTarType.CRACK));
-		OreDictionary.registerOre(KEY_COAL_TAR, fromOne(oil_tar, EnumTarType.COAL));
+		// OreDictionary.registerOre(KEY_CRACK_TAR, fromOne(oil_tar, EnumTarType.CRACK));
+		// OreDictionary.registerOre(KEY_COAL_TAR, fromOne(oil_tar, EnumTarType.COAL));
 
 		OreDictionary.registerOre(KEY_UNIVERSAL_TANK, new ItemStack(fluid_tank_full, 1, OreDictionary.WILDCARD_VALUE));
 		/* yell at me if these bastard was ever used for anything
@@ -444,6 +446,16 @@ public class OreDictManager {
 		OreDictionary.registerOre("stairWood", pink_stairs);
 		OreDictionary.registerOre("stairWoodPink", pink_stairs);
 
+		OreDictionary.registerOre(KEY_SAND, Blocks.SAND);
+		OreDictionary.registerOre(KEY_SAND, new ItemStack(Blocks.SAND, 1, 1));
+		OreDictionary.registerOre(KEY_GRAVEL, Blocks.GRAVEL);
+		OreDictionary.registerOre(KEY_PLANKS, Blocks.PLANKS);
+		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 1));
+		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 2));
+		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 3));
+		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 4));
+		OreDictionary.registerOre(KEY_PLANKS, new ItemStack(Blocks.PLANKS, 1, 5));
+
 		OreDictionary.registerOre("dyeRed", cinnebar);
 		OreDictionary.registerOre("dye", cinnebar);
 		OreDictionary.registerOre("dyeYellow", sulfur);
@@ -459,7 +471,7 @@ public class OreDictManager {
 		OreDictionary.registerOre("dyeBlue", powder_lapis);
 		OreDictionary.registerOre("dye", powder_lapis);
 		OreDictionary.registerOre("dyeBlack", fromOne(oil_tar, EnumTarType.CRUDE));
-		OreDictionary.registerOre("dyeBlack", fromOne(oil_tar, EnumTarType.CRACK));
+		// OreDictionary.registerOre("dyeBlack", fromOne(oil_tar, EnumTarType.CRACK));
 		OreDictionary.registerOre("dye", oil_tar);
 
 		OreDictionary.registerOre("blockGlass", glass_boron);
@@ -489,7 +501,6 @@ public class OreDictManager {
 	
 	@SubscribeEvent
 	public void onRegisterOre(OreRegisterEvent event) {
-		System.out.println("OREDICT REGISTER EVENT "+event);
 		if(recursionBrake)
 			return;
 		
@@ -500,7 +511,7 @@ public class OreDictManager {
 		if(strings != null) {
 			for(String name : strings) {
 				OreDictionary.registerOre(name, event.getOre());
-				MainRegistry.logger.info("Re-registration for " + event.getName() + " to " + name);
+				MainRegistry.logger.info("OreDict: Re-registration for " + event.getName() + " to " + name);
 			}
 		}
 		

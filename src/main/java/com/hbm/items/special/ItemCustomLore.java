@@ -81,7 +81,7 @@ public class ItemCustomLore extends Item {
 		if(this == ModItems.reacher)
 		{
 			list.add("Holding this in main hand or off hand reduces radiation coming from items to its square-root.");
-			list.add("It also stops hot items from setting you on fire.");
+			list.add("It also is useful to handle very hot or cold items.");
 		}
 		if(this == ModItems.crystal_horn)
 		{
@@ -144,6 +144,10 @@ public class ItemCustomLore extends Item {
 		{
 			list.add("Used in multi purpose bombs:");
 			list.add("*cough cough* Halp pls!");
+		}
+		if(this == ModItems.powder_tektite)
+		{
+			list.add("Collected via Miningship from §3outer space");
 		}
 		if(this == ModItems.igniter)
 		{
@@ -385,6 +389,7 @@ public class ItemCustomLore extends Item {
 			this == ModItems.ingot_caesium || 
 			this == ModItems.ingot_niobium || 
 			this == ModItems.ingot_neodymium || 
+			this == ModItems.ingot_gh336 || 
 
 			this == ModItems.nugget_euphemium || 
 			this == ModItems.nugget_osmiridium || 
@@ -392,6 +397,11 @@ public class ItemCustomLore extends Item {
 			this == ModItems.nugget_sr90 || 
 			this == ModItems.nugget_cobalt || 
 			this == ModItems.nugget_co60 || 
+			this == ModItems.nugget_gh336 || 
+
+			this == ModItems.billet_gh336 || 
+			this == ModItems.billet_co60 || 
+			this == ModItems.billet_sr90 || 
 			
 			this == ModItems.powder_neptunium ||
 			this == ModItems.powder_euphemium || 
@@ -450,8 +460,8 @@ public class ItemCustomLore extends Item {
 			this == ModItems.nugget_schrabidium || 
 			this == ModItems.nugget_solinium || 
 			this == ModItems.ingot_electronium || 
-			this == ModItems.nugget_gh336 || 
-			this == ModItems.ingot_gh336 || 
+			this == ModItems.billet_solinium || 
+			this == ModItems.billet_schrabidium || 
 			
 			this == ModItems.powder_schrabidate || 
 			this == ModItems.powder_schrabidium || 
@@ -531,7 +541,11 @@ public class ItemCustomLore extends Item {
     			this == ModItems.rune_thurisaz ||
     			this == ModItems.egg_balefire_shard ||
     			this == ModItems.egg_balefire ||
-    			this == ModItems.coin_maskman) 
+    			this == ModItems.coin_maskman || 
+    			this == ModItems.coin_radiation || 
+    			this == ModItems.coin_worm || 
+    			this == ModItems.coin_ufo || 
+    			this == ModItems.coin_creeper) 
 		{
     		return true;
     	}

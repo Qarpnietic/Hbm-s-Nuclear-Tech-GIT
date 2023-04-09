@@ -11,10 +11,13 @@
 		},
 		"frame": "challenge"
 	},
-	"parent": "hbm:root",
+	"parent": "hbm:progress_radspice",
 	"criteria": {
 		"impossible": {
 			"trigger": "minecraft:impossible"
 		}
-	}
+	},
+    "rewards": {
+        "experience": 70
+    }
 }

@@ -11,10 +11,13 @@
 		},
 		"frame": "challenge"
 	},
-	"parent": "hbm:root",
+	"parent": "hbm:digammafeel",
 	"criteria": {
 		"impossible": {
 			"trigger": "minecraft:impossible"
 		}
-	}
+	},
+    "rewards": {
+        "experience": 500
+    }
 }

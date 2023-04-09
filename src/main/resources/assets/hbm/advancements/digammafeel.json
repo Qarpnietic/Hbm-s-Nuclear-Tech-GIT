@@ -8,13 +8,15 @@
 		},
 		"description": {
 			"translate": "hbm.achievement.digammaFeel.desc"
-		},
-		"frame": "challenge"
+		}
 	},
-	"parent": "hbm:root",
+	"parent": "hbm:digammasee",
 	"criteria": {
 		"impossible": {
 			"trigger": "minecraft:impossible"
 		}
-	}
+	},
+    "rewards": {
+        "experience": 250
+    }
 }

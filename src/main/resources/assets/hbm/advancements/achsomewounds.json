@@ -8,13 +8,15 @@
 		},
 		"description": {
 			"translate": "hbm.achievement.someWounds.desc"
-		},
-		"frame": "challenge"
+		}
 	},
-	"parent": "hbm:root",
+	"parent": "hbm:progress_modtable",
 	"criteria": {
 		"impossible": {
 			"trigger": "minecraft:impossible"
 		}
-	}
+	},
+    "rewards": {
+        "experience": 17
+    }
 }

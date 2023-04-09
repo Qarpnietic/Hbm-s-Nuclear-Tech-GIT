@@ -310,13 +310,13 @@ public class AssemblerRecipes {
 			new OreDictStack(DURA.dust(), 12), 
 			new OreDictStack(ZR.dust(), 12), 
 			new OreDictStack(PU238.ingot(), 4), 
-			new OreDictStack(PO210.nugget(), 4), }, 400);
+			new OreDictStack(TC99.nugget(), 2), }, 400);
 		makeRecipe(new ComparableStack(ModBlocks.machine_desh_battery, 1), new AStack[] { 
 			new OreDictStack(DESH.ingot(), 12), 
 			new OreDictStack(BAKELITE.dust(), 12), 
 			new OreDictStack(P_RED.dust(), 12), 
 			new OreDictStack(GRAPHITE.ingot(), 6), 
-			new OreDictStack(ANY_BISMOID.nugget(), 4), }, 600);
+			new OreDictStack(ANY_BISMOID.nugget(), 2), }, 600);
 		makeRecipe(new ComparableStack(ModBlocks.machine_schrabidium_battery, 1), new AStack[] { 
 			new OreDictStack(SA326.ingot(), 16), 
 			new OreDictStack(SA326.dust(), 12), 
@@ -343,7 +343,7 @@ public class AssemblerRecipes {
 			new ComparableStack(ModItems.coil_magnetized_tungsten, 12), }, 4800);
 		makeRecipe(new ComparableStack(ModBlocks.machine_electronium_battery, 1), new AStack[] { 
 			new ComparableStack(ModItems.ingot_electronium, 64), 
-			new OreDictStack(DNT.dust(), 48), 
+			new OreDictStack(OSMIRIDIUM.dust(), 48), 
 			new ComparableStack(ModItems.battery_spark_cell_10000, 1), 
 			new OreDictStack(AU198.ingot(), 32), 
 			new ComparableStack(ModItems.nugget_u238m2, 16), }, 6400);
@@ -353,7 +353,7 @@ public class AssemblerRecipes {
 		
 		makeRecipe(new ComparableStack(ModBlocks.machine_shredder, 1), new AStack[] { new OreDictStack(STEEL.ingot(), 2), new OreDictStack(STEEL.plate(), 4), new ComparableStack(ModItems.motor, 2), new ComparableStack(ModItems.wire_red_copper, 2), new ComparableStack(ModBlocks.steel_beam, 2), new ComparableStack(Blocks.IRON_BARS, 2), new ComparableStack(ModBlocks.red_wire_coated, 1), }, 200);
 		makeRecipe(new ComparableStack(ModBlocks.machine_well, 1), new AStack[] { new ComparableStack(ModBlocks.steel_scaffold, 20), new ComparableStack(ModBlocks.steel_beam, 8), new ComparableStack(ModItems.tank_steel, 2), new ComparableStack(ModItems.motor, 1), new ComparableStack(ModItems.pipes_steel, 3), new ComparableStack(ModItems.drill_titanium, 1), new ComparableStack(ModItems.wire_red_copper, 6), }, 250);
-		makeRecipe(new ComparableStack(ModBlocks.machine_pumpjack, 1), new AStack[] { new ComparableStack(ModBlocks.steel_scaffold, 8), new OreDictStack(STEEL.block(), 8), new ComparableStack(ModItems.pipes_steel, 4), new ComparableStack(ModItems.tank_steel, 4), new OreDictStack(STEEL.ingot(), 24), new OreDictStack(STEEL.plate(), 16), new OreDictStack(AL.plate(), 6), new ComparableStack(ModItems.drill_titanium, 1), new ComparableStack(ModItems.motor, 2), new ComparableStack(ModItems.wire_red_copper, 8), }, 400);
+		makeRecipe(new ComparableStack(ModBlocks.machine_pumpjack, 1), new AStack[] { new ComparableStack(ModBlocks.steel_scaffold, 8), new OreDictStack(STEEL.block(), 8), new OreDictStack(ANY_PLASTIC.block(), 2), new ComparableStack(ModItems.pipes_steel, 4), new ComparableStack(ModItems.tank_steel, 4), new OreDictStack(STEEL.ingot(), 24), new OreDictStack(STEEL.plate(), 16), new OreDictStack(AL.plate(), 6), new ComparableStack(ModItems.drill_titanium, 1), new ComparableStack(ModItems.motor, 2), new ComparableStack(ModItems.wire_red_copper, 8), }, 400);
 		makeRecipe(new ComparableStack(ModBlocks.machine_fracking_tower, 1), new AStack[] { new ComparableStack(ModBlocks.steel_scaffold, 40), new ComparableStack(ModBlocks.concrete_smooth, 64), new ComparableStack(ModItems.drill_titanium, 1), new ComparableStack(ModItems.motor_desh, 2), new ComparableStack(ModItems.plate_desh, 6), new OreDictStack(NB.ingot(), 8), new ComparableStack(ModItems.tank_steel, 24), new ComparableStack(ModItems.pipes_steel, 2), }, 600);
 		makeRecipe(new ComparableStack(ModBlocks.machine_catalytic_cracker), new AStack[] {
 				new ComparableStack(ModBlocks.steel_scaffold, 16),
@@ -770,7 +770,7 @@ public class AssemblerRecipes {
 
 		makeRecipe(new ComparableStack(ModBlocks.machine_fel, 1), new AStack[] {
 				new ComparableStack(ModBlocks.fusion_conductor, 16),
-				new ComparableStack(ModBlocks.machine_desh_battery, 2),
+				new ComparableStack(ModBlocks.machine_saturnite_battery, 2),
 				new OreDictStack(STEEL.ingot(), 16),
 				new OreDictStack(STEEL.plate(), 24),
 				new OreDictStack(DESH.ingot(), 8),
@@ -906,7 +906,7 @@ public class AssemblerRecipes {
 		makeRecipe(new ComparableStack(ModBlocks.qe_sliding_door, 1), new AStack[]{new OreDictStack(STEEL.plate(), 12), new OreDictStack(POLYMER.plate(), 2), new OreDictStack(STEEL.block(), 1), new ComparableStack(ModItems.motor, 2), new ComparableStack(ModItems.bolt_dura_steel, 2), new OreDictStack(KEY_WHITE, 4), new ComparableStack(Blocks.GLASS, 4)}, 200);
 		makeRecipe(new ComparableStack(ModBlocks.fire_door, 1), new AStack[]{new OreDictStack(STEEL.plate(), 36), new OreDictStack(ASBESTOS.ingot(), 12), new OreDictStack(POLYMER.plate(), 6), new OreDictStack(STEEL.block(), 4), new ComparableStack(ModItems.motor, 4), new ComparableStack(ModItems.bolt_dura_steel, 6), new OreDictStack(KEY_RED, 8)}, 500);
 		makeRecipe(new ComparableStack(ModBlocks.small_hatch, 1), new AStack[]{new OreDictStack(STEEL.plate(), 8), new OreDictStack(ALLOY.plate(), 2), new ComparableStack(ModItems.bolt_dura_steel, 1), new ComparableStack(ModBlocks.brick_concrete, 1), new ComparableStack(ModBlocks.ladder_red, 1)}, 200);
-		makeRecipe(new ComparableStack(ModBlocks.round_airlock_door, 1), new AStack[]{new OreDictStack(STEEL.plate(), 32), new OreDictStack(ALLOY.plate(), 12), new OreDictStack(POLYMER.plate(), 12), new OreDictStack(STEEL.block(), 6), new ComparableStack(ModItems.motor, 6), new ComparableStack(ModItems.bolt_dura_steel, 12), new OreDictStack(KEY_GREEN, 4)}, 500);
+		makeRecipe(new ComparableStack(ModBlocks.round_airlock_door, 1), new AStack[]{new OreDictStack(STEEL.plate(), 32), new OreDictStack(ALLOY.plate(), 12), new OreDictStack(POLYMER.plate(), 12), new OreDictStack(STEEL.block(), 6), new ComparableStack(ModItems.motor, 6), new ComparableStack(ModItems.bolt_dura_steel, 12), new OreDictStack(KEY_GRAY, 4)}, 500);
 		makeRecipe(new ComparableStack(ModBlocks.secure_access_door, 1), new AStack[]{new OreDictStack(STEEL.plate(), 48), new OreDictStack(ALLOY.plate(), 16), new OreDictStack(POLYMER.plate(), 2), new OreDictStack(STEEL.block(), 6), new ComparableStack(ModItems.motor, 4), new ComparableStack(ModItems.bolt_dura_steel, 24), new OreDictStack(KEY_CYAN, 8)}, 1000);
 		makeRecipe(new ComparableStack(ModBlocks.sliding_seal_door, 1), new AStack[]{new OreDictStack(STEEL.plate(), 12), new OreDictStack(ALLOY.plate(), 4), new OreDictStack(POLYMER.plate(), 2), new OreDictStack(STEEL.block(), 1), new ComparableStack(ModItems.motor, 2), new ComparableStack(ModItems.bolt_dura_steel, 2), new OreDictStack(KEY_WHITE, 2)}, 500);
 		makeRecipe(new ComparableStack(ModBlocks.transition_seal, 1), new AStack[]{new ComparableStack(ModBlocks.cmb_brick_reinforced, 16), new OreDictStack(STEEL.plate(), 64), new OreDictStack(ALLOY.plate(), 40), new OreDictStack(POLYMER.plate(), 36), new OreDictStack(STEEL.block(), 24), new ComparableStack(ModItems.motor_desh, 16), new ComparableStack(ModItems.bolt_dura_steel, 12), new OreDictStack(KEY_YELLOW, 4)}, 5000);
