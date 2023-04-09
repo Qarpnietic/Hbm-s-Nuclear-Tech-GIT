@@ -849,6 +849,14 @@ public class AssemblerRecipes {
 					new ComparableStack(ModItems.circuit_tantalium, 20),
 				}, 300);
 			
+				makeRecipe(new ComparableStack(ModItems.meteor_remote, 1), new AStack[] {
+					new OreDictStack(STEEL.ingot(), 2),
+					new OreDictStack(AL.plate(), 6),
+					new OreDictStack(POLYMER.plate(), 2),
+					new ComparableStack(ModItems.circuit_gold, 5),
+					new ComparableStack(ModItems.gem_tantalium, 1),
+				}, 300);
+
 			makeRecipe(new ComparableStack(ModBlocks.rbmk_console, 1), new AStack[] {
 					new OreDictStack(STEEL.ingot(), 16),
 					new OreDictStack(AL.plate(), 32),

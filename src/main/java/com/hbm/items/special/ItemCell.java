@@ -173,6 +173,7 @@ public class ItemCell extends Item {
 	public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flagIn) {
 		if(ItemCell.hasFluid(stack, ModForgeFluids.amat)){
 			tooltip.add("§eExposure to matter will lead to violent annihilation!§r");
+			tooltip.add("§eSomeone mined a chest with these§r");
 			tooltip.add("§c[Dangerous Drop]§r");
 		} else if(ItemCell.hasFluid(stack, ModForgeFluids.aschrab)){
 			tooltip.add("§eExposure to matter will create a fólkvangr field!§r");

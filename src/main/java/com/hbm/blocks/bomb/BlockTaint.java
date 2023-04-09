@@ -136,7 +136,7 @@ public class BlockTaint extends Block {
 	
 	@Override
 	public void addInformation(ItemStack stack, World player, List<String> tooltip, ITooltipFlag advanced) {
-		tooltip.add("DO NOT TOUCH, BREATHE OR STARE AT. RUN!");
+		tooltip.add("warcrime");
 	}
 
 	@Override
