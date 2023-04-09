@@ -574,6 +574,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					}
 				}
 			}
+			
 				int dimJungleStructure = parseInt(CompatibilityConfig.jungleStructure.get(dimID));
 				if(dimJungleStructure > 0 && rand.nextInt(dimJungleStructure) == 0) {
 					int x = i + rand.nextInt(16);
@@ -593,7 +594,6 @@ public class HbmWorldGen implements IWorldGenerator {
 					world.setBlockState(new BlockPos(x, y + 3, z), Blocks.REDSTONE_BLOCK.getDefaultState());
 				}
 			}
-			
 			if(biome.getTempCategory() == Biome.TempCategory.COLD){
 				int dimArcticStructure = parseInt(CompatibilityConfig.arcticStructure.get(dimID));
 				if (dimArcticStructure > 0 && rand.nextInt(dimArcticStructure) == 0) {
@@ -603,7 +603,7 @@ public class HbmWorldGen implements IWorldGenerator {
 					new ArcticVault().trySpawn(world, x, y, z);
 				}
 			}
-			if(biome.getDefaultTemperature() == Biome.TempCategory.WARM){
+			if(biome.getDefaultTemperature() >= 1.8F){
 				int dimPyramidStructure = parseInt(CompatibilityConfig.pyramidStructure.get(dimID));
 				if (dimPyramidStructure > 0 && rand.nextInt(dimPyramidStructure) == 0) {
 					int x = i + rand.nextInt(16);
@@ -626,7 +626,6 @@ public class HbmWorldGen implements IWorldGenerator {
 				}
 			}
 		}
-		
 		
 		if(rand.nextInt(25) == 0) {
 			int randPosX = i + rand.nextInt(16);
