@@ -40,7 +40,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 	public static final int demand = 1000;
 	public int acidRequired = 500;
 	public short progress;
-	public static final short duration = 600;
+	public static final short duration = 300;
 
 	public float angle;
 	public float prevAngle;

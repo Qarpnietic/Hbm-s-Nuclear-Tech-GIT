@@ -346,7 +346,7 @@ public class HbmWorldGen implements IWorldGenerator {
 			if (biome.getDefaultTemperature() < 2F || biome.getDefaultTemperature() > 1.0F) {
 				generateAStructure(world, rand, i, j, new Relay(), parseInt(CompatibilityConfig.relayStructure.get(dimID)));
 			}
-			if (biome.getDefaultTemperature() > 1.8F) {
+			if (!biome.canRain() && biome.getDefaultTemperature() > 1.4F) {
 				generateAStructure(world, rand, i, j, new Barrel(), parseInt(CompatibilityConfig.barrelStructure.get(dimID)));
 			}
 			if (!biome.canRain() && biome.getDefaultTemperature() >= 2F) {
