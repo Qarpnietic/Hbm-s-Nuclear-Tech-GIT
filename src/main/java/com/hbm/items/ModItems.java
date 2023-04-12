@@ -641,7 +641,7 @@ public class ModItems {
 	public static final Item hazmat_paa_legs = new ArmorHazmat(MainRegistry.enumArmorMaterialPaa, -1, EntityEquipmentSlot.LEGS, "hazmat_paa_legs").setMaxStackSize(1);
 	public static final Item hazmat_paa_boots = new ArmorHazmat(MainRegistry.enumArmorMaterialPaa, -1, EntityEquipmentSlot.FEET, "hazmat_paa_boots").setMaxStackSize(1);
 	
-	public static final Item paa_helmet = new ArmorFSB(MainRegistry.enumArmorMaterialPaa, -1, EntityEquipmentSlot.HEAD, RefStrings.MODID + ":textures/armor/paa_1.png", "paa_helmet").setCap(4F).setMod(0.2F).setBlastProtection(0.5F).addEffect(new PotionEffect(MobEffects.HASTE, 20, 0)).addEffect(new PotionEffect(MobEffects.SPEED, 20, 0)).setFireproof(true).setMaxStackSize(1);
+	public static final Item paa_helmet = new ArmorFSB(MainRegistry.enumArmorMaterialPaa, -1, EntityEquipmentSlot.HEAD, RefStrings.MODID + ":textures/armor/paa_1.png", "paa_helmet").setCap(4F).setMod(0.2F).setBlastProtection(0.5F).addEffect(new PotionEffect(MobEffects.HASTE, 20, 0)).addEffect(new PotionEffect(MobEffects.SPEED, 20, 0)).addEffect(new PotionEffect(MobEffects.WATER_BREATHING, 20, 0)).setFireproof(true).setMaxStackSize(1);
 	public static final Item paa_plate = new ArmorFSB(MainRegistry.enumArmorMaterialPaa, -1, EntityEquipmentSlot.CHEST, RefStrings.MODID + ":textures/armor/paa_1.png", "paa_plate").cloneStats((ArmorFSB) paa_helmet).setMaxStackSize(1);
 	public static final Item paa_legs = new ArmorFSB(MainRegistry.enumArmorMaterialPaa, -1, EntityEquipmentSlot.LEGS, RefStrings.MODID + ":textures/armor/paa_2.png", "paa_legs").cloneStats((ArmorFSB) paa_helmet).setMaxStackSize(1);
 	public static final Item paa_boots = new ArmorFSB(MainRegistry.enumArmorMaterialPaa, -1, EntityEquipmentSlot.FEET, RefStrings.MODID + ":textures/armor/paa_1.png", "paa_boots").cloneStats((ArmorFSB) paa_helmet).setMaxStackSize(1);
@@ -771,6 +771,7 @@ public class ModItems {
 	public static final Item hev_helmet = new ArmorHEV(MainRegistry.aMatHEV, 7, EntityEquipmentSlot.HEAD, RefStrings.MODID + ":textures/armor/starmetal_1.png", 5000000, 10000, 2500, 100, "hev_helmet").setMod(0.25F).setCap(4.0F).setThreshold(2.0F)
 			.addEffect(new PotionEffect(MobEffects.JUMP_BOOST, 20, 0))
 			.addEffect(new PotionEffect(MobEffects.SPEED, 20, 1))
+			.addEffect(new PotionEffect(MobEffects.WATER_BREATHING, 20, 0))
 			.enableFlashlight(new Vec3d(0, -0.1, 0.8))
 			.setBlastProtection(0.25F)
 			.setMod(0.2F)
@@ -809,6 +810,7 @@ public class ModItems {
 			.setHasHardLanding(true)
 			.addEffect(new PotionEffect(HbmPotion.radx, 20, 0))
 			.addEffect(new PotionEffect(MobEffects.STRENGTH, 20, 3))
+			.addEffect(new PotionEffect(MobEffects.WATER_BREATHING, 20, 0))
 			.setBlastProtection(0.25F)
 			.setMod(0.1F)
 			.setThreshold(20.0F)
@@ -823,6 +825,7 @@ public class ModItems {
 
 	public static final Item fau_helmet = new ArmorDigamma(MainRegistry.aMatFau, -1, EntityEquipmentSlot.HEAD, RefStrings.MODID + ":textures/armor/starmetal_1.png", 100000000, 100000, 25000, 1000, "fau_helmet").setMod(0.25F).setCap(4.0F).setThreshold(2.0F)
 			.addEffect(new PotionEffect(MobEffects.JUMP_BOOST, 20, 1))
+			.addEffect(new PotionEffect(MobEffects.WATER_BREATHING, 20, 0))
 			.setBlastProtection(0.05F)
 			.setMod(0.05F)
 			.setHasGeigerSound(true)
@@ -842,6 +845,7 @@ public class ModItems {
 			.addEffect(new PotionEffect(MobEffects.STRENGTH, 20, 9))
 			.addEffect(new PotionEffect(MobEffects.HASTE, 20, 7))
 			.addEffect(new PotionEffect(MobEffects.JUMP_BOOST, 20, 2))
+			.addEffect(new PotionEffect(MobEffects.WATER_BREATHING, 20, 0))
 			.setHasGeigerSound(true)
 			.enableVATS(true)
 			.enableThermalSight(true)
@@ -975,7 +979,7 @@ public class ModItems {
 	public static final Item gun_skystinger = new GunStinger("gun_skystinger").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_mp = new ItemGunBase(Gun556mmFactory.getEuphieConfig(), "gun_mp").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_bolter = new ItemGunBase(Gun75BoltFactory.getBolterConfig(), "gun_bolter").setCreativeTab(MainRegistry.weaponTab);
-	public static final Item gun_brimstone = new GunBrimstone("gun_brimstone").setCreativeTab(MainRegistry.weaponTab);
+	public static final Item gun_brimstone = new GunBrimstone("gun_brimstone").setCreativeTab(null);
 	public static final Item gun_cryolator = new GunCryolator("gun_cryolator").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_jack = new GunJack("gun_jack").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_immolator = new GunImmolator("gun_immolator").setCreativeTab(MainRegistry.weaponTab);
@@ -2404,11 +2408,11 @@ public class ModItems {
 	public static final Item gun_b92_ammo = new GunB92Cell("gun_b92_ammo").setMaxStackSize(1).setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_fatman_ammo = new ItemBase("gun_fatman_ammo").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_mirv_ammo = new ItemBase("gun_mirv_ammo").setCreativeTab(MainRegistry.weaponTab);
-	public static final Item gun_bf_ammo = new ItemBase("gun_bf_ammo").setCreativeTab(null);
+	public static final Item gun_bf_ammo = new ItemBase("gun_bf_ammo").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_stinger_ammo = new ItemBase("gun_stinger_ammo").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_xvl1456_ammo = new ItemBase("gun_xvl1456_ammo").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_hp_ammo = new ItemBase("gun_hp_ammo").setCreativeTab(MainRegistry.weaponTab);
-	public static final Item gun_dash_ammo = new ItemBase("gun_dash_ammo").setCreativeTab(MainRegistry.weaponTab);
+	public static final Item gun_dash_ammo = new ItemBase("gun_dash_ammo").setCreativeTab(null);
 	public static final Item gun_defabricator_ammo = new ItemBase("gun_defabricator_ammo").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_cryolator_ammo = new ItemBase("gun_cryolator_ammo").setCreativeTab(MainRegistry.weaponTab);
 	public static final Item gun_jack_ammo = new ItemBase("gun_jack_ammo").setCreativeTab(MainRegistry.weaponTab);
