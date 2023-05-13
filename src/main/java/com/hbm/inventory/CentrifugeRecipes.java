@@ -218,6 +218,16 @@ public class CentrifugeRecipes {
 				new ItemStack(ModItems.powder_fire, 2),
 				new ItemStack(ModItems.ingot_phosphorus),
 				new ItemStack(Blocks.NETHERRACK) });
+
+		recipes.put(new ComparableStack(Items.COOKED_BEEF), new ItemStack[] {
+				new ItemStack(ModItems.billet_nuclear_waste),
+				new ItemStack(Items.BEEF),
+				new ItemStack(Items.BEEF) });
+
+		recipes.put(new ComparableStack(Items.COOKED_PORKCHOP), new ItemStack[] {
+				new ItemStack(ModItems.billet_nuclear_waste),
+				new ItemStack(Items.PORKCHOP),
+				new ItemStack(Items.PORKCHOP) });
 		
 		recipes.put(new ComparableStack(Items.BLAZE_ROD), new ItemStack[] {new ItemStack(Items.BLAZE_POWDER, 1), new ItemStack(Items.BLAZE_POWDER, 1), new ItemStack(ModItems.powder_fire, 1), new ItemStack(ModItems.powder_fire, 1) });
 		
