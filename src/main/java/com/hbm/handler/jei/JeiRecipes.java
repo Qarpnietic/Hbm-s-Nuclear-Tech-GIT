@@ -25,6 +25,7 @@ import com.hbm.inventory.BreederRecipes.BreederRecipe;
 import com.hbm.inventory.WasteDrumRecipes;
 import com.hbm.inventory.CyclotronRecipes;
 import com.hbm.inventory.FusionRecipes;
+import com.hbm.inventory.DiFurnaceRecipes;
 import com.hbm.inventory.MachineRecipes;
 import com.hbm.inventory.MachineRecipes.GasCentOutput;
 import com.hbm.inventory.MagicRecipes;
@@ -48,6 +49,7 @@ import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
 import com.hbm.util.WeightedRandomObject;
 import com.hbm.util.Tuple.Quartet;
+import com.hbm.util.Tuple.Pair;
 import com.hbm.util.I18nUtil;
 
 import mezz.jei.api.gui.IDrawableStatic;
@@ -83,6 +85,7 @@ public class JeiRecipes {
 	private static List<FluidRecipe> fluidEquivalences = null;
 	private static List<BookRecipe> bookRecipes = null;
 	private static List<FusionRecipe> fusionByproducts = null;
+	private static List<SAFERecipe> safeRecipes = null;
 	private static List<HadronRecipe> hadronRecipes = null;
 	private static List<SILEXRecipe> silexRecipes = null;
 	private static Map<EnumWavelengths, List<SILEXRecipe>> waveSilexRecipes = new HashMap<EnumWavelengths, List<SILEXRecipe>>();
@@ -92,6 +95,7 @@ public class JeiRecipes {
 	private static List<ItemStack> batteries = null;
 	private static Map<Integer, List<ItemStack>> reactorFuelMap = new HashMap<Integer, List<ItemStack>>();
 	private static List<ItemStack> blades = null;
+	private static List<ItemStack> alloyFuels = null;
 	
 	
 	public static class ChemRecipe implements IRecipeWrapper {
@@ -160,17 +164,21 @@ public class JeiRecipes {
 	
 	public static class AlloyFurnaceRecipe implements IRecipeWrapper {
 		
-		private final List<ItemStack> inputs;
+		private final List<List<ItemStack>> inputs;
 		private final ItemStack output;
 		
-		public AlloyFurnaceRecipe(List<ItemStack> inputs, ItemStack output) {
-			this.inputs = inputs;
+		public AlloyFurnaceRecipe(AStack input1, AStack input2, ItemStack output) {
+			List<List<ItemStack>> list = new ArrayList<>(2);
+			list.add(input1.getStackList());
+			list.add(input2.getStackList());
+			this.inputs = list;
 			this.output = output; 
 		}
 		
 		@Override
 		public void getIngredients(IIngredients ingredients) {
-			ingredients.setInputs(VanillaTypes.ITEM, inputs);
+			List<List<ItemStack>> in = Library.copyItemStackListList(inputs);
+			ingredients.setInputLists(VanillaTypes.ITEM, in);
 			ingredients.setOutput(VanillaTypes.ITEM, output);
 		}
 		
@@ -435,7 +443,22 @@ public class JeiRecipes {
 			ingredients.setInput(VanillaTypes.ITEM, input);
 			ingredients.setOutput(VanillaTypes.ITEM, output);
 		}
+	}
+
+	public static class SAFERecipe implements IRecipeWrapper {
+		ItemStack input;
+		ItemStack output;
 		
+		public SAFERecipe(ItemStack input, ItemStack output) {
+			this.input = input;
+			this.output = output;
+		}
+		
+		@Override
+		public void getIngredients(IIngredients ingredients) {
+			ingredients.setInput(VanillaTypes.ITEM, input);
+			ingredients.setOutput(VanillaTypes.ITEM, output);
+		}
 	}
 	
 	public static class HadronRecipe implements IRecipeWrapper {
@@ -739,70 +762,20 @@ public class JeiRecipes {
 		if(alloyFurnaceRecipes != null)
 			return alloyFurnaceRecipes;
 		alloyFurnaceRecipes = new ArrayList<AlloyFurnaceRecipe>();
-		Map<ItemStack[], ItemStack> recipes = new HashMap<ItemStack[], ItemStack>();
-		
-		if (GeneralConfig.enableDebugMode) {
-			recipes.put(new ItemStack[] { new ItemStack(Items.IRON_INGOT), new ItemStack(Items.QUARTZ) },
-					new ItemStack(Item.getItemFromBlock(ModBlocks.test_render)));
-		}
-		try {
-			recipes.put(new ItemStack[] { new ItemStack(Items.IRON_INGOT), new ItemStack(Items.COAL) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(Items.IRON_INGOT), new ItemStack(Items.COAL)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.ingot_lead), new ItemStack(ModItems.ingot_copper) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.ingot_lead), new ItemStack(ModItems.ingot_copper)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.plate_lead), new ItemStack(ModItems.plate_copper) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.plate_lead), new ItemStack(ModItems.plate_copper)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.ingot_tungsten), new ItemStack(Items.COAL) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.ingot_tungsten), new ItemStack(Items.COAL)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.ingot_copper), new ItemStack(Items.REDSTONE) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.ingot_copper), new ItemStack(Items.REDSTONE)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.ingot_red_copper), new ItemStack(ModItems.ingot_steel) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.ingot_red_copper), new ItemStack(ModItems.ingot_steel)).copy());
-			recipes.put(new ItemStack[] { ItemFluidCanister.getFullCanister(ModForgeFluids.diesel), new ItemStack(Items.SLIME_BALL) },
-					MachineRecipes.getFurnaceOutput(ItemFluidCanister.getFullCanister(ModForgeFluids.diesel), new ItemStack(Items.SLIME_BALL)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.ingot_tungsten), new ItemStack(ModItems.nugget_schrabidium) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.ingot_tungsten), new ItemStack(ModItems.nugget_schrabidium)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.plate_mixed), new ItemStack(ModItems.plate_gold) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.plate_mixed), new ItemStack(ModItems.plate_gold)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.ingot_steel), new ItemStack(ModItems.ingot_tungsten) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.ingot_steel), new ItemStack(ModItems.ingot_tungsten)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.ingot_steel), new ItemStack(ModItems.ingot_cobalt) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.ingot_steel), new ItemStack(ModItems.ingot_cobalt)).copy());
-			recipes.put(new ItemStack[] { new ItemStack(ModItems.ingot_saturnite), new ItemStack(ModItems.powder_meteorite) },
-					MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.ingot_saturnite), new ItemStack(ModItems.powder_meteorite)).copy());
-			if(GeneralConfig.enableBabyMode) {
-				recipes.put(new ItemStack[] { new ItemStack(ModItems.canister_generic), new ItemStack(Items.COAL) },
-						MachineRecipes.getFurnaceOutput(new ItemStack(ModItems.canister_generic), new ItemStack(Items.COAL)).copy());
-			}
-		} catch (Exception x) {
-			MainRegistry.logger.error("Unable to register alloy recipes for NEI!");
-			x.printStackTrace();
-		}
-		for(Map.Entry<ItemStack[], ItemStack> entry : recipes.entrySet()){
-			List<ItemStack> inputs = new ArrayList<ItemStack>(2);
-			for(ItemStack stack : entry.getKey())
-				inputs.add(stack);
-			alloyFurnaceRecipes.add(new AlloyFurnaceRecipe(inputs, entry.getValue()));
+
+		for(Map.Entry<Pair<AStack, AStack>, ItemStack> pairEntry : DiFurnaceRecipes.diRecipes.entrySet()){
+			alloyFurnaceRecipes.add(new AlloyFurnaceRecipe(pairEntry.getKey().getKey(), pairEntry.getKey().getValue(), pairEntry.getValue()));
 		}
 		return alloyFurnaceRecipes;
 	}
 	
-	public static ArrayList<ItemStack> getAlloyFuels() {
-		ArrayList<ItemStack> fuels = new ArrayList<ItemStack>();
-		fuels.add(new ItemStack(Items.COAL));
-		fuels.add(new ItemStack(Blocks.COAL_BLOCK));
-		fuels.add(new ItemStack(Items.LAVA_BUCKET));
-		fuels.add(new ItemStack(Items.BLAZE_ROD));
-		fuels.add(new ItemStack(Items.BLAZE_POWDER));
-		fuels.add(new ItemStack(ModItems.lignite));
-		fuels.add(new ItemStack(ModItems.powder_lignite));
-		fuels.add(new ItemStack(ModItems.briquette_lignite));
-		fuels.add(new ItemStack(ModItems.coke));
-		fuels.add(new ItemStack(ModItems.solid_fuel));
-		fuels.add(new ItemStack(ModItems.powder_coal));
-		return fuels;
+	public static List<ItemStack> getAlloyFuels() {
+		if(alloyFuels != null)
+			return alloyFuels;
+		alloyFuels = DiFurnaceRecipes.getAlloyFuels();
+		return alloyFuels;
 	}
-	
+
 	public static List<BoilerRecipe> getBoilerRecipes() {
 		if(boilerRecipes != null)
 			return boilerRecipes;
@@ -1058,6 +1031,16 @@ public class JeiRecipes {
 		fusionByproducts.add(new FusionRecipe(ModForgeFluids.plasma_put, FusionRecipes.getByproduct(ModForgeFluids.plasma_put)));
 		fusionByproducts.add(new FusionRecipe(ModForgeFluids.plasma_bf, FusionRecipes.getByproduct(ModForgeFluids.plasma_bf)));
 		return fusionByproducts;
+	}
+
+	public static List<SAFERecipe> getSAFERecipes(){
+		if(safeRecipes != null)
+			return safeRecipes;
+		safeRecipes = new ArrayList<>();
+		for(Entry<ItemStack, ItemStack> recipe : com.hbm.inventory.SAFERecipes.getAllRecipes().entrySet()){
+			safeRecipes.add(new SAFERecipe(recipe.getKey(), recipe.getValue()));
+		}
+		return safeRecipes;
 	}
 	
 	public static List<HadronRecipe> getHadronRecipes(){

@@ -62,6 +62,7 @@ public class CrystallizerRecipes {
 		addRecipe("oreRareEarth", new FluidStack(ModForgeFluids.sulfuric_acid, 500), new ItemStack(ModItems.crystal_rare));
 		addRecipe(CO.ore(), new FluidStack(ModForgeFluids.sulfuric_acid, 500), new ItemStack(ModItems.crystal_cobalt));
 		addRecipe(CINNABAR.ore(), new FluidStack(ModForgeFluids.sulfuric_acid, 500), new ItemStack(ModItems.crystal_cinnebar));
+		addRecipe(ASBESTOS.ore(), new FluidStack(ModForgeFluids.sulfuric_acid, 500), new ItemStack(ModItems.crystal_asbestos));
 		
 		addRecipe(new ComparableStack(ModBlocks.ore_nether_fire), new FluidStack(ModForgeFluids.acid, 500), new ItemStack(ModItems.crystal_phosphorus));
 		addRecipe(new ComparableStack(ModBlocks.ore_tikite), new FluidStack(ModForgeFluids.sulfuric_acid, 500), new ItemStack(ModItems.crystal_trixite));
@@ -94,6 +95,7 @@ public class CrystallizerRecipes {
 		addRecipe(new ComparableStack(Items.DYE, 1, 15), new FluidStack(ModForgeFluids.sulfuric_acid, 250), new ItemStack(Items.SLIME_BALL, 4));
 		addRecipe(new ComparableStack(ModItems.powder_lithium, 1), new FluidStack(ModForgeFluids.heatingoil, 4000), new ItemStack(ModItems.crystal_redstone, 1));
 		addRecipe(new ComparableStack(ModItems.coal_infernal), new FluidStack(ModForgeFluids.sulfuric_acid, 500), new ItemStack(ModItems.solid_fuel));
+		addRecipe(new ComparableStack(ModItems.fallout), new FluidStack(ModForgeFluids.corium_fluid, 500), new ItemStack(ModItems.powder_balefire));
 		
 		List<ItemStack> quartz = OreDictionary.getOres("crystalCertusQuartz");
 		

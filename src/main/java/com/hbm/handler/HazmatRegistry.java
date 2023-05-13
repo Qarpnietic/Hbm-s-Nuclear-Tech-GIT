@@ -68,7 +68,7 @@ public class HazmatRegistry {
 		}
 		PotionEffect radx = player.getActivePotionEffect(HbmPotion.radx);
 		if(radx != null)
-			res += 0.1F * radx.getAmplifier();
+			res += 0.1F * (1+radx.getAmplifier());
 
 		return res;
 
@@ -172,6 +172,7 @@ public class HazmatRegistry {
 		HazmatRegistry.registerHazmat(ModItems.dns_legs, dns * legs);
 		HazmatRegistry.registerHazmat(ModItems.dns_boots, dns * boots);
 
+		HazmatRegistry.registerHazmat(ModItems.paa_helmet, paa * helmet);
 		HazmatRegistry.registerHazmat(ModItems.paa_plate, paa * chest);
 		HazmatRegistry.registerHazmat(ModItems.paa_legs, paa * legs);
 		HazmatRegistry.registerHazmat(ModItems.paa_boots, paa * boots);

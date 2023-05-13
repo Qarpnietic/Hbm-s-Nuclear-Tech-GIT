@@ -897,6 +897,11 @@ public class SILEXRecipes {
 				.addOut(new WeightedRandomObject(new ItemStack(Blocks.GRAVEL), 14))
 				.addOut(new WeightedRandomObject(new ItemStack(ModItems.powder_polonium), 21))
 				);
+		recipes.put(ASBESTOS.crystal(), new SILEXRecipe(900, 100, EnumWavelengths.VISIBLE)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.powder_asbestos), 64))
+				.addOut(new WeightedRandomObject(new ItemStack(Blocks.GRAVEL), 24))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.powder_boron_tiny), 12))
+				);
 
 
 		recipes.put(TH232.crystal(), new SILEXRecipe(900, 100, EnumWavelengths.UV)
@@ -949,13 +954,18 @@ public class SILEXRecipes {
 				);
 		
 		//crystals minerals
-		
-		
-		
-		
-		
-		
-		
+	}
+
+	public static void addRecipe(int wavelength, int solution, int consumption, ItemStack input, ItemStack[] outputItems, int[] outputWeights){
+		SILEXRecipe newRecipe = new SILEXRecipe(solution, consumption, EnumWavelengths.values()[wavelength]);
+		for(int i = 0; i < outputItems.length; i++){
+			newRecipe = newRecipe.addOut(new WeightedRandomObject(outputItems[i], outputWeights[i]));
+		}
+		recipes.put(new ComparableStack(input), newRecipe);
+	}
+
+	public static void removeRecipe(ItemStack input){
+		recipes.remove(new ComparableStack(input));
 	}
 	
 	public static SILEXRecipe getOutput(ItemStack stack) {
