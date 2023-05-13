@@ -1,8 +1,6 @@
 # <u>**HBM Nuclear Tech Mod - 1.12.2 Extended Edition**</u>
 
-This is my 1.12.2 custom version of the mod, 
-where I attempt to add features from Hbm's original 1.7.10 version and add QoL features.
-Planning to contribute to Alcater's fork.
+This is just me changing small things about this mod. Used for a server I host.
 
 which is forked from the fork made by [Alcatergit](https://github.com/Alcatergit/Hbm-s-Nuclear-Tech-GIT)
 which is forked from the fork made by [TheOriginalGolem](https://github.com/TheOriginalGolem/Hbm-s-Nuclear-Tech-GIT)
