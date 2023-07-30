@@ -417,40 +417,6 @@ public class ModEventHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public void itemCrafted(ItemCraftedEvent e) {
-		EntityPlayer player = e.player;
-		Item item = e.crafting.getItem();
-
-		/*if (item == ModItems.gun_mp40) {
-			e.player.addStat(MainRegistry.achFreytag, 1);
-		}
-		if (item == ModItems.piston_selenium || item == ModItems.gun_b92) {
-			e.player.addStat(MainRegistry.achSelenium, 1);
-		}
-		if (item == ModItems.battery_potatos) {
-			e.player.addStat(MainRegistry.achPotato, 1);
-		}
-		if (item == ModItems.gun_revolver_pip) {
-			e.player.addStat(MainRegistry.achC44, 1);
-		}*/
-		if(item == Item.getItemFromBlock(ModBlocks.machine_difurnace_off)) {
-			AdvancementManager.grantAchievement(player, AdvancementManager.bobMetalworks);
-		}
-		if(item == Item.getItemFromBlock(ModBlocks.machine_assembler) && AdvancementManager.hasAdvancement(player, AdvancementManager.bobMetalworks)) {
-			AdvancementManager.grantAchievement(player, AdvancementManager.bobAssembly);
-		}
-		if(item == Item.getItemFromBlock(ModBlocks.brick_concrete) && AdvancementManager.hasAdvancement(player, AdvancementManager.bobAssembly)) {
-			AdvancementManager.grantAchievement(player, AdvancementManager.bobChemistry);
-		}
-		if(item == Item.getItemFromBlock(ModBlocks.machine_boiler_electric_off) && AdvancementManager.hasAdvancement(player, AdvancementManager.bobChemistry)) {
-			AdvancementManager.grantAchievement(player, AdvancementManager.bobOil);
-		}
-		if(item == ModItems.ingot_uranium_fuel && AdvancementManager.hasAdvancement(player, AdvancementManager.bobOil)) {
-			AdvancementManager.grantAchievement(player, AdvancementManager.bobNuclear);
-		}
-	}
-
 	private static final String hash = "87cd50b55b1b9115fef35dd4d135af7ab27b0e014374411e4aa23af3c6af1ed4";
 
 
