@@ -49,6 +49,8 @@ import net.minecraft.world.World;
 
 public class ContaminationUtil {
 
+	public static final String NTM_NEUTRON_NBT_KEY = "ntmNeutron";
+
 	/**
 	 * Calculates how much radiation can be applied to this entity by calculating resistance
 	 * @param entity
@@ -229,6 +231,35 @@ public class ContaminationUtil {
 	
 	}
 
+	public static double getStackRads(ItemStack stack) {
+		if(stack == null)
+			return 0;
+		
+		Item item = stack.getItem();
+
+		double rads = 0;
+		
+		if(item instanceof IItemHazard){
+			rads += ((IItemHazard)item).getModule().radiation;
+		}
+
+		if(item instanceof ItemBlockHazard){
+			rads += ((ItemBlockHazard)item).getModule().radiation;
+		}
+
+		if(stack.hasTagCompound()){
+			NBTTagCompound stackNBT = stack.getTagCompound();
+			if(stackNBT.hasKey(NTM_NEUTRON_NBT_KEY)){
+				rads += stackNBT.getFloat(NTM_NEUTRON_NBT_KEY);
+			}
+		}
+
+		if(rads > 1)
+			return rads;
+		else
+			return 0;
+	}
+
 	public static double getActualPlayerRads(EntityLivingBase entity) {
 		return getPlayerRads(entity) * (double)(ContaminationUtil.calculateRadiationMod(entity));
 	}
@@ -274,8 +305,8 @@ public class ContaminationUtil {
 		if(stack != null && !stack.isEmpty() && !isRadItem(stack)){
 			if(stack.hasTagCompound()){
 				NBTTagCompound nbt = stack.getTagCompound();
-				if(nbt.hasKey("ntmNeutron")){
-					return nbt.getFloat("ntmNeutron") * stack.getCount();
+				if(nbt.hasKey(NTM_NEUTRON_NBT_KEY)){
+					return nbt.getFloat(NTM_NEUTRON_NBT_KEY) * stack.getCount();
 				}
 			}
 		}
@@ -304,8 +335,8 @@ public class ContaminationUtil {
 				nbt = new NBTTagCompound();
 			}
 			float prevActivation = 0;
-			if(nbt.hasKey("ntmNeutron")){
-				prevActivation = nbt.getFloat("ntmNeutron");
+			if(nbt.hasKey(NTM_NEUTRON_NBT_KEY)){
+				prevActivation = nbt.getFloat(NTM_NEUTRON_NBT_KEY);
 			}
 
 			if(prevActivation + rad == 0)
@@ -313,9 +344,9 @@ public class ContaminationUtil {
 
 			float newActivation = prevActivation * decay + (rad / stack.getCount());
 			if(prevActivation * decay + rad < 0.0001F || (rad <= 0 && newActivation < 0.001F )){
-				nbt.removeTag("ntmNeutron");
+				nbt.removeTag(NTM_NEUTRON_NBT_KEY);
 			} else {
-				nbt.setFloat("ntmNeutron", newActivation);
+				nbt.setFloat(NTM_NEUTRON_NBT_KEY, newActivation);
 			}
 			if(nbt.hasNoTags()){
 				stack.setTagCompound(null);
@@ -323,6 +354,14 @@ public class ContaminationUtil {
 				stack.setTagCompound(nbt);
 			}
 		}
+	}
+
+	public static boolean isContaminated(ItemStack stack){
+		if(!stack.hasTagCompound())
+			return false;
+		if(stack.getTagCompound().hasKey(NTM_NEUTRON_NBT_KEY))
+			return true;
+		return false;
 	}
 	
 	public static String getPreffixFromRad(double rads) {
@@ -349,7 +388,7 @@ public class ContaminationUtil {
 		if(e instanceof IRadiationImmune)
 			return 0.0F;
 		if(e instanceof EntityLivingBase)
-			HbmLivingProps.getRadiation((EntityLivingBase)e);
+			return HbmLivingProps.getRadiation((EntityLivingBase)e);
 		return 0.0F;
 	}
 
@@ -398,7 +437,12 @@ public class ContaminationUtil {
 	}
 	
 	/// ASBESTOS ///
+
 	public static void applyAsbestos(Entity e, int i, int dmg) {
+		applyAsbestos(e, i, dmg, 1);
+	}
+
+	public static void applyAsbestos(Entity e, int i, int dmg, int chance) {
 
 		if(!GeneralConfig.enableAsbestos)
 			return;
@@ -414,14 +458,27 @@ public class ContaminationUtil {
 		
 		EntityLivingBase entity = (EntityLivingBase)e;
 		
-		if(ArmorRegistry.hasProtection(entity, EntityEquipmentSlot.HEAD, HazardClass.PARTICLE_FINE))
-			ArmorUtil.damageGasMaskFilter(entity, dmg);
-		else
+		if(ArmorRegistry.hasProtection(entity, EntityEquipmentSlot.HEAD, HazardClass.PARTICLE_FINE)){
+			if(chance > 1){
+				if(entity.world.rand.nextInt(chance) == 0){
+					ArmorUtil.damageGasMaskFilter(entity, 1);
+				}
+			}
+			else{
+				ArmorUtil.damageGasMaskFilter(entity, dmg);
+			}
+		}
+		else{
 			HbmLivingProps.incrementAsbestos(entity, i);
+		}
+	}
+
+	public static void applyCoal(Entity e, int i, int dmg) {
+		applyCoal(e, i, dmg, 1);
 	}
 
 	/// COAL ///
-	public static void applyCoal(Entity e, int i, int dmg) {
+	public static void applyCoal(Entity e, int i, int dmg, int chance) {
 
 		if(!GeneralConfig.enableCoal)
 			return;
@@ -437,10 +494,19 @@ public class ContaminationUtil {
 		
 		EntityLivingBase entity = (EntityLivingBase)e;
 		
-		if(ArmorRegistry.hasProtection(entity, EntityEquipmentSlot.HEAD, HazardClass.PARTICLE_COARSE))
-			ArmorUtil.damageGasMaskFilter(entity, dmg);
-		else
+		if(ArmorRegistry.hasProtection(entity, EntityEquipmentSlot.HEAD, HazardClass.PARTICLE_COARSE)){
+			if(chance > 1){
+				if(entity.world.rand.nextInt(chance) == 0){
+					ArmorUtil.damageGasMaskFilter(entity, 1);
+				}
+			}
+			else{
+				ArmorUtil.damageGasMaskFilter(entity, dmg);
+			}
+		}
+		else{
 			HbmLivingProps.incrementBlackLung(entity, i);
+		}
 	}
 		
 	/// DIGAMMA ///
@@ -563,8 +629,6 @@ public class ContaminationUtil {
 		MONOXIDE,
 		RADIATION,
 		NEUTRON,
-		ASBESTOS,
-		COAL,
 		DIGAMMA
 	}
 	
@@ -624,8 +688,6 @@ public class ContaminationUtil {
 		case MONOXIDE: entity.attackEntityFrom(ModDamageSource.monoxide, amount); break;
 		case RADIATION: HbmLivingProps.incrementRadiation(entity, amount * (cont == ContaminationType.RAD_BYPASS ? 1 : calculateRadiationMod(entity))); break;
 		case NEUTRON: HbmLivingProps.incrementRadiation(entity, amount * (cont == ContaminationType.RAD_BYPASS ? 1 : calculateRadiationMod(entity))); HbmLivingProps.setNeutron(entity, amount); break;
-		case ASBESTOS: applyAsbestos(entity, (int)amount, (int)amount); break;
-		case COAL: applyCoal(entity, (int)amount, (int)amount); break;
 		case DIGAMMA: applyDigammaData(entity, amount); break;
 		}
 		

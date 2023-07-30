@@ -39,15 +39,12 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
     public Fluid[] tankTypes;
     public boolean needsUpdate;
 
-    public static long maxPower = 100000;
-    protected static int consumption = 100;
-    protected static int delay = 50;
-    protected static int oilPerDeposit = 500;
-    protected static int gasPerDepositMin = 100;
-    protected static int extraGasPerDepositMax = 401;
-
     public TileEntityOilDrillBase() {
-        inventory = new ItemStackHandler(6){
+        this(6);
+    }
+
+    public TileEntityOilDrillBase(int slots) {
+        inventory = new ItemStackHandler(slots){
             @Override
             protected void onContentsChanged(int slot) {
                 markDirty();
@@ -112,7 +109,7 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
     }
 
     public long getPowerScaled(long i) {
-        return (power * i) / maxPower;
+        return (power * i) / getMaxPower();
     }
 
     List<int[]> list = new ArrayList<int[]>();
@@ -199,9 +196,8 @@ public abstract class TileEntityOilDrillBase extends TileEntityLoadedBase implem
 
     @Override
     public long getMaxPower() {
-        return maxPower;
+        return 100000L;
     }
-
 
     @Override
     public IFluidTankProperties[] getTankProperties() {

@@ -1,14 +1,12 @@
 package com.hbm.tileentity.machine;
 
+import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.MachineDiFurnace;
 import com.hbm.inventory.DiFurnaceRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.tileentity.TileEntityMachineBase;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -23,9 +21,9 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	public static final int maxPower = 12800;
 	public static final int processingSpeed = 200;
 	
-	private static final int[] slots_top = new int[] {0};
+	private static final int[] slots_top = new int[] {0, 1};
 	private static final int[] slots_bottom = new int[] {3};
-	private static final int[] slots_side = new int[] {1};
+	private static final int[] slots_side = new int[] {2};
 	
 	public TileEntityDiFurnace() {
 		super(4);
@@ -53,14 +51,10 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	@Override
 	public void update() {
 		boolean flag = this.hasPower();
-		
-		if(flag && isProcessing())
-		{
-			this.dualPower = this.dualPower - 2;
-			if(this.dualPower < 0)
-			{
-				this.dualPower = 0;
-			}
+        boolean extension = world.getBlockState(pos.up()).getBlock() == ModBlocks.machine_difurnace_ext;
+
+		if(this.dualPower > 0) {
+			this.dualPower--;
 		}
 		int itemPower = DiFurnaceRecipes.getItemPower(inventory.getStackInSlot(2));
 		if (this.hasItemPower(inventory.getStackInSlot(2))
@@ -75,8 +69,8 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 			}
 		}
 		if (flag && canProcess()) {
-			dualCookTime++;
-			if (this.dualCookTime == TileEntityDiFurnace.processingSpeed) {
+			dualCookTime += extension ? 3 : 1;
+			if (this.dualCookTime >= TileEntityDiFurnace.processingSpeed) {
 				this.dualCookTime = 0;
 				this.processItem();
 			}
@@ -92,16 +86,10 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 			{
 				trigger = false;
 			}
-
-			if (!inventory.getStackInSlot(2).isEmpty() && inventory.getStackInSlot(2).getItem() == ModItems.pellet_rtg) {
-				if(this.dualPower != maxPower){
-					this.dualPower = maxPower;
-				}
-			}
 			
 			if(trigger)
             {
-                MachineDiFurnace.updateBlockState(this.dualCookTime > 0, this.world, pos);
+                MachineDiFurnace.updateBlockState(this.dualCookTime > 0, extension, this.world, pos);
             }
 		}
 		
@@ -125,20 +113,25 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 	
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
-		if(i == 3){
+		if(i == 3)
 			return false;
-		}
+		if(i == 2)
+			return hasItemPower(stack);
 		return true;
 	}
 	
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
+		if(slot == 0 && isItemValidForSlot(slot, itemStack)) return inventory.getStackInSlot(1).getItem() != itemStack.getItem();
+		if(slot == 1 && isItemValidForSlot(slot, itemStack)) return inventory.getStackInSlot(0).getItem() != itemStack.getItem();
 		return isItemValidForSlot(slot, itemStack);
 	}
 	
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
-		return true;
+		if(slot == 3)
+			return true;
+		return false;
 	}
 	
 	public boolean isUsableByPlayer(EntityPlayer player){
@@ -174,7 +167,6 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 			return true;
 		}
 		if(inventory.getStackInSlot(3).getItem() != ItemStack.EMPTY.getItem() && !inventory.getStackInSlot(3).isItemEqual(itemStack)) {
-			System.out.println(inventory.getStackInSlot(3).getItem());
 			return false;
 		}
 		
@@ -236,5 +228,4 @@ public class TileEntityDiFurnace extends TileEntityMachineBase implements ITicka
 		if(mark)
 			markDirty();
 	}
-
 }

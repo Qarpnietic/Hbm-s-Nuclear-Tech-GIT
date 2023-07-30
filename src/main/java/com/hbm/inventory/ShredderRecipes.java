@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.items.special.ItemBedrockOre;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
+import com.hbm.inventory.BedrockOreRegistry;
 import com.hbm.items.ModItems;
 
 import mezz.jei.api.ingredients.IIngredients;
@@ -282,10 +284,24 @@ public class ShredderRecipes {
 		ShredderRecipes.setRecipe(ModItems.turret_rocket_ammo, new ItemStack(Items.GUNPOWDER, 4));
 		ShredderRecipes.setRecipe(ModItems.turret_cwis_ammo, new ItemStack(Items.GUNPOWDER, 4));
 		ShredderRecipes.setRecipe(ModItems.turret_tau_ammo, new ItemStack(ModItems.powder_uranium, 4));
+		ShredderRecipes.setRecipe(ModBlocks.ore_nether_coal, new ItemStack(ModItems.coal_infernal, 2));
 		
 		for(int i = 0; i < 16; i++) {
 			ShredderRecipes.setRecipe(new ItemStack(Blocks.STAINED_HARDENED_CLAY, 1, i), new ItemStack(Items.CLAY_BALL, 4));
 			ShredderRecipes.setRecipe(new ItemStack(Blocks.WOOL, 1, i), new ItemStack(Items.STRING, 4));
+		}
+
+		for(Integer oreMeta : BedrockOreRegistry.oreIndexes.keySet()) {
+			int type = ItemBedrockOre.getOutType(oreMeta);
+			if(type == 0 || type == 1){
+				ShredderRecipes.setRecipe(new ItemStack(ModItems.ore_bedrock, 1, oreMeta), ItemBedrockOre.getOut(oreMeta, 2));
+				ShredderRecipes.setRecipe(new ItemStack(ModItems.ore_bedrock_cleaned, 1, oreMeta), ItemBedrockOre.getOut(oreMeta, 2));
+				ShredderRecipes.setRecipe(new ItemStack(ModItems.ore_bedrock_deepcleaned, 1, oreMeta), ItemBedrockOre.getOut(oreMeta, 2));
+				ShredderRecipes.setRecipe(new ItemStack(ModItems.ore_bedrock_nitrated, 1, oreMeta), ItemBedrockOre.getOut(oreMeta, 2));
+				ShredderRecipes.setRecipe(new ItemStack(ModItems.ore_bedrock_seared, 1, oreMeta), ItemBedrockOre.getOut(oreMeta, 2));
+				ShredderRecipes.setRecipe(new ItemStack(ModItems.ore_bedrock_perfect, 1, oreMeta), ItemBedrockOre.getOut(oreMeta, 2));
+				ShredderRecipes.setRecipe(new ItemStack(ModItems.ore_bedrock_enriched, 1, oreMeta), ItemBedrockOre.getOut(oreMeta, 2));
+			}
 		}
 	}
 	

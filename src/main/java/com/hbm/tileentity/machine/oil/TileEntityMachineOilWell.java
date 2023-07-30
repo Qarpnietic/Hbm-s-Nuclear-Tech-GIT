@@ -1,6 +1,7 @@
 package com.hbm.tileentity.machine.oil;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.config.MachineConfig;
 import com.hbm.entity.particle.EntityGasFX;
 import com.hbm.explosion.ExplosionLarge;
 import com.hbm.forgefluid.FFUtils;
@@ -24,8 +25,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 
-
-
 	// private static final int[] slots_top = new int[] {1};
 	// private static final int[] slots_bottom = new int[] {2, 0};
 	// private static final int[] slots_side = new int[] {0};
@@ -34,12 +33,15 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 		return this.hasCustomInventoryName() ? this.getCustomName() : "container.oilWell";
 	}
 
-
+	@Override
+    public long getMaxPower() {
+        return 100000L;
+    }
 
 	@SuppressWarnings("deprecation")
 	@Override
 	public void update() {
-		int timer = delay;
+		int timer = MachineConfig.delayPerOperationDerrick;
 
 		age++;
 		age2++;
@@ -64,9 +66,9 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 			if(needsUpdate) {
 				needsUpdate = false;
 			}
-			power = Library.chargeTEFromItems(inventory, 0, power, maxPower);
+			power = Library.chargeTEFromItems(inventory, 0, power, getMaxPower());
 
-			if(power >= 100 && !(tank0Amount >= tanks[0].getCapacity() || tank1Amount >= tanks[1].getCapacity())) {
+			if(power >= MachineConfig.powerConsumptionPerOperationDerrick && !(tank0Amount >= tanks[0].getCapacity() || tank1Amount >= tanks[1].getCapacity())) {
 
 				// operation start
 
@@ -80,7 +82,7 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 
 					for(int i = pos.getY() - 1; i > pos.getY() - 1 - 100; i--) {
 
-						if(i <= 5) {
+						if(i <= 0) {
 							// Code 2: The drilling ended
 							warning = 2;
 							break;
@@ -90,7 +92,7 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 						if(b == ModBlocks.oil_pipe)
 							continue;
 
-						if((b.isReplaceable(world, new BlockPos(pos.getX(), i, pos.getZ())) || b.getExplosionResistance(null) < 100) && !(b == ModBlocks.ore_oil || b == ModBlocks.ore_oil_empty)) {
+						if((b.isReplaceable(world, new BlockPos(pos.getX(), i, pos.getZ())) || b.getExplosionResistance(null) < 100) && !(b == ModBlocks.ore_oil || b == ModBlocks.ore_oil_empty || b == ModBlocks.ore_bedrock_oil)) {
 							world.setBlockState(new BlockPos(pos.getX(), i, pos.getZ()), ModBlocks.oil_pipe.getDefaultState());
 
 							// Code 2: The drilling ended
@@ -101,8 +103,11 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 						} else if(this.tanks[0].getFluidAmount() < this.tanks[0].getCapacity() && this.tanks[1].getFluidAmount() < this.tanks[1].getCapacity()) {
 							if(succ(pos.getX(), i, pos.getZ()) == 1) {
 
-								this.tanks[0].fill(new FluidStack(tankTypes[0], oilPerDeposit), true);
-								this.tanks[1].fill(new FluidStack(tankTypes[1], (gasPerDepositMin + world.rand.nextInt(extraGasPerDepositMax))), true);
+								int oilCollected = MachineConfig.oilPerDepositBlockMinDerrick + ((MachineConfig.oilPerDepositBlockMaxExtraDerrick > 0) ? world.rand.nextInt(MachineConfig.oilPerDepositBlockMaxExtraDerrick) : 0);
+								int gasCollected = MachineConfig.gasPerDepositBlockMinDerrick + ((MachineConfig.gasPerDepositBlockMaxExtraDerrick > 0) ? world.rand.nextInt(MachineConfig.gasPerDepositBlockMaxExtraDerrick) : 0);
+
+								this.tanks[0].fill(new FluidStack(tankTypes[0], oilCollected), true);
+								this.tanks[1].fill(new FluidStack(tankTypes[1], gasCollected), true);
 								needsUpdate = true;
 
 								ExplosionLarge.spawnOilSpills(world, pos.getX() + 0.5F, pos.getY() + 5.5F, pos.getZ() + 0.5F, 3);
@@ -124,7 +129,7 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 
 				// operation end
 
-				power -= consumption;
+				power -= MachineConfig.powerConsumptionPerOperationDerrick;
 			} else {
 				warning = 1;
 			}

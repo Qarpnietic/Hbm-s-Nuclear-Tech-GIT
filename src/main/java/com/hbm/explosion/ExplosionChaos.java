@@ -199,17 +199,19 @@ public class ExplosionChaos {
 						}
 					}
 
-					if(entity instanceof EntityPlayer && ArmorUtil.checkForHazmat((EntityPlayer) entity)) {
-					} else {
+					if(!(entity instanceof EntityPlayer && ArmorUtil.checkForHazmat((EntityPlayer) entity))) {
 
-						if(entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPotionActive(HbmPotion.taint)) {
-							((EntityLivingBase) entity).removePotionEffect(HbmPotion.taint);
-							((EntityLivingBase) entity).addPotionEffect(new PotionEffect(HbmPotion.mutation, 1 * 60 * 60 * 20, 0, false, true));
-						} else {
-							if(ArmorRegistry.hasProtection((EntityLivingBase) entity, EntityEquipmentSlot.HEAD, HazardClass.BACTERIA)){
-								ArmorUtil.damageGasMaskFilter((EntityLivingBase) entity, 1);
-							}else{
-								entity.attackEntityFrom(ModDamageSource.cloud, 3);
+						if(entity instanceof EntityLivingBase){
+							EntityLivingBase livi = (EntityLivingBase)entity;
+							if(livi.isPotionActive(HbmPotion.taint)) {
+								livi.removePotionEffect(HbmPotion.taint);
+								livi.addPotionEffect(new PotionEffect(HbmPotion.mutation, 1 * 60 * 60 * 20, 0, false, true));
+							} else {
+								if(ArmorRegistry.hasProtection(livi, EntityEquipmentSlot.HEAD, HazardClass.BACTERIA)){
+									ArmorUtil.damageGasMaskFilter(livi, 1);
+								}else{
+									entity.attackEntityFrom(ModDamageSource.cloud, 3);
+								}
 							}
 						}
 					}
@@ -718,8 +720,9 @@ public class ExplosionChaos {
 					int Z = zz + z;
 					int ZZ = YY + zz * zz;
 					if(ZZ < r22 + world.rand.nextInt(r22 / 2)) {
-						pos.setPos(X, Y, Z);
-						Block block = world.getBlockState(pos).getBlock();
+						pos.setPos(X, Y, Z);						
+						Block block =world.getBlockState(pos).getBlock();
+						if(block.getExplosionResistance(null) > 0.1F) continue;
 						if(block != Blocks.BEDROCK && world.getBlockState(pos).getBlock() != ModBlocks.statue_elb
 													&& world.getBlockState(pos).getBlock() != ModBlocks.statue_elb_g
 													&& world.getBlockState(pos).getBlock() != ModBlocks.statue_elb_w
