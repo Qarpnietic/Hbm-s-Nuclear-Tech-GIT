@@ -2,9 +2,6 @@ package com.hbm.items.armor;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import com.hbm.main.MainRegistry;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.render.model.ModelJetPack;
@@ -96,17 +93,7 @@ public class JetpackBase extends ItemArmorMod {
 		float pitch = player.rotationPitch;
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(this.getArmorTexture(armor, event.getEntity(), this.getEquipmentSlot(armor), null)));
-
-		EntityPlayer me = MainRegistry.proxy.me();
-		boolean isMe = player == me;
-		if(!isMe){
-			GL11.glPushMatrix();
-			offset(player, me, interp);
-		}
 		modelJetpack.render(event.getEntityPlayer(), 0.0F, 0.0F, 0, yawWrapped, pitch, 0.0625F);
-		if(!isMe){
-			GL11.glPopMatrix();
-		}
 	}
 	
 	@Override

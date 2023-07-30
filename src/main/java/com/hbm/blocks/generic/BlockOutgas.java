@@ -27,7 +27,7 @@ public class BlockOutgas extends BlockOre implements IItemHazard {
 	ItemHazardModule module;
 
 	public BlockOutgas(Material mat, boolean randomTick, int rate, boolean onBreak, String s) {
-		super(mat, s, -1);
+		super(mat, s);
 		this.module = new ItemHazardModule();
 		this.setTickRandomly(randomTick);
 		this.randomTick = randomTick;
@@ -145,4 +145,5 @@ public class BlockOutgas extends BlockOre implements IItemHazard {
 			}
 		}
 	}
+	
 }

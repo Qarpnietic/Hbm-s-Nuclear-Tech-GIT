@@ -22,7 +22,6 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.MutableBlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -65,7 +64,6 @@ public class ItemSurveyScanner extends Item {
 	public int getLevel(IBlockState state, int i) {
 		Block b = state.getBlock();
 		if(i == 0) {
-			if(b == ModBlocks.ore_bedrock_block) return 1000;
 			ItemStack stack = new ItemStack(b, 1, b.getMetaFromState(state));
 			if(stack.isEmpty())
 				return 0;
@@ -96,13 +94,12 @@ public class ItemSurveyScanner extends Item {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 		if(player.isSneaking()) {
-			int mode = getMode(stack);
-			setMode(stack, (mode == 1 ? 0 : 1));
+			setMode(stack, (getMode(stack) == 1 ? 0 : 1));
 	    	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBoop, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
 			if(world.isRemote)
 			{
-				player.sendMessage(new TextComponentTranslation(mode == 0 ? "§6[Scanner]§e Mode switched to §6Structures§r" : "§3[Scanner]§b Mode switched to §3Resources§r"));
+				player.sendMessage(new TextComponentTranslation("Mode switched."));
 			}
 			
 		} else {
@@ -111,26 +108,268 @@ public class ItemSurveyScanner extends Item {
 			int y = (int)player.posY;
 			int z = (int)player.posZ;
 			MutableBlockPos mPos = new BlockPos.MutableBlockPos();
-			int mode = getMode(stack);
+			
 			int level = 0;
-			int range = 25;
-			int samples = 500;
+			int xOff = -25;
 
-			int lx = 0;
-			int lz = 0;
-			for(int i = 0; i < samples; i++){
-				lx = (int)MathHelper.clamp(world.rand.nextGaussian() * range/3F, -range, range);
-				lz = (int)MathHelper.clamp(world.rand.nextGaussian() * range/3F, -range, range);
-				for(int ly = y + 15; ly > 0; ly--){
-					level += getLevel(world.getBlockState(mPos.setPos(x + lx, ly, z + lz)), mode);
-				}
-			}
-
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			xOff += 5;
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -25)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + -5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 0)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 5)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 10)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 15)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 20)), getMode(stack));
+			for(int i =  y + 15; i > 5; i--)
+				level += getLevel(world.getBlockState(mPos.setPos(x + xOff, i, z + 25)), getMode(stack));
+			
 	    	world.playSound(null, player.posX, player.posY, player.posZ, HBMSoundHandler.techBleep, SoundCategory.PLAYERS, 1.0F, 1.0F);
 	    	
 			if(world.isRemote)
 			{
-				player.sendMessage(new TextComponentTranslation(mode == 0 ? ("§3[Scanner]§b Ore Level: §3" + level) : ("§6[Scanner]§e Structure Level: §6" + level)));
+				player.sendMessage(new TextComponentTranslation("Scanned! Result: " + level));
 			}
 		}
 		

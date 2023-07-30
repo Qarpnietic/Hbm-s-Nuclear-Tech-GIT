@@ -20,15 +20,13 @@ public class RenderFlamerTurret extends TileEntitySpecialRenderer<TileEntityTurr
 		GL11.glRotatef(180, 0F, 1F, 0F);
 		
 		double yaw = te.rotationYaw;
-		double pitch = -te.rotationPitch;
+		double pitch = te.rotationPitch;
 		
         
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
-		this.bindTexture(ResourceManager.turret_flamethower_tex);
-        ResourceManager.turret_flamethower.renderPart("base");
+		this.bindTexture(ResourceManager.turret_heavy_base_tex);
+        ResourceManager.turret_heavy_base.renderAll();
 
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-		GL11.glPopMatrix();
+        GL11.glPopMatrix();
         
         renderTileEntityAt2(te, x, y, z, partialTicks, yaw, pitch);
 	}
@@ -43,12 +41,10 @@ public class RenderFlamerTurret extends TileEntitySpecialRenderer<TileEntityTurr
 
 		GL11.glRotated(yaw + 180, 0F, -1F, 0F);
 
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
-		this.bindTexture(ResourceManager.turret_flamethower_tex);
-        ResourceManager.turret_flamethower.renderPart("rotor");
+		this.bindTexture(ResourceManager.turret_flamer_rotor_tex);
+        ResourceManager.turret_heavy_rotor.renderAll();
 
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-		GL11.glPopMatrix();
+        GL11.glPopMatrix();
         
         renderTileEntityAt3(tileEntity, x, y, z, f, yaw, pitch);
     }
@@ -56,19 +52,17 @@ public class RenderFlamerTurret extends TileEntitySpecialRenderer<TileEntityTurr
 	public void renderTileEntityAt3(TileEntity tileEntity, double x, double y, double z, float f, double yaw, double pitch)
     {
         GL11.glPushMatrix();
-        GL11.glTranslated(x + 0.5D, y + 0.75D, z + 0.5D);
+        GL11.glTranslated(x + 0.5D, y + 1, z + 0.5D);
         GlStateManager.enableLighting();
         GL11.glDisable(GL11.GL_CULL_FACE);
+		GL11.glRotatef(180, 0F, 1F, 0F);
 
 		GL11.glRotated(yaw + 180, 0F, -1F, 0F);
 		GL11.glRotated(pitch, 1F, 0F, 0F);
-		GL11.glTranslated(0, -0.75D, 0);
-        
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
-		this.bindTexture(ResourceManager.turret_flamethower_tex);
-        ResourceManager.turret_flamethower.renderPart("gun");
 
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-		GL11.glPopMatrix();
+		this.bindTexture(ResourceManager.turret_flamer_gun_tex);
+        ResourceManager.turret_flamer_gun.renderAll();
+
+        GL11.glPopMatrix();
     }
 }

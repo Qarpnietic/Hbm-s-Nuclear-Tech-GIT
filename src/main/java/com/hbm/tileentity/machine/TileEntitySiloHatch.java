@@ -3,13 +3,11 @@ package com.hbm.tileentity.machine;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.BlockSiloHatch;
 import com.hbm.blocks.machine.DummyBlockSiloHatch;
-import com.hbm.handler.RadiationSystemNT;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.interfaces.IAnimatedDoor;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.TEDoorAnimationPacket;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -24,7 +22,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntitySiloHatch extends TileEntityLockableBase implements ITickable, IAnimatedDoor {
 
-	public DoorState state = DoorState.CLOSED;
+	//0: closed, 1: open, 2: closing, 3: opening
+	public byte state = 0;
 	public long sysTime;
 	public int timer = -1;
 	public EnumFacing facing = null;
@@ -41,19 +40,16 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 					tryClose();
 				}
 			}
-			DoorState oldState = state;
-			if(timer < 0) {
-				//oldState = -1; // what
-				oldState = null;
-			}
-
-			if(this.state.isStationaryState()) {
+			int oldState = state;
+			if(timer < 0)
+				oldState = -1;
+			if(state < 2) {
 				timer = 0;
 			} else {
 				if(facing == null)
 					facing = world.getBlockState(pos).getValue(BlockSiloHatch.FACING).getOpposite();
 				timer ++;
-				if(state == DoorState.CLOSING){
+				if(state == 2){
 					if(timer == 1){
 						BlockPos hydrolics = pos.offset(facing, 5);
 						this.world.playSound(null, hydrolics.getX(), hydrolics.getY(), hydrolics.getZ(), HBMSoundHandler.siloclose, SoundCategory.BLOCKS, 3F, 1F);
@@ -67,16 +63,9 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 						}
 					}
 					if(timer > 100){
-						state = DoorState.CLOSED;
-
-						if (state != oldState)
-						{
-							// With door finally closed, mark chunk for rad update since door is now rad resistant
-							// No need to update when open as well, as opening door should update
-							RadiationSystemNT.markChunkForRebuild(world, pos);
-						}
+						state = 0;
 					}
-				} else if(state == DoorState.OPENING){
+				} else if(state == 3){
 					if(timer == 1){
 						BlockPos hydrolics = pos.offset(facing, 5);
 						this.world.playSound(null, hydrolics.getX(), hydrolics.getY(), hydrolics.getZ(), HBMSoundHandler.siloopen, SoundCategory.BLOCKS, 4F, 1F);
@@ -90,36 +79,42 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 						}
 					}
 					if(timer > 100){
-						state = DoorState.OPEN;
+						state = 1;
 					}
 				}
 			}
 			if(oldState != state)
-				PacketDispatcher.wrapper.sendToAllTracking(new TEDoorAnimationPacket(pos, (byte) state.ordinal()), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
+				PacketDispatcher.wrapper.sendToAllTracking(new TEDoorAnimationPacket(pos, state), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 200));
 		}
 	}
-
-	public void tryToggle(){
-		if(state == DoorState.CLOSED) {
-			tryOpen();
-		} else if(state == DoorState.OPEN) {
-			tryClose();
+	
+	public void tryToggle() {
+		if(this.state == 0) {
+			if(!world.isRemote) {
+				this.state = 3;
+				timer = -1;
+			}
+		} else if(this.state == 1) {
+			if(!world.isRemote) {
+				this.state = 2;
+				timer = -1;
+			}
 		}
 	}
 
 	public void tryOpen() {
-		if(this.state == DoorState.CLOSED) {
+		if(this.state == 0) {
 			if(!world.isRemote) {
-				open();
+				this.state = 3;
 				timer = -1;
 			}
 		}
 	}
 
 	public void tryClose() {
-		if(this.state == DoorState.OPEN) {
+		if(this.state == 1) {
 			if(!world.isRemote) {
-				close();
+				this.state = 2;
 				timer = -1;
 			}
 		}
@@ -152,13 +147,13 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 	
 	@Override
 	public void readFromNBT(NBTTagCompound compound) {
-		state = DoorState.values()[compound.getByte("state")];
+		state = compound.getByte("state");
 		super.readFromNBT(compound);
 	}
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-		compound.setByte("state", (byte) state.ordinal());
+		compound.setByte("state", state);
 		return super.writeToNBT(compound);
 	}
 	
@@ -180,41 +175,33 @@ public class TileEntitySiloHatch extends TileEntityLockableBase implements ITick
 
 	@Override
 	public void open() {
-		if(state == DoorState.CLOSED)
+		if(state == 0)
 			toggle();
 	}
 
 	@Override
 	public void close() {
-		if(state == DoorState.OPEN)
+		if(state == 1)
 			toggle();
 	}
 
 	@Override
 	public DoorState getState() {
-		return state;
+		return DoorState.values()[state];
 	}
 
 	@Override
-	public void toggle(){
-		if(state == DoorState.CLOSED) {
-			state = DoorState.OPENING;
-			// With door opening, mark chunk for rad update
-			RadiationSystemNT.markChunkForRebuild(world, pos);
-		} else if(state == DoorState.OPEN) {
-			state = DoorState.CLOSING;
-			// With door closing, mark chunk for rad update
-			RadiationSystemNT.markChunkForRebuild(world, pos);
-		}
+	public void toggle() {
+		tryToggle();
 	}
 
 	@Override
-	public void handleNewState(DoorState newState) {
-		if(this.state != newState){
-			if(this.state.isStationaryState() && newState.isMovingState()){
+	public void handleNewState(byte state) {
+		if(this.state != state){
+			if(this.state < 2 && state >= 2){
 				sysTime = System.currentTimeMillis();
 			}
-			this.state = newState;
+			this.state = state;
 		}
 	}
 	

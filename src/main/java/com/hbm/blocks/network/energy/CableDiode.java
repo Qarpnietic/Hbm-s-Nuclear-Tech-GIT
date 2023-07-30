@@ -119,7 +119,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		
 		if(tool == ToolType.DEFUSER) {
 			int p = te.priority.ordinal() + 1;
-			if(p > 2) p = 0;
+			if(p > 3) p = 1;
 			te.priority = ConnectionPriority.values()[p];
 			te.markDirty();
 			INBTPacketReceiver.networkPack((TileEntity)te, te.packValues(), 20);
@@ -194,12 +194,9 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 
 		@Override
 		public SPacketUpdateTileEntity getUpdatePacket(){
-			return new SPacketUpdateTileEntity(this.getPos(), 0, this.writeToNBT(new NBTTagCompound()));
-		}
-
-		@Override
-		public NBTTagCompound getUpdateTag() {
-			return this.writeToNBT(new NBTTagCompound());
+			NBTTagCompound nbt = new NBTTagCompound();
+			this.writeToNBT(nbt);
+			return new SPacketUpdateTileEntity(this.getPos(), 0, nbt);
 		}
 		
 		@Override

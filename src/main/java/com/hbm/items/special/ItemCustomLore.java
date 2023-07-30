@@ -78,7 +78,7 @@ public class ItemCustomLore extends Item {
 			if(GeneralConfig.enableBabyMode)
 				list.add("Peer can go die, I'm not putting any retarded niko stuff in the mod.");
 			else
-				list.add("Made from uranium in a nuclear transmutator");
+				list.add("Made from uranium in a schrabidium transmutator");
 		}
 		if(this == ModItems.ingot_fiberglass)
 		{
@@ -341,10 +341,6 @@ public class ItemCustomLore extends Item {
 		{
 			list.add("'Tantalum'");
 		}
-		if(this == ModItems.euphemium_capacitor)
-		{
-			list.add("Permits passive dispersion of accumulated positive energy.");
-		}
 		if(this == ModItems.missile_micro)
 		{
 			list.add("§2[Nuclear Micro Missile]§r");
@@ -416,7 +412,6 @@ public class ItemCustomLore extends Item {
 			this == ModItems.ingot_niobium || 
 			this == ModItems.ingot_neodymium || 
 			this == ModItems.ingot_gh336 || 
-			this == ModItems.euphemium_capacitor ||
 
 			this == ModItems.nugget_euphemium || 
 			this == ModItems.nugget_osmiridium || 

@@ -72,13 +72,10 @@ public class ItemGasCanister extends Item implements IHasCustomModel {
 	@SideOnly(Side.CLIENT)
 	public String getItemStackDisplayName(ItemStack stack) {
 		FluidStack f = FluidUtil.getFluidContained(stack);
-		if(f == null || f.getFluid() == null) {
+		if(f == null) {
 			return I18n.format("item.gas_empty.name");
 		} else {
-			EnumGasCanister canister = EnumGasCanister.getEnumFromFluid(f.getFluid());
-			if(canister == null)
-				return I18n.format("item.gas_null.name");
-			return I18n.format(canister.getTranslateKey());
+			return I18n.format(EnumGasCanister.getEnumFromFluid(f.getFluid()).getTranslateKey());
 		}
 	}
 	

@@ -74,32 +74,25 @@ public class MachineFractionTower extends BlockDummyable implements ILookOverlay
 				TileEntityMachineFractionTower frac = (TileEntityMachineFractionTower) te;
 				
 				if(player.getHeldItem(hand).isEmpty()) {
-					if(world.isRemote){
-						player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "=== FRACTIONING TOWER Y:" + pos[1] + " ==="));
+					
+					player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "=== FRACTIONING TOWER Y:" + pos[1] + " ==="));
 
-						for(int i = 0; i < frac.tanks.length; i++)
-							player.sendMessage(new TextComponentTranslation(frac.types[i].getUnlocalizedName()).appendSibling(new TextComponentString(": " + frac.tanks[i].getFluidAmount() + "/" + frac.tanks[i].getCapacity() + "mB")));
-					}
+					for(int i = 0; i < frac.tanks.length; i++)
+						player.sendMessage(new TextComponentTranslation(frac.types[i].getUnlocalizedName()).appendSibling(new TextComponentString(": " + frac.tanks[i].getFluidAmount() + "/" + frac.tanks[i].getCapacity() + "mB")));
 				} else {
 					
 					if(world.getTileEntity(new BlockPos(pos[0], pos[1] - 3, pos[2])) instanceof TileEntityMachineFractionTower) {
-						if(world.isRemote){
-							player.sendMessage(new TextComponentString(TextFormatting.RED + "You can only change the type in the bottom segment!"));
-						}
+						player.sendMessage(new TextComponentString(TextFormatting.RED + "You can only change the type in the bottom segment!"));
 					} else {
 						Fluid type = ItemForgeFluidIdentifier.getType(player.getHeldItem(hand));
 						if(RefineryRecipes.getFractions(type) == null){
-							if(world.isRemote){
-								player.sendMessage(new TextComponentString("§cNo recipe found for §e"+type.getLocalizedName(new FluidStack(type, 1))));
-							}
+							player.sendMessage(new TextComponentString("§cNo recipe found for §e"+type.getLocalizedName(new FluidStack(type, 1))));
 							return false;
 						}
 						
 						frac.setTankType(0, type);
 						frac.markDirty();
-						if(world.isRemote){
-							player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Changed type to §a" + I18n.format(type.getUnlocalizedName())));
-						}
+						player.sendMessage(new TextComponentString(TextFormatting.YELLOW + "Changed type to §a" + I18n.format(type.getUnlocalizedName())));
 					}
 				}
 				

@@ -1,9 +1,10 @@
 package com.hbm.tileentity.machine;
 
 import java.util.List;
+import java.util.Set;
 
+import com.google.common.collect.Sets;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.gas.BlockGasBase;
 import com.hbm.forgefluid.FFUtils;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.interfaces.ITankPacketAcceptor;
@@ -18,7 +19,6 @@ import com.hbm.lib.ForgeDirection;
 import com.hbm.packet.FluidTankPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.TileEntityMachineBase;
-import com.hbm.packet.LoopedSoundPacket;
 import com.hbm.util.InventoryUtil;
 
 import api.hbm.energy.IEnergyUser;
@@ -29,6 +29,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -43,8 +44,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -126,7 +125,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 			lastTargetZ = targetZ;
 
 			double clientBreakProgress = 0;
-			
+
 			if(isOn) {
 				
 				int cycles = getOverdrive();
@@ -134,12 +133,6 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 				int range = getRange();
 				int fortune = getFortune();
 				int consumption = getConsumption() * speed;
-
-				if(doesScream()){
-					cycles *= 4;
-					speed *= 4;
-					consumption *= 20;
-				}
 
 				for(int i = 0; i < cycles; i++) {
 
@@ -162,6 +155,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 						buildDam();
 						continue;
 					}
+
 					if(beam && canBreak(block, targetX, targetY, targetZ)) {
 
 						breakProgress += getBreakSpeed(speed);
@@ -175,9 +169,6 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 						}
 					}
 				}
-				if(doesScream()) {
-					world.playSound(null, targetX + 0.5, targetY + 0.5, targetZ + 0.5, HBMSoundHandler.screm, SoundCategory.BLOCKS, 20.0F, 1.0F);
-				}
 			} else {
 				targetY = pos.getY() - 2;
 				beam = false;
@@ -188,7 +179,6 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 			this.tryFillContainer(pos.getX(), pos.getY(), pos.getZ() + 2);
 			this.tryFillContainer(pos.getX(), pos.getY(), pos.getZ() - 2);
 
-			PacketDispatcher.wrapper.sendToAll(new LoopedSoundPacket(pos.getX(), pos.getY(), pos.getZ()));
 			NBTTagCompound data = new NBTTagCompound();
 			data.setLong("power", power);
 			data.setInteger("lastX", lastTargetX);
@@ -221,16 +211,14 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 	
 	private void buildDam() {
 
-		placeBags(new BlockPos(targetX + 1, targetY, targetZ));
-		placeBags(new BlockPos(targetX - 1, targetY, targetZ));
-		placeBags(new BlockPos(targetX, targetY, targetZ + 1));
-		placeBags(new BlockPos(targetX, targetY, targetZ - 1));
-	}
-
-	private void placeBags(BlockPos wallPos){
-		IBlockState bState = world.getBlockState(wallPos);
-		if(bState.getBlock().isReplaceable(world, wallPos) && bState.getMaterial().isLiquid())
-			world.setBlockState(wallPos, ModBlocks.barricade.getDefaultState());
+		if(world.getBlockState(new BlockPos(targetX + 1, targetY, targetZ)).getMaterial().isLiquid())
+			world.setBlockState(new BlockPos(targetX + 1, targetY, targetZ), ModBlocks.barricade.getDefaultState());
+		if(world.getBlockState(new BlockPos(targetX - 1, targetY, targetZ)).getMaterial().isLiquid())
+			world.setBlockState(new BlockPos(targetX - 1, targetY, targetZ), ModBlocks.barricade.getDefaultState());
+		if(world.getBlockState(new BlockPos(targetX, targetY, targetZ + 1)).getMaterial().isLiquid())
+			world.setBlockState(new BlockPos(targetX, targetY, targetZ + 1), ModBlocks.barricade.getDefaultState());
+		if(world.getBlockState(new BlockPos(targetX, targetY, targetZ - 1)).getMaterial().isLiquid())
+			world.setBlockState(new BlockPos(targetX, targetY, targetZ - 1), ModBlocks.barricade.getDefaultState());
 	}
 	
 	private void tryFillContainer(int x, int y, int z) {
@@ -329,8 +317,25 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 		
 		suckDrops();
 
+		if(doesScream()) {
+			world.playSound(null, targetX + 0.5, targetY + 0.5, targetZ + 0.5, HBMSoundHandler.screm, SoundCategory.BLOCKS, 2000.0F, 1.0F);
+		}
+
 		breakProgress = 0;
 	}
+
+	private static final Set<Item> bad = Sets.newHashSet(new Item[] {
+			Item.getItemFromBlock(Blocks.DIRT),
+			Item.getItemFromBlock(Blocks.STONE),
+			Item.getItemFromBlock(Blocks.COBBLESTONE),
+			Item.getItemFromBlock(Blocks.SAND),
+			Item.getItemFromBlock(Blocks.SANDSTONE),
+			Item.getItemFromBlock(Blocks.GRAVEL),
+			Item.getItemFromBlock(ModBlocks.stone_gneiss),
+			Items.FLINT,
+			Items.SNOWBALL,
+			Items.WHEAT_SEEDS
+			});
 
 	//hahahahahahahaha he said "suck"
 	private void suckDrops() {
@@ -350,7 +355,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 
 		for(EntityItem item : items) {
 
-			if(nullifier && ItemMachineUpgrade.scrapItems.contains(item.getItem().getItem())) {
+			if(nullifier && bad.contains(item.getItem().getItem())) {
 				item.setDead();
 				continue;
 			}
@@ -422,14 +427,7 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 	}
 
 	private boolean canBreak(IBlockState block, int x, int y, int z) {
-		Block b = block.getBlock();
-		if(b == Blocks.AIR) return false;
-		if(b == Blocks.BEDROCK) return false;
-		if(b instanceof BlockGasBase) return false;
-		float hardness = block.getBlockHardness(world, new BlockPos(x, y, z));
-		if(hardness < 0 || hardness > 3_500_000) return false;
-		if(block.getMaterial().isLiquid()) return false;
-		return true;
+		return block.getBlock() != Blocks.AIR && block.getBlockHardness(world, new BlockPos(x, y, z)) >= 0 && !block.getMaterial().isLiquid() && block.getBlock() != Blocks.BEDROCK;
 	}
 
 	public int getOverdrive() {
@@ -726,22 +724,4 @@ public class TileEntityMachineMiningLaser extends TileEntityMachineBase implemen
 		return 100;
 	}
 
-	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
-			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
-		}
-		if(capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
-			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(this);
-		}
-		return super.getCapability(capability, facing);
-	}
-	
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
-			return true;
-		}
-		return super.hasCapability(capability, facing);
-	}
 }

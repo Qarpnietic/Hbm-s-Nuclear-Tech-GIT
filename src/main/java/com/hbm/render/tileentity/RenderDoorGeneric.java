@@ -2,7 +2,6 @@ package com.hbm.render.tileentity;
 
 import java.nio.DoubleBuffer;
 
-import com.hbm.interfaces.IDoor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.lwjgl.opengl.GL11;
 
@@ -73,8 +72,8 @@ public class RenderDoorGeneric extends TileEntitySpecialRenderer<TileEntityDoorG
 			Animation anim = door.getAnim();
 			bindTexture(door.getTextureForPart(""));
 			long time = System.currentTimeMillis();
-	        long startTime = te.state.isMovingState() ? te.animStartTime : time;
-	        boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
+	        long startTime = te.state > 1 ? te.animStartTime : time;
+	        boolean reverse = te.state == 1 || te.state == 2;
 			AnimationWrapper w = new AnimationWrapper(startTime, anim).onEnd(new EndResult(EndType.STAY));
 			if(reverse)
 				w.reverse();
@@ -84,7 +83,7 @@ public class RenderDoorGeneric extends TileEntitySpecialRenderer<TileEntityDoorG
 			WavefrontObjDisplayList model = door.getModel();
 			
 			long ms = System.currentTimeMillis()-te.animStartTime;
-			float openTicks = MathHelper.clamp(te.state == IDoor.DoorState.CLOSING || te.state == IDoor.DoorState.CLOSED ? door.timeToOpen()*50-ms : ms, 0, door.timeToOpen()*50)*0.02F;
+			float openTicks = MathHelper.clamp(te.state == 2 || te.state == 0 ? door.timeToOpen()*50-ms : ms, 0, door.timeToOpen()*50)*0.02F;
 			for(Pair<String, Integer> p : model.nameToCallList){
 				if(!door.doesRender(p.getLeft(), false))
 					continue;

@@ -4,11 +4,8 @@ import java.util.Random;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.potion.HbmPotion;
-import com.hbm.handler.ArmorUtil;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.capability.HbmLivingProps;
-import com.hbm.util.ArmorRegistry;
-import com.hbm.util.ArmorRegistry.HazardClass;
 import com.hbm.util.ContaminationUtil;
 import com.hbm.util.ContaminationUtil.ContaminationType;
 import com.hbm.util.ContaminationUtil.HazardType;
@@ -17,7 +14,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
@@ -60,17 +56,13 @@ public class BlockGasRadonTomb extends BlockGasBase {
 	public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entity){
 		if(entity instanceof EntityLivingBase) {
 
+			EntityLivingBase living = (EntityLivingBase) entity;
 
-			EntityLivingBase entityLiving = (EntityLivingBase) entity;
+			living.removePotionEffect(HbmPotion.radaway); //get fucked
+			living.removePotionEffect(HbmPotion.radx);
 
-			if(ArmorRegistry.hasProtection(entityLiving, EntityEquipmentSlot.HEAD, HazardClass.RAD_GAS)) {
-				ArmorUtil.damageGasMaskFilter(entityLiving, 4);
-				ContaminationUtil.contaminate(entityLiving, HazardType.RADIATION, ContaminationType.CREATIVE, 5F);
-			} else {
-				entityLiving.removePotionEffect(HbmPotion.radaway); //get fucked
-				entityLiving.removePotionEffect(HbmPotion.radx);
-				ContaminationUtil.contaminate(entityLiving, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5F);
-			}
+			ContaminationUtil.contaminate(living, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 0.5F);
+			HbmLivingProps.incrementAsbestos(living, 10);
 		}
 	}
 	

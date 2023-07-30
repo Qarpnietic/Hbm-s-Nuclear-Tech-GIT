@@ -20,7 +20,6 @@ public class RenderGasCent extends TileEntitySpecialRenderer<TileEntityMachineGa
 		GL11.glPushMatrix();
         GL11.glTranslated(x + 0.5D, y, z + 0.5D);
         GlStateManager.enableLighting();
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		switch(te.getBlockMetadata())
 		{
 		case 4:
@@ -35,8 +34,7 @@ public class RenderGasCent extends TileEntitySpecialRenderer<TileEntityMachineGa
 
 		bindTexture(ResourceManager.centrifuge_gas_tex);
         ResourceManager.centrifuge_gas.renderAll();
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-        
+
         GL11.glPopMatrix();
 	}
 }

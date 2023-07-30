@@ -112,7 +112,7 @@ public class Landmine extends BlockContainer implements IBomb {
 	
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		if (player.getHeldItemMainhand().getItem() == ModItems.defuser || player.getHeldItemOffhand().getItem() == ModItems.defuser || player.getHeldItemMainhand().getItem() == ModItems.defuser_desh || player.getHeldItemOffhand().getItem() == ModItems.defuser_desh) {
+		if (player.getHeldItemMainhand().getItem() == ModItems.defuser) {
 
 			safeMode = true;
 			world.setBlockToAir(pos);

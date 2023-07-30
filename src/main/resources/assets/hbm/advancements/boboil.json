@@ -12,16 +12,9 @@
 	},
 	"parent": "hbm:bobchemistry",
 	"criteria": {
-		"crafting_table": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "hbm:oil_tar"
-                    }
-                ]
-            }
-        }
+		"impossible": {
+			"trigger": "minecraft:impossible"
+		}
 	},
     "rewards": {
         "experience": 100

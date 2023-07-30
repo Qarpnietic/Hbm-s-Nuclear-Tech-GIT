@@ -2,7 +2,6 @@ package com.hbm.render.tileentity;
 
 import java.nio.DoubleBuffer;
 
-import com.hbm.interfaces.IDoor;
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.animloader.AnimationWrapper;
@@ -68,8 +67,8 @@ public class RenderSlidingBlastDoor extends TileEntitySpecialRenderer<TileEntity
 		GL11.glPopMatrix();
         
         long time = System.currentTimeMillis();
-        long startTime = te.state.isMovingState() ? te.sysTime : time;
-        boolean reverse = te.state == IDoor.DoorState.OPEN || te.state == IDoor.DoorState.CLOSING;
+        long startTime = te.state > 1 ? te.sysTime : time;
+        boolean reverse = te.state == 1 || te.state == 2;
         AnimationWrapper w = new AnimationWrapper(startTime, ResourceManager.door0_open);
         if(reverse){
         	w.reverse();

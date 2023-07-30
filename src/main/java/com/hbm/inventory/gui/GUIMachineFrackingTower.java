@@ -32,7 +32,7 @@ public class GUIMachineFrackingTower extends GuiInfoContainer {
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 80, guiTop + 124 - 52, 34, 52, frackingTower.tanks[1], frackingTower.tankTypes[1]);
 		FFUtils.renderTankInfo(this, mouseX, mouseY, guiLeft + 155, guiTop + 124 - 52, 16, 52, frackingTower.tanks[2], frackingTower.tankTypes[2]);
 
-		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 70 - 52, 16, 52, frackingTower.power, frackingTower.getMaxPower());
+		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 70 - 52, 16, 52, frackingTower.power, TileEntityMachineFrackingTower.maxPower);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}
 
@@ -62,9 +62,9 @@ public class GUIMachineFrackingTower extends GuiInfoContainer {
 
 		int l = frackingTower.warning2;
 		if(l == 1)
-			drawTexturedModalRect(guiLeft + 43, guiTop + 80, 212, 52, 18, 18);
+			drawTexturedModalRect(guiLeft + 43, guiTop + 89, 212, 52, 18, 18);
 		if(l == 2)
-			drawTexturedModalRect(guiLeft + 43, guiTop + 80, 230, 52, 18, 18);
+			drawTexturedModalRect(guiLeft + 43, guiTop + 89, 230, 52, 18, 18);
 
 		FFUtils.drawLiquid(frackingTower.tanks[0], guiLeft, guiTop, zLevel, 34, 52, 80, 98);
 		FFUtils.drawLiquid(frackingTower.tanks[1], guiLeft, guiTop, zLevel, 34, 52, 80, 152);

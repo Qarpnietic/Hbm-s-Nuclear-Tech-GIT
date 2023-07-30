@@ -12,16 +12,9 @@
 	},
 	"parent": "hbm:bobassembly",
 	"criteria": {
-		"crafting_table": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "hbm:ingot_rubber"
-                    }
-                ]
-            }
-        }
+		"impossible": {
+			"trigger": "minecraft:impossible"
+		}
 	},
     "rewards": {
         "experience": 100

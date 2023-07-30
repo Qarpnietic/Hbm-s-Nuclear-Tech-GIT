@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
-import com.hbm.main.MainRegistry;
 import com.hbm.handler.ArmorModHandler;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.util.I18nUtil;
@@ -44,7 +41,6 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, World worldIn, List<String> list, ITooltipFlag flagIn){
 		if(this == ModItems.attachment_mask)
 			list.add(TextFormatting.GREEN + "Gas protection");
@@ -66,10 +62,9 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void addDesc(List<String> list, ItemStack stack, ItemStack armor){
 		list.add("§a  " + stack.getDisplayName() + " (gas protection)");
-		ArmorUtil.addGasMaskTooltip(stack, null, list, ITooltipFlag.TooltipFlags.NORMAL);
+		ArmorUtil.addGasMaskTooltip(stack, null, list, null);
 	}
 	
 	@Override
@@ -84,8 +79,7 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 		EntityPlayer player = event.getEntityPlayer();
 
 		modelM65.isSneak = model.isSneak;
-		modelM65.isChild = false;
-
+		
 		float interp = event.getPartialRenderTick();
 		float yawHead = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * interp;
 		float yawWrapped = MathHelper.wrapDegrees(yawHead+180);
@@ -96,16 +90,7 @@ public class ItemModGasmask extends ItemArmorMod implements IGasMask {
 		if(this == ModItems.attachment_mask_mono)
 			Minecraft.getMinecraft().renderEngine.bindTexture(tex_mono);
 		
-		EntityPlayer me = MainRegistry.proxy.me();
-		boolean isMe = player == me;
-		if(!isMe){
-			GL11.glPushMatrix();
-			offset(player, me, interp);
-		}
 		modelM65.render(event.getEntityPlayer(), 0.0F, 0.0F, 0, yawWrapped, pitch, 0.0625F);
-		if(!isMe){
-			GL11.glPopMatrix();
-		}
 	}
 
 	@Override

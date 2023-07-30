@@ -19,6 +19,8 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+
+
 public abstract class TileEntityFireboxBase extends TileEntityMachineBase implements ITickable, IGUIProvider, IHeatSource {
 
 	public int maxBurnTime;
@@ -31,6 +33,10 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 	public float prevDoorAngle = 0;
 
 	public int heatEnergy;
+    
+    int xCoord = pos.getX();
+    int yCoord = pos.getY();
+    int zCoord = pos.getZ();
    
 	public TileEntityFireboxBase() {
 		super(2);
@@ -75,7 +81,7 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 				this.wasOn = true;
 				
 				if(world.rand.nextInt(15) == 0) {
-					world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 0.5F + world.rand.nextFloat() * 0.5F);
+					this.world.playSound(null, xCoord, yCoord, zCoord, SoundEvents.BLOCK_FURNACE_FIRE_CRACKLE, SoundCategory.BLOCKS, 1.0F, 0.5F + world.rand.nextFloat() * 0.5F);
 				}
 			}
 			
@@ -108,10 +114,10 @@ public abstract class TileEntityFireboxBase extends TileEntityMachineBase implem
 			
 			if(wasOn && world.getTotalWorldTime() % 5 == 0) {
 				ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
-				double x = pos.getX() + 0.5 + dir.offsetX;
-				double y = pos.getY() + 0.25;
-				double z = pos.getZ() + 0.5 + dir.offsetZ;
-				world.spawnParticle(EnumParticleTypes.FLAME, wasOn, x + world.rand.nextDouble() * 0.5 - 0.25, y + world.rand.nextDouble() * 0.25, z + world.rand.nextDouble() * 0.5 - 0.25, 0, 0, 0);
+				double x = xCoord + 0.5 + dir.offsetX;
+				double y = yCoord + 0.25;
+				double z = zCoord + 0.5 + dir.offsetZ;
+				world.spawnParticle(EnumParticleTypes.FLAME, wasOn, x + world.rand.nextDouble() * 0.5 - 0.25, y + world.rand.nextDouble() * 0.25, z + world.rand.nextDouble() * 0.5 - 0.25, 0, 0, 0, null);
 			}
 		}
 	}

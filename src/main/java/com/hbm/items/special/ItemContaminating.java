@@ -4,15 +4,11 @@ import java.util.List;
 
 import com.hbm.items.ModItems;
 import com.hbm.util.I18nUtil;
-import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.generic.BlockClean;
 import com.hbm.entity.effect.EntityFalloutUnderGround;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.block.Block;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
@@ -40,9 +36,6 @@ public class ItemContaminating extends ItemHazard {
 	@Override
 	public boolean onEntityItemUpdate(EntityItem entityItem){
 		if(entityItem != null && !entityItem.world.isRemote && entityItem.onGround) {
-			if(isCleanGround(new BlockPos(entityItem.posX, entityItem.posY, entityItem.posZ), entityItem.world)){
-				return false;
-			}
 			if(falloutBallRadius > 1){
 				EntityFalloutUnderGround falloutBall = new EntityFalloutUnderGround(entityItem.world);
 				falloutBall.posX = entityItem.posX;
@@ -56,22 +49,13 @@ public class ItemContaminating extends ItemHazard {
 		}
 		return false;
 	}
-
-	public static boolean isCleanGround(BlockPos pos, World world){
-		Block b = world.getBlockState(pos.down()).getBlock();
-		boolean isClean = b instanceof BlockClean;
-		if(isClean){
-			BlockClean.getUsed(b, pos.down(), world);
-		}
-		return isClean;
-	}
 	
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flagIn){
 		super.addInformation(stack, world, list, flagIn);
 		if(falloutBallRadius > 1){
-			list.add("§2["+I18nUtil.resolveKey("trait.contaminating")+"§2]");
-			list.add(" §a"+I18nUtil.resolveKey("trait.contaminating.radius", falloutBallRadius));
+			list.add(TextFormatting.DARK_GREEN + "[Contaminating Drop]");
+			list.add(TextFormatting.GREEN + " Radius: "+falloutBallRadius+"m");
 		}
 	}
 

@@ -23,12 +23,10 @@ public class RenderCIWSTurret extends TileEntitySpecialRenderer<TileEntityTurret
 		double pitch = te.rotationPitch;
 		
         
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		this.bindTexture(ResourceManager.turret_ciws_base_tex);
         ResourceManager.turret_cwis_base.renderAll();
 
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-		GL11.glPopMatrix();
+        GL11.glPopMatrix();
         
         renderTileEntityAt2(te, x, y, z, partialTicks, yaw, pitch);
 	}
@@ -43,12 +41,10 @@ public class RenderCIWSTurret extends TileEntitySpecialRenderer<TileEntityTurret
 
 		GL11.glRotated(yaw + 180, 0F, -1F, 0F);
 
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		this.bindTexture(ResourceManager.turret_ciws_rotor_tex);
         ResourceManager.turret_cwis_rotor.renderAll();
 
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-		GL11.glPopMatrix();
+        GL11.glPopMatrix();
         
         renderTileEntityAt3(tileEntity, x, y, z, f, yaw, pitch);
     }
@@ -64,12 +60,10 @@ public class RenderCIWSTurret extends TileEntitySpecialRenderer<TileEntityTurret
 		GL11.glRotated(yaw + 180, 0F, -1F, 0F);
 		GL11.glRotated(pitch, 1F, 0F, 0F);
 
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		this.bindTexture(ResourceManager.turret_ciws_head_tex);
         ResourceManager.turret_cwis_head.renderAll();
 
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-		GL11.glPopMatrix();
+        GL11.glPopMatrix();
         
         renderTileEntityAt4(tileEntity, x, y, z, f, yaw, pitch);
     }
@@ -86,11 +80,9 @@ public class RenderCIWSTurret extends TileEntitySpecialRenderer<TileEntityTurret
 		GL11.glRotated(pitch, 1F, 0F, 0F);
 		GL11.glRotated(((TileEntityTurretCIWS)tileEntity).rotation, 0F, 0F, 1F);
 
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
 		this.bindTexture(ResourceManager.turret_ciws_gun_tex);
         ResourceManager.turret_cwis_gun.renderAll();
 
-        GlStateManager.shadeModel(GL11.GL_FLAT);
-		GL11.glPopMatrix();
+        GL11.glPopMatrix();
     }
 }

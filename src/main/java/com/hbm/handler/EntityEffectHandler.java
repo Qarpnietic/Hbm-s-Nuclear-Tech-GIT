@@ -9,7 +9,6 @@ import com.hbm.capability.HbmLivingCapability.IEntityHbmProps;
 import com.hbm.capability.HbmLivingProps;
 import com.hbm.capability.HbmLivingProps.ContaminationEffect;
 import com.hbm.config.CompatibilityConfig;
-import com.hbm.config.GeneralConfig;
 import com.hbm.config.RadiationConfig;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.lib.ModDamageSource;
@@ -99,15 +98,13 @@ public class EntityEffectHandler {
 			int ix = (int)MathHelper.floor(entity.posX);
 			int iy = (int)MathHelper.floor(entity.posY);
 			int iz = (int)MathHelper.floor(entity.posZ);
-
+	
 			float rad = data.getRadNumFromCoord(new BlockPos(ix, iy, iz));
 			
 			Object dimRad = CompatibilityConfig.dimensionRad.get(world.provider.getDimension());
-			if(dimRad != null) {
-				if(rad < (float)dimRad) {
-					// TODO: Can we use sealed rad pockets to protect against dim rads?
+			if(dimRad != null){
+				if(rad < (float)dimRad)
 					rad = (float)dimRad;
-				}
 			}
 
 			if(rad > 0) {

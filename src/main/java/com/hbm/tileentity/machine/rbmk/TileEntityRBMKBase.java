@@ -404,7 +404,7 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 				}
 				
 			} else {
-				world.setBlockToAir(new BlockPos(pos.getX(), pos.getY() + i, pos.getZ()));
+				world.setBlockState(new BlockPos(pos.getX(), pos.getY() + i, pos.getZ()), Blocks.AIR.getDefaultState());
 			}
 			IBlockState state = world.getBlockState(pos.up(i));
 			world.notifyBlockUpdate(pos.up(i), state, state, 3);
@@ -416,7 +416,7 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 		EntityRBMKDebris debris = new EntityRBMKDebris(world, pos.getX() + 0.5D, pos.getY() + 4D, pos.getZ() + 0.5D, type);
 		debris.motionX = world.rand.nextGaussian() * 0.25D;
 		debris.motionZ = world.rand.nextGaussian() * 0.25D;
-		debris.motionY = 0.5D + world.rand.nextDouble() * 1.5D;
+		debris.motionY = 0.25D + world.rand.nextDouble() * 1.25D;
 		
 		if(type == DebrisType.LID) {
 			debris.motionX *= 0.5D;
@@ -455,7 +455,6 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 				maxZ = rbmk.pos.getZ();
 		}
 		
-		//Convert every rbmk part into debris
 		for(TileEntityRBMKBase rbmk : columns) {
 
 			int distFromMinX = rbmk.pos.getX() - minX;
@@ -468,7 +467,6 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 			rbmk.onMelt(minDist + 1);
 		}
 		
-		//Adding extra rads near corium blocks
 		for(TileEntityRBMKBase rbmk : columns) {
 			
 			if(rbmk instanceof TileEntityRBMKRod && world.getBlockState(new BlockPos(rbmk.pos.getX(), rbmk.pos.getY(), rbmk.pos.getZ())).getBlock() == ModBlocks.corium_block) {
@@ -522,7 +520,6 @@ public abstract class TileEntityRBMKBase extends TileEntity implements INBTPacke
 		RBMKBase.digamma = false;
 	}
 	
-	//Family and Friends
 	private void getFF(int x, int y, int z) {
 		
 		TileEntity te = world.getTileEntity(new BlockPos(x, y, z));

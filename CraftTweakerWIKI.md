@@ -1,5 +1,4 @@
 
-
 # **HBM Nuclear Tech Mod - 1.12.2 Extended Edition**
 
 # CraftTweaker Integration
@@ -125,37 +124,3 @@ mods.ntm.Shredder.removeRecipe(IItemStack input);<br>
 ## Waste Drum
 mods.ntm.WasteDrum.addRecipe(IItemStack input, IItemStack output);<br>
 ``mods.ntm.WasteDrum.addRecipe(<minecraft:cooked_beef>, <minecraft:beef>);``
-
-## Fluid Heat Recipes
-
-> **inputFluid** is the input fluid name
-> **inputAmount** amount of mB used - must be > 0
-> **outputFluid** is the output fluid name
-> **outputAmount** amount of mB used - must be > 0
-> **heatCapacity** TU used to convert this recipe - must be > 0
-
-1mb of IC2 coolant and 450TU are used to produce 1mb of hot IC2 Coolant<br> mods.ntm.FluidHeating.addBoilRecipe(String inputFluid, int inputAmount, String outputFluid, int outputAmount, int heatCapacity);<br> ``mods.ntm.FluidHeating.addBoilRecipe("ic2coolant", 1, "ic2hot_coolant", 1, 450);``
-
-1mb of hot IC2 Coolant if cooled releases 450TU and produces 1mb of IC2 Coolant<br>mods.ntm.FluidHeating.addCoolRecipe(String inputFluid, int inputAmount, String outputFluid, int outputAmount, int heatCapacity);<br>
-``mods.ntm.FluidHeating.addCoolRecipe("ic2hot_coolant", 1, "ic2coolant", 1, 450);``
-
-The top 2 recipes combined into one method<br>mods.ntm.FluidHeating.addBoilAndCoolRecipe(String inputFluid, int inputAmount, String outputFluid, int outputAmount, int heatCapacity);<br>
-``mods.ntm.FluidHeating.addBoilAndCoolRecipe("ic2coolant", 1, "ic2hot_coolant", 1, 450);``
-
-mods.ntm.FluidHeating.removeBoilRecipe(String inputFluid);<br>
-``mods.ntm.FluidHeating.removeBoilRecipe("ic2coolant");``
-
-mods.ntm.FluidHeating.removeCoolRecipe(String inputFluid);<br>
-``mods.ntm.FluidHeating.removeCoolRecipe("ic2hot_coolant");``
-
-## Fluid Combustion
-
-> **inputFluid** is the input fluid name
-> **heatPerMiliBucket** TU per 1mB of fluid - must be > 0 and < 100,000
-
-Burn 1mB of experience fluid and get 5 TU<br>mods.ntm.FluidCombustion.addBurnableFluid(String inputFluid, int heatPerMiliBucket);<br>
-``mods.ntm.FluidCombustion.addBurnableFluid("experience", 5);``
-
-mods.ntm.FluidCombustion.removeBurnableFluid(String inputFluid);<br>
-``mods.ntm.FluidCombustion.removeBurnableFluid("experience");``
-

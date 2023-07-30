@@ -17,9 +17,4 @@ public class GUITurretTauon extends GUITurretBase {
 	protected ResourceLocation getTexture() {
 		return texture;
 	}
-
-	@Override
-	public int getTurretFontColor(){
-		return 0x121514;
-	}
 }

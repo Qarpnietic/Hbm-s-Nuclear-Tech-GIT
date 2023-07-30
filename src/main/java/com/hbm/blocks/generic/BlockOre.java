@@ -33,22 +33,21 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockOre extends Block implements IItemHazard {
-	
+
 	ItemHazardModule module;
 
-	public BlockOre(Material materialIn, String name, int harvestLvl) {
+	public BlockOre(Material materialIn, String name) {
 		super(materialIn);
 		this.setUnlocalizedName(name);
 		this.setRegistryName(name);
 		this.setCreativeTab(MainRegistry.controlTab);
 		this.setTickRandomly(false);
-		this.setHarvestLevel("pickaxe", harvestLvl);
 		this.module = new ItemHazardModule();
 		ModBlocks.ALL_BLOCKS.add(this);
 	}
 	
-	public BlockOre(Material mat, SoundType sound, String name, int harvestLvl){
-		this(mat, name, harvestLvl);
+	public BlockOre(Material mat, SoundType sound, String name){
+		this(mat, name);
 		super.setSoundType(sound);
 	}
 
@@ -83,14 +82,13 @@ public class BlockOre extends Block implements IItemHazard {
 		}
 		if(this == ModBlocks.ore_rare || this == ModBlocks.ore_gneiss_rare)
 		{
-			switch(rand.nextInt(7)) {
+			switch(rand.nextInt(6)) {
 			case 0: return ModItems.fragment_boron;
 			case 1: return ModItems.fragment_cerium;
 			case 2: return ModItems.fragment_cobalt;
 			case 3: return ModItems.fragment_lanthanium;
 			case 4: return ModItems.fragment_neodymium;
 			case 5: return ModItems.fragment_niobium;
-			case 6: return ModItems.fragment_actinium;
 			}
 		}
 		if(this == ModBlocks.block_meteor)
@@ -188,7 +186,7 @@ public class BlockOre extends Block implements IItemHazard {
 		if(this == ModBlocks.ore_cobalt || this == ModBlocks.ore_nether_cobalt) {
 			return ModItems.fragment_cobalt;
 		}
-		return super.getItemDropped(state, rand, fortune);
+		return Item.getItemFromBlock(this);
 	}
 	
 	@Override
@@ -222,7 +220,7 @@ public class BlockOre extends Block implements IItemHazard {
 		if(this == ModBlocks.ore_nether_cobalt) {
 			return 5 + rand.nextInt(8);
 		}
-		return super.quantityDropped(state, fortune, rand);
+		return 1;
 	}
 	
 	@Override

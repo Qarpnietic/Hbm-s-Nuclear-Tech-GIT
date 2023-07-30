@@ -1,9 +1,9 @@
 # Blender v2.79 (sub 0) OBJ File: 'anvil_cut.blend'
 # www.blender.org
-mtllib anvil_osmiridium.mtl
+mtllib anvil_ferrouranium.mtl
 
-o anvil_osmiridium
-g anvil_osmiridium
+o anvil_ferrouranium
+g anvil_ferrouranium
 usemtl AnvilMTL
 
 o Back

@@ -103,7 +103,7 @@ public class ChemplantRecipes {
 		
 		makeRecipe(EnumChemistryTemplate.BP_BIOGAS, new AStack[] { new ComparableStack(ModItems.biomass, 16) }, null, null, new FluidStack[]{ new FluidStack(ModForgeFluids.biogas, 4000) }, 200);
 		
-		makeRecipe(EnumChemistryTemplate.BP_BIOFUEL, null, new FluidStack[]{ new FluidStack(ModForgeFluids.biogas, 1500), new FluidStack(ModForgeFluids.ethanol, 250) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.biofuel, 1000) }, 100);
+		makeRecipe(EnumChemistryTemplate.BP_BIOFUEL, null, new FluidStack[]{ new FluidStack(ModForgeFluids.biogas, 2000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.biofuel, 1000) }, 100);
 		
 		makeRecipe(EnumChemistryTemplate.OIL_SAND, new AStack[] { new ComparableStack(ModBlocks.ore_oil_sand, 16), new OreDictStack(KEY_OIL_TAR, 1) }, null, new AStack[] { new ComparableStack(Blocks.SAND, 16) }, new FluidStack[]{ new FluidStack(ModForgeFluids.bitumen, 1000) }, 200);
 		
@@ -127,12 +127,6 @@ public class ChemplantRecipes {
 		
 		makeRecipe(EnumChemistryTemplate.SULFURIC_ACID, new AStack[] { new OreDictStack(S.dust()) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 800) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 500) }, 50);
 		
-		makeRecipe(EnumChemistryTemplate.NITRIC_ACID, new AStack[] { new OreDictStack(KNO.dust()) }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 500) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.nitric_acid, 500) }, 50);
-		
-		makeRecipe(EnumChemistryTemplate.SOLVENT, null, new FluidStack[]{ new FluidStack(ModForgeFluids.naphtha, 500), new FluidStack(ModForgeFluids.aromatics, 500) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.solvent, 1000) }, 50);
-		
-		makeRecipe(EnumChemistryTemplate.RADIOSOLVENT, null, new FluidStack[]{ new FluidStack(ModForgeFluids.solvent, 500), new FluidStack(ModForgeFluids.watz, 500) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.radiosolvent, 1000) }, 50);
-		
 		makeRecipe(EnumChemistryTemplate.CIRCUIT_4, new AStack[] { new ComparableStack(ModItems.circuit_red_copper, 1), new ComparableStack(ModItems.wire_gold, 4), new OreDictStack(LAPIS.dust(), 1), new OreDictStack(ANY_PLASTIC.ingot(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 400) }, new AStack[] { new ComparableStack(ModItems.circuit_gold, 1) }, null, 200);
 		
 		makeRecipe(EnumChemistryTemplate.CIRCUIT_5, new AStack[] { new ComparableStack(ModItems.circuit_gold, 1), new ComparableStack(ModItems.wire_schrabidium, 4), new OreDictStack(DIAMOND.dust(), 1), new OreDictStack(DESH.ingot(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.acid, 800), new FluidStack(ModForgeFluids.petroleum, 400) }, new AStack[] { new ComparableStack(ModItems.circuit_schrabidium, 1) }, null, 250);
@@ -143,14 +137,12 @@ public class ChemplantRecipes {
 		
 		makeRecipe(EnumChemistryTemplate.RUBBER, new AStack[] { new OreDictStack(S.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.unsaturateds, 500) }, new AStack[] { new ComparableStack(ModItems.ingot_rubber, 1) }, null, 100);
 		
-		makeRecipe(EnumChemistryTemplate.DYNAMITE, new AStack[] { new ComparableStack(Items.SUGAR), new OreDictStack(KNO.dust()), new OreDictStack(KEY_SAND) }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 1000) }, new AStack[] { new ComparableStack(ModItems.ball_dynamite, 2) }, null, 50);
+		makeRecipe(EnumChemistryTemplate.DYNAMITE, new AStack[] { new ComparableStack(Items.SUGAR), new OreDictStack(KNO.dust()), new OreDictStack("sand") }, new FluidStack[]{ new FluidStack(ModForgeFluids.sulfuric_acid, 1000) }, new AStack[] { new ComparableStack(ModItems.ball_dynamite, 2) }, null, 50);
 		
 		makeRecipe(EnumChemistryTemplate.TNT, new AStack[] { new OreDictStack(KNO.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.aromatics, 500) }, new AStack[] { new ComparableStack(ModItems.ball_tnt, 4) }, null, 150);
 
 		makeRecipe(EnumChemistryTemplate.C4, new AStack[] { new OreDictStack(KNO.dust(), 1) }, new FluidStack[]{ new FluidStack(ModForgeFluids.unsaturateds, 500) }, new AStack[] { new ComparableStack(ModItems.ingot_c4, 4) }, null, 150);
 
-		makeRecipe(EnumChemistryTemplate.HEAVY_ELECTROLYSIS, null, new FluidStack[]{ new FluidStack(ModForgeFluids.heavywater, 8000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.deuterium, 400), new FluidStack(ModForgeFluids.oxygen, 400) }, 150);
-		
 		makeRecipe(EnumChemistryTemplate.DEUTERIUM, new AStack[] { new OreDictStack(S.dust(), 2) }, new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 4000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.deuterium, 500) }, 200);
 		
 		makeRecipe(EnumChemistryTemplate.STEAM, null, new FluidStack[]{ new FluidStack(FluidRegistry.WATER, 1000) }, null, new FluidStack[]{ new FluidStack(ModForgeFluids.steam, 1000) }, 20);
@@ -276,9 +268,6 @@ public class ChemplantRecipes {
 		NITAN,
 		PEROXIDE,
 		SULFURIC_ACID,
-		NITRIC_ACID,
-		SOLVENT,
-		RADIOSOLVENT,
 		CIRCUIT_4,
 		CIRCUIT_5,
 		POLYMER,
@@ -287,8 +276,6 @@ public class ChemplantRecipes {
 		DYNAMITE,
 		TNT,
 		C4,
-		ELECTROLYSIS,
-		HEAVY_ELECTROLYSIS,
 		DEUTERIUM,
 		STEAM,
 		ALGE,
@@ -307,6 +294,7 @@ public class ChemplantRecipes {
 		CONCRETE_ASBESTOS,
 		DUCRETE,
 		SOLID_FUEL,
+		ELECTROLYSIS,
 		XENON,
 		XENON_OXY,
 		SATURN,

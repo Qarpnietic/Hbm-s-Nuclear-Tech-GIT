@@ -11,7 +11,6 @@ import com.hbm.items.weapon.ItemCrucible;
 import com.hbm.packet.AuxParticlePacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.inventory.DFCRecipes;
-import com.hbm.tileentity.INBTPacketReceiver;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -26,14 +25,13 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class TileEntityCrateTungsten extends TileEntityLockableBase implements ITickable, ILaserable, INBTPacketReceiver {
+public class TileEntityCrateTungsten extends TileEntityLockableBase implements ITickable, ILaserable {
 
 	public ItemStackHandler inventory;
 
 	private Random rand = new Random();
 
-	public int heatTimer = 0;
-	public int age = 0;
+	public int heatTimer;
 
 	public TileEntityCrateTungsten() {
 		inventory = new ItemStackHandler(27){
@@ -83,23 +81,7 @@ public class TileEntityCrateTungsten extends TileEntityLockableBase implements I
 			if(heatTimer > 0) {
 				PacketDispatcher.wrapper.sendToAllAround(new AuxParticlePacket(pos.getX(), pos.getY(), pos.getZ(), 4), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 50));
 			}
-			age++;
-			if(age > 20){
-				networkPack();
-				age = 0;
-			}
 		}
-	}
-
-	public void networkPack() {
-		NBTTagCompound data = new NBTTagCompound();
-		data.setInteger("timer", this.heatTimer);
-		INBTPacketReceiver.networkPack(this, data, 150);
-	}
-
-	@Override
-	public void networkUnpack(NBTTagCompound data) {
-		this.heatTimer = data.getInteger("timer");
 	}
 
 	@Override

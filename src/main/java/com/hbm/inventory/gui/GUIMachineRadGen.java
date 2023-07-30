@@ -33,14 +33,13 @@ public class GUIMachineRadGen extends GuiInfoContainer {
 		this.drawElectricityInfo(this, mouseX, mouseY, guiLeft + 143, guiTop + 69 - 52, 16, 52, radgen.power, TileEntityMachineRadGen.maxPower);
 		
 		String[] text = new String[] { "Accepted Fuels:",
-				"  ANYTHING radioactive",
-				"  so even waste like dead grass and contaminated items!",
-				"  fuel amount of an item is sqrt(item radiation)" };
+				"  About anything radioactive other than reactor fuel,",
+				"  even waste like dead grass!" };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, text);
 		
 		String[] text1 = new String[] { "Power generation rate:",
-				"  up to 200k HE/s",
-				"(Generation rate depends on how much fuel there is)" };
+				"  20 kHE/s",
+				"(Generation rate at maximum performance)" };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36 + 16, 16, 16, guiLeft - 8, guiTop + 36 + 16, text1);
 		super.renderHoveredToolTip(mouseX, mouseY);
 	}

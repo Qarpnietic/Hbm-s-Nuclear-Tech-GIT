@@ -29,11 +29,4 @@ public class WeightedRandomObject extends WeightedRandom.Item {
 		return null;
 	}
 
-	public String asString() {
-
-		if(item instanceof String)
-			return (String) item;
-
-		return null;
-	}
 }

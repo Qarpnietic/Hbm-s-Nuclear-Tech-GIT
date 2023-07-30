@@ -12,16 +12,9 @@
 	},
 	"parent": "hbm:progress_anvil",
 	"criteria": {
-		"crafting_table": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "hbm:ingot_red_copper"
-                    }
-                ]
-            }
-        }
+		"impossible": {
+			"trigger": "minecraft:impossible"
+		}
 	},
     "rewards": {
         "experience": 25

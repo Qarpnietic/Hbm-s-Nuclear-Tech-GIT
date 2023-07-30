@@ -24,4 +24,5 @@ public class RBMKModerator extends RBMKBase {
 	public EnumBlockRenderType getRenderType(IBlockState state){
 		return EnumBlockRenderType.MODEL;
 	}
+	
 }

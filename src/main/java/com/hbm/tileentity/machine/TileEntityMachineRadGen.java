@@ -3,8 +3,8 @@ package com.hbm.tileentity.machine;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.items.ModItems;
-
-import com.hbm.util.ContaminationUtil;
+import com.hbm.blocks.items.ItemBlockHazard;
+import com.hbm.interfaces.IItemHazard;
 import com.hbm.lib.Library;
 import com.hbm.lib.ForgeDirection;
 import com.hbm.packet.AuxElectricityPacket;
@@ -39,8 +39,8 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	public int soundCycle = 0;
 	public float rotation;
 	public static final long maxPower = 1000000;
-	public static final int maxFuel = 1000;
-	public static final int maxStrength = 10000;
+	public static final int maxFuel = 300000;
+	public static final int maxStrength = 20000;
 
 	///private static final int[] slots_top = new int[] { 0 };
 	///private static final int[] slots_bottom = new int[] { 0, 0 };
@@ -105,15 +105,14 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 	}
 
 	public boolean isItemValidForSlot(int i, ItemStack stack) {
-		return i == 0 && ContaminationUtil.getStackRads(stack) > 0;
+		return i == 0 && this.getRads(stack) > 0;
 	}
 	
 	@Override
 	public void update() {
 		if (!world.isRemote) {
-			power = Library.chargeItemsFromTE(inventory, 2, power, maxPower);
 			sendRADGenPower();
-			int r = (int)Math.sqrt(ContaminationUtil.getStackRads(inventory.getStackInSlot(0)));
+			int r = getRads(inventory.getStackInSlot(0));
 			if(r > 0) {
 				if(inventory.getStackInSlot(0).getItem().hasContainerItem(inventory.getStackInSlot(0))) {
 					if(inventory.getStackInSlot(1).isEmpty()) {
@@ -140,20 +139,17 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 				} else {
 					if(fuel + r <= maxFuel) {
 						inventory.getStackInSlot(0).shrink(1);
+						if(inventory.getStackInSlot(0).isEmpty())
+							inventory.setStackInSlot(0, ItemStack.EMPTY);
 						fuel += r;
 					}
 				}
 			}
-
-			if(fuel > maxFuel)
-				fuel = maxFuel;
 			
 			if(fuel > 0) {
 				fuel--;
 				if(strength < maxStrength){
-					strength = (int)(maxStrength * fuel / maxFuel);
-				} else{
-					strength = maxStrength;
+					strength = (int)Math.ceil(fuel / 15);
 				}
 			} else {
 				if(strength > 0)
@@ -177,6 +173,7 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 			if(strength > 1000)
 				mode = 2;
 			
+			//PacketDispatcher.wrapper.sendToAll(new TEIGeneratorPacket(xCoord, yCoord, zCoord, rotation, torque));
 			PacketDispatcher.wrapper.sendToAllAround(new AuxElectricityPacket(pos.getX(), pos.getY(), pos.getZ(), power), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 20));
 		}
 	}
@@ -192,6 +189,32 @@ public class TileEntityMachineRadGen extends TileEntityLoadedBase implements ITi
 		case 5: 
 			this.sendPower(world, pos.add(0, 0, 5), Library.POS_Z); break;
 		}
+	}
+	
+	private int getRads(ItemStack stack) {
+		if(stack == null)
+			return 0;
+		
+		Item item = stack.getItem();
+
+		int fuel = 0;
+		
+		if(item instanceof IItemHazard){
+			fuel += (int)((IItemHazard)item).getModule().radiation;
+		}
+
+		if(item instanceof ItemBlockHazard){
+			fuel += (int)((ItemBlockHazard)item).getModule().radiation;
+		}
+
+		if(stack.hasTagCompound()){
+			NBTTagCompound stackNBT = stack.getTagCompound();
+			if(stackNBT.hasKey("ntmNeutron")){
+				fuel += (int)stackNBT.getFloat("ntmNeutron");
+			}
+		}
+
+		return fuel;
 	}
 	
 	public int getFuelScaled(int i) {

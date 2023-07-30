@@ -301,22 +301,24 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 				cycles += 6;
 		}
 
-		return Math.min(cycles, 7);
+		return Math.min(cycles, 4);
 	}
 	
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemStack, int amount) {
-		return slot == 0 && CrystallizerRecipes.getOutputItem(itemStack) != null;
+		return slot == 0;
 	}
 	
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
-		return slot == 2 || slot == 4;
+		return slot == 2;
 	}
 
 	@Override
 	public int[] getAccessibleSlotsFromSide(EnumFacing face) {
-		return new int[] { 0, 2, 4 };
+		int side = face.getIndex();
+
+		return side == 0 ? new int[] { 2 } : new int[] { 0, 2 };
 	}
 
 	@Override
@@ -374,7 +376,7 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 
 	@Override
 	public int fill(FluidStack resource, boolean doFill) {
-		if(resource != null && CrystallizerRecipes.isAllowedFluid(resource.getFluid())) {
+		if(CrystallizerRecipes.isAllowedFluid(resource.getFluid())) {
 			return tank.fill(resource, doFill);
 		}
 		return 0;
@@ -409,4 +411,5 @@ public class TileEntityMachineCrystallizer extends TileEntityMachineBase impleme
 			tank.readFromNBT(tags[0]);
 		}
 	}
+
 }

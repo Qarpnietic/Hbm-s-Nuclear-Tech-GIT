@@ -2,7 +2,6 @@ package com.hbm.items.armor;
 
 import org.lwjgl.opengl.GL11;
 
-import com.hbm.lib.Library;
 import com.hbm.render.model.ModelArmorHEV;
 
 import net.minecraft.client.Minecraft;
@@ -62,7 +61,7 @@ public class ArmorHEV extends ArmorFSBPowered {
 
     private void renderOverlay(RenderGameOverlayEvent.Pre event, EntityPlayer player) {
 		float in = 0;
-		in = (float)Library.getEntRadCap(player).getRads();
+		in = player.getEntityData().getFloat("hfr_radiation");
 
         float radiation = 0;
 

@@ -12,16 +12,9 @@
 	},
 	"parent": "hbm:bobmetalworks",
 	"criteria": {
-		"crafting_table": {
-            "trigger": "minecraft:inventory_changed",
-            "conditions": {
-                "items": [
-                    {
-                        "item": "hbm:circuit_copper"
-                    }
-                ]
-            }
-        }
+		"impossible": {
+			"trigger": "minecraft:impossible"
+		}
 	},
     "rewards": {
         "experience": 50

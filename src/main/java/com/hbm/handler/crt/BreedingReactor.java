@@ -53,7 +53,7 @@ public class BreedingReactor {
 
 	@ZenMethod
 	public static void addRecipe(IItemStack input, IItemStack output, int heatLvl){
-		NTMCraftTweaker.postInitActions.add(new ActionAddRecipe(input, output, heatLvl));
+		CraftTweakerAPI.apply(new ActionAddRecipe(input, output, heatLvl));
 	}
 
 
@@ -119,7 +119,7 @@ public class BreedingReactor {
 
 	@ZenMethod
 	public static void addFuel(IItemStack input, int heatLvl, int usesInNuclearFurnace){
-		NTMCraftTweaker.postInitActions.add(new ActionAddFuel(input, heatLvl, usesInNuclearFurnace));
+		CraftTweakerAPI.apply(new ActionAddFuel(input, heatLvl, usesInNuclearFurnace));
 	}
 
 	

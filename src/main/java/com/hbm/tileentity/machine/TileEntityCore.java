@@ -5,7 +5,6 @@ import java.util.List;
 import com.hbm.entity.effect.EntityCloudFleijaRainbow;
 import com.hbm.entity.logic.EntityNukeExplosionMK3;
 import com.hbm.forgefluid.FFUtils;
-import com.hbm.forgefluid.FluidTypeHandler;
 import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.handler.ArmorUtil;
 import com.hbm.items.ModItems;
@@ -144,33 +143,27 @@ public class TileEntityCore extends TileEntityMachineBase implements ITickable {
 	
 	private void radiation() {
 		
-		double scale = (int)Math.log(heat) * 1.25 + 0.5;
+		double scale = 2;
 		
-		int range = (int)(scale * 4);
-		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - range + 0.5, pos.getY() - range + 0.5, pos.getZ() - range + 0.5, pos.getX() + range + 0.5, pos.getY() + range + 0.5, pos.getZ() + range + 0.5));
+		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - 10 + 0.5, pos.getY() - 10 + 0.5 + 6, pos.getZ() - 10 + 0.5, pos.getX() + 10 + 0.5, pos.getY() + 10 + 0.5 + 6, pos.getZ() + 10 + 0.5));
 		
 		for(Entity e : list) {
-			boolean isPlayer = e instanceof EntityPlayer;
-			if(!(isPlayer && ArmorUtil.checkForHazmat((EntityPlayer)e))){
+			if(!(e instanceof EntityPlayer && (ArmorUtil.checkForHazmat((EntityPlayer)e) || ((EntityPlayer)e).capabilities.isCreativeMode))){
 				if(!(Library.isObstructed(world, pos.getX() + 0.5, pos.getY() + 0.5 + 6, pos.getZ() + 0.5, e.posX, e.posY + e.getEyeHeight(), e.posZ))){
-					if(!isPlayer || (isPlayer && !((EntityPlayer)e).capabilities.isCreativeMode))
-						e.attackEntityFrom(ModDamageSource.ams, this.heat * 100);
+					e.attackEntityFrom(ModDamageSource.ams, this.heat * 100);
 					e.setFire(3);
 				}
 			}
-			if(isPlayer){
+			if(e instanceof EntityPlayer){
 				AdvancementManager.grantAchievement(((EntityPlayer) e), AdvancementManager.progress_dfc);
 			}
 		}
 
-		List<Entity> list2 = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - scale + 0.5, pos.getY() - scale + 0.5, pos.getZ() - scale + 0.5, pos.getX() + scale + 0.5, pos.getY() + scale + 0.5, pos.getZ() + scale + 0.5));
+		List<Entity> list2 = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(pos.getX() - scale + 0.5, pos.getY() - scale + 0.5 + 6, pos.getZ() - scale + 0.5, pos.getX() + scale + 0.5, pos.getY() + scale + 0.5 + 6, pos.getZ() + scale + 0.5));
 		
 		for(Entity e : list2) {
-			boolean isPlayer = e instanceof EntityPlayer;
-			if(!(isPlayer && ArmorUtil.checkForHaz2((EntityPlayer)e))){
-				if(!isPlayer || (isPlayer && !((EntityPlayer)e).capabilities.isCreativeMode))
-					e.attackEntityFrom(ModDamageSource.amsCore, this.heat * 1000);
-				e.setFire(3);
+			if(!(e instanceof EntityPlayer && (ArmorUtil.checkForHaz2((EntityPlayer)e) || ((EntityPlayer)e).capabilities.isCreativeMode))){
+				e.attackEntityFrom(ModDamageSource.amsCore, this.heat * 1000);
 			}
 		}
 	}
@@ -194,7 +187,7 @@ public class TileEntityCore extends TileEntityMachineBase implements ITickable {
 		if(tanks[0].getFluid() == null || tanks[1].getFluid() == null)
 			return false;
 		
-		if(FluidTypeHandler.getDFCEfficiency(tanks[0].getFluid().getFluid()) <= 0 || FluidTypeHandler.getDFCEfficiency(tanks[1].getFluid().getFluid()) <= 0)
+		if(getFuelEfficiency(tanks[0].getFluid().getFluid()) <= 0 || getFuelEfficiency(tanks[1].getFluid().getFluid()) <= 0)
 			return false;
 		
 		return true;
@@ -227,11 +220,35 @@ public class TileEntityCore extends TileEntityMachineBase implements ITickable {
 
 		tanks[0].drain(demand, true);
 		tanks[1].drain(demand, true);
-
-		long powerOutput = (long) Math.max(0, (powerMod * joules * getCorePower() * FluidTypeHandler.getDFCEfficiency(f1) * FluidTypeHandler.getDFCEfficiency(f2)) + powerAbs);
-		if(powerOutput > 0 && heat == 0)
-			heat = 1;
-		return powerOutput;
+		
+		return (long) Math.abs((powerMod * joules * getCorePower() * getFuelEfficiency(f1) * getFuelEfficiency(f2)) + powerAbs);
+	}
+	
+	public float getFuelEfficiency(Fluid type) {
+		
+		if(type == ModForgeFluids.hydrogen){
+			return 1.0F;
+		} else if(type == ModForgeFluids.deuterium){
+			return 1.5F;
+		} else if(type == ModForgeFluids.tritium){
+			return 1.7F;
+		} else if(type == ModForgeFluids.oxygen){
+			return 1.2F;
+		} else if(type == ModForgeFluids.acid){
+			return 1.4F;
+		} else if(type == ModForgeFluids.xenon){
+			return 1.5F;
+		} else if(type == ModForgeFluids.sas3){
+			return 2.0F;
+		} else if(type == ModForgeFluids.balefire){
+			return 2.5F;
+		} else if(type == ModForgeFluids.amat){
+			return 2.2F;
+		} else if(type == ModForgeFluids.aschrab){
+			return 2.7F;
+		}
+		
+		return 0;
 	}
 	
 	//TODO: move stats to the AMSCORE class
@@ -289,4 +306,5 @@ public class TileEntityCore extends TileEntityMachineBase implements ITickable {
 		compound.setTag("tanks", FFUtils.serializeTankArray(tanks));
 		return super.writeToNBT(compound);
 	}
+
 }

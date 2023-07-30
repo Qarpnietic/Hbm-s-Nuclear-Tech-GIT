@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.hbm.inventory.AssemblerRecipes;
 import com.hbm.inventory.MachineRecipes;
-import com.hbm.forgefluid.FluidTypeHandler;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemCassette;
 import com.hbm.items.machine.ItemChemistryTemplate;
@@ -67,6 +66,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 				stacks.add(stack);
 			} else if(stack.getItem() instanceof ItemForgeFluidIdentifier) {
 				Fluid fluid = ItemForgeFluidIdentifier.getType(stack);
+
 				if(I18nUtil.resolveKey(fluid.getUnlocalizedName()).toLowerCase().contains(sub)) {
 					stacks.add(stack);
 				}
@@ -98,10 +98,8 @@ public class GUIScreenTemplateFolder extends GuiScreen {
     	for(int i = 1; i < ItemCassette.TrackType.values().length; i++)
 			allStacks.add(new ItemStack(ModItems.siren_track, 1, i));
     	//Fluid IDs
-    	for(Fluid fluid : FluidRegistry.getRegisteredFluids().values()){
-    		if(FluidTypeHandler.noID(fluid)) continue;
+    	for(Fluid fluid : FluidRegistry.getRegisteredFluids().values())
 			allStacks.add(ItemForgeFluidIdentifier.getStackFromFluid(fluid));
-    	}
     	//Assembly Templates
     	//for(int i = 0; i < ItemAssemblyTemplate.recipes.size(); i++)
     	//	stacks.add(new ItemStack(ModItems.assembly_template, 1, i));

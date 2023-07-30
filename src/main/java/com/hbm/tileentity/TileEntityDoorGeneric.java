@@ -7,7 +7,6 @@ import java.util.Set;
 
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.generic.BlockDoorGeneric;
-import com.hbm.handler.RadiationSystemNT;
 import com.hbm.interfaces.IAnimatedDoor;
 import com.hbm.inventory.control_panel.ControlEvent;
 import com.hbm.inventory.control_panel.ControlEventSystem;
@@ -37,7 +36,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITickable, IAnimatedDoor, IControllable {
 
-	public DoorState state = DoorState.CLOSED;
+	//0: closed, 1: open, 2: closing, 3: opening
+	public byte state = 0;
 	public DoorDecl doorType;
 	public int openTicks = 0;
 	public long animStartTime = 0;
@@ -50,12 +50,12 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 	
 	@Override
 	public void update(){
-		if(state == DoorState.OPENING) {
+		if(state == 3) {
 			openTicks++;
 			if(openTicks >= doorType.timeToOpen()) {
 				openTicks = doorType.timeToOpen();
 			}
-		} else if(state == DoorState.CLOSING) {
+		} else if(state == 2) {
 			openTicks--;
 			if(openTicks <= 0) {
 				openTicks = 0;
@@ -65,7 +65,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 		if(!world.isRemote) {
 			int[][] ranges = doorType.getDoorOpenRanges();
 			ForgeDirection dir = ForgeDirection.getOrientation(getBlockMetadata() - BlockDummyable.offset);
-			if(state == DoorState.OPENING) {
+			if(state == 3) {
 				for(int i = 0; i < ranges.length; i++) {
 					int[] range = ranges[i];
 					BlockPos startPos = new BlockPos(range[0], range[1], range[2]);
@@ -98,7 +98,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 						}
 					}
 				}
-			} else if(state == DoorState.CLOSING){
+			} else if(state == 2){
 				for(int i = 0; i < ranges.length; i++) {
 					int[] range = ranges[i];
 					BlockPos startPos = new BlockPos(range[0], range[1], range[2]);
@@ -132,19 +132,15 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 					}
 				}
 			}
-			if(state == DoorState.OPENING && openTicks == doorType.timeToOpen()) {
-				state = DoorState.OPEN;
+			if(state == 3 && openTicks == doorType.timeToOpen()) {
+				state = 1;
 				broadcastControlEvt();
 			}
-			if(state == DoorState.CLOSING && openTicks == 0) {
-				state = DoorState.CLOSED;
+			if(state == 2 && openTicks == 0) {
+				state = 0;
 				broadcastControlEvt();
-
-				// With door finally closed, mark chunk for rad update since door is now rad resistant
-				// No need to update when open as well, as opening door should update
-				RadiationSystemNT.markChunkForRebuild(world, pos);
 			}
-			PacketDispatcher.wrapper.sendToAllAround(new TEDoorAnimationPacket(pos, (byte) state.ordinal(), (byte)(shouldUseBB ? 1 : 0)), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
+			PacketDispatcher.wrapper.sendToAllAround(new TEDoorAnimationPacket(pos, state, (byte)(shouldUseBB ? 1 : 0)), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 100));
 			
 			if(redstonePower > 0){
 				tryOpen(-1);
@@ -184,19 +180,19 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 	}
 
 	public boolean tryToggle(EntityPlayer player){
-		if(state == DoorState.CLOSED && redstonePower > 0) {
+		if(state == 0 && redstonePower > 0) {
 			//Redstone "power locks" doors, just like minecraft iron doors
 			return false;
 		}
-		if(state == DoorState.CLOSED) {
+		if(this.state == 0) {
 			if(!world.isRemote && canAccess(player)) {
-				open();
+				this.state = 3;
 				broadcastControlEvt();
 			}
 			return true;
-		} else if(state == DoorState.OPEN) {
+		} else if(this.state == 1) {
 			if(!world.isRemote && canAccess(player)) {
-				close();
+				this.state = 2;
 				broadcastControlEvt();
 			}
 			return true;
@@ -207,9 +203,9 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 	public boolean tryOpen(int passcode){
 		if(this.isLocked() && passcode != this.lock)
 			return false;
-		if(state == DoorState.CLOSED) {
+		if(this.state == 0) {
 			if(!world.isRemote) {
-				open();
+				this.state = 3;
 				broadcastControlEvt();
 			}
 			return true;
@@ -218,22 +214,30 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 	}
 
 	public boolean tryToggle(int passcode){
-		if(isLocked() && passcode != lock)
+		if(this.isLocked() && passcode != this.lock)
 			return false;
-		if(state == DoorState.CLOSED) {
-			return tryOpen(passcode);
-		} else if(state == DoorState.OPEN) {
-			return tryClose(passcode);
+		if(this.state == 0) {
+			if(!world.isRemote) {
+				this.state = 3;
+				broadcastControlEvt();
+			}
+			return true;
+		} else if(this.state == 1) {
+			if(!world.isRemote) {
+				this.state = 2;
+				broadcastControlEvt();
+			}
+			return true;
 		}
 		return false;
 	}
 
 	public boolean tryClose(int passcode){
-		if(isLocked() && passcode != lock)
+		if(this.isLocked() && passcode != this.lock)
 			return false;
-		if(state == DoorState.OPEN) {
+		if(this.state == 1) {
 			if(!world.isRemote) {
-				close();
+				this.state = 2;
 				broadcastControlEvt();
 			}
 			return true;
@@ -242,40 +246,36 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 	}
 
 	@Override
-	public void open() {
-		if(state == DoorState.CLOSED)
+	public void open(){
+		if(state == 0)
 			toggle();
 	}
 
 	@Override
 	public void close(){
-		if(state == DoorState.OPEN)
+		if(state == 1)
 			toggle();
 	}
 
 	@Override
 	public DoorState getState(){
-		return state;
+		return DoorState.values()[state];
 	}
 
 	@Override
 	public void toggle(){
-		if(state == DoorState.CLOSED) {
-			state = DoorState.OPENING;
-			// With door opening, mark chunk for rad update
-			RadiationSystemNT.markChunkForRebuild(world, pos);
-		} else if(state == DoorState.OPEN) {
-			state = DoorState.CLOSING;
-			// With door closing, mark chunk for rad update
-			RadiationSystemNT.markChunkForRebuild(world, pos);
+		if(state == 0) {
+			state = 3;
+		} else if(state == 1) {
+			state = 2;
 		}
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void handleNewState(DoorState newState){
-		if(this.state != newState) {
-			if(this.state == DoorState.CLOSED && newState == DoorState.OPENING){
+	public void handleNewState(byte state){
+		if(this.state != state) {
+			if(this.state == 0 && state == 3){
 				if(audio == null){
 					audio = MainRegistry.proxy.getLoopedSoundStartStop(world, doorType.getOpenSoundLoop(), doorType.getOpenSoundStart(), doorType.getOpenSoundEnd(), SoundCategory.BLOCKS, pos.getX(), pos.getY(), pos.getZ(), doorType.getSoundVolume(), 1);
 					audio.startSound();
@@ -285,7 +285,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 					audio2.startSound();
 				}
 			}
-			if(this.state == DoorState.OPEN && newState == DoorState.CLOSING){
+			if(this.state == 1 && state == 2){
 				if(audio == null){
 					audio = MainRegistry.proxy.getLoopedSoundStartStop(world, doorType.getCloseSoundLoop(), doorType.getCloseSoundStart(), doorType.getCloseSoundEnd(), SoundCategory.BLOCKS, pos.getX(), pos.getY(), pos.getZ(), doorType.getSoundVolume(), 1);
 					audio.startSound();
@@ -295,7 +295,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 					audio2.startSound();
 				}
 			}
-			if(this.state.isMovingState() && newState.isStationaryState()){
+			if((this.state == 3 && state == 1) || (this.state == 2 && state == 0)){
 				if(audio != null){
 					audio.stopSound();
 					audio = null;
@@ -305,9 +305,10 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 					audio2 = null;
 				}
 			}
-
-			this.state = newState;
-			if(newState.isMovingState())
+			
+			
+			this.state = state;
+			if(state > 1)
 				animStartTime = System.currentTimeMillis();
 		}
 	}
@@ -333,7 +334,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag){
-		this.state = DoorState.values()[tag.getByte("state")];
+		this.state = tag.getByte("state");
 		this.openTicks = tag.getInteger("openTicks");
 		this.animStartTime = tag.getInteger("animStartTime");
 		this.redstonePower = tag.getInteger("redstoned");
@@ -348,7 +349,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag){
-		tag.setByte("state", (byte) state.ordinal());
+		tag.setByte("state", state);
 		tag.setInteger("openTicks", openTicks);
 		tag.setLong("animStartTime", animStartTime);
 		tag.setInteger("redstoned", redstonePower);
@@ -366,7 +367,7 @@ public class TileEntityDoorGeneric extends TileEntityLockableBase implements ITi
 	}
 
 	public void broadcastControlEvt(){
-		ControlEventSystem.get(world).broadcastToSubscribed(this, ControlEvent.newEvent("door_open_state").setVar("state", new DataValueFloat(state.ordinal())));
+		ControlEventSystem.get(world).broadcastToSubscribed(this, ControlEvent.newEvent("door_open_state").setVar("state", new DataValueFloat(state)));
 	}
 	
 	@Override

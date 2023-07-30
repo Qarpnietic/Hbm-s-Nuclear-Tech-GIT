@@ -200,7 +200,20 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 			
 			this.power = Library.chargeTEFromItems(inventory, 10, this.power, this.getMaxPower());
 			
-			networkPack();
+			NBTTagCompound data = new NBTTagCompound();
+			if(this.tPos != null) {
+				data.setDouble("tX", this.tPos.x);
+				data.setDouble("tY", this.tPos.y);
+				data.setDouble("tZ", this.tPos.z);
+			}
+			data.setLong("power", this.power);
+			data.setBoolean("isOn", this.isOn);
+			data.setBoolean("targetPlayers", this.targetPlayers);
+			data.setBoolean("targetAnimals", this.targetAnimals);
+			data.setBoolean("targetMobs", this.targetMobs);
+			data.setBoolean("targetMachines", this.targetMachines);
+			data.setInteger("stattrak", this.stattrak);
+			this.networkPack(data, 250);
 			
 		} else {
 			
@@ -217,23 +230,6 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 					this.lastRotationYaw -= Math.PI * 2;
 			}
 		}
-	}
-
-	public void networkPack(){
-		NBTTagCompound data = new NBTTagCompound();
-		if(this.tPos != null) {
-			data.setDouble("tX", this.tPos.x);
-			data.setDouble("tY", this.tPos.y);
-			data.setDouble("tZ", this.tPos.z);
-		}
-		data.setLong("power", this.power);
-		data.setBoolean("isOn", this.isOn);
-		data.setBoolean("targetPlayers", this.targetPlayers);
-		data.setBoolean("targetAnimals", this.targetAnimals);
-		data.setBoolean("targetMobs", this.targetMobs);
-		data.setBoolean("targetMachines", this.targetMachines);
-		data.setInteger("stattrak", this.stattrak);
-		this.networkPack(data, 250);
 	}
 	
 	@Override
@@ -315,12 +311,8 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		
 		return null;
 	}
-
-	public void spawnBullet(BulletConfiguration bullet) {
-		spawnBullet(bullet, 0);
-	}
 	
-	public void spawnBullet(BulletConfiguration bullet, float overrideDamage) {
+	public void spawnBullet(BulletConfiguration bullet) {
 		
 		Vec3 pos = new Vec3(this.getTurretPos());
 		Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
@@ -329,8 +321,6 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 		
 		EntityBulletBase proj = new EntityBulletBase(world, BulletConfigSyncingUtil.getKey(bullet));
 		proj.setPositionAndRotation(pos.xCoord + vec.xCoord, pos.yCoord + vec.yCoord, pos.zCoord + vec.zCoord, 0.0F, 0.0F);
-		if(overrideDamage > 0)
-			proj.overrideDamage = overrideDamage;
 		
 		proj.shoot(vec.xCoord, vec.yCoord, vec.zCoord, bullet.velocity, bullet.spread);
 		world.spawnEntity(proj);
@@ -733,28 +723,6 @@ public abstract class TileEntityTurretBaseNT extends TileEntityMachineBase imple
 	 */
 	protected abstract List<Integer> getAmmoList();
 	
-	@SideOnly(Side.CLIENT)
-	protected List<ItemStack> ammoStacks;
-
-	@SideOnly(Side.CLIENT)
-	public List<ItemStack> getAmmoTypesForDisplay() {
-		
-		if(ammoStacks != null)
-			return ammoStacks;
-		
-		ammoStacks = new ArrayList();
-		
-		for(Integer i : getAmmoList()) {
-			BulletConfiguration config = BulletConfigSyncingUtil.pullConfig(i);
-			
-			if(config != null && config.ammo != null) {
-				ammoStacks.add(new ItemStack(config.ammo));
-			}
-		}
-		
-		return ammoStacks;
-	}
-
 	@Override
 	public int[] getAccessibleSlotsFromSide(EnumFacing e){
 		return new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };

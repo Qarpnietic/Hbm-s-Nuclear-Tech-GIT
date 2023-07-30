@@ -5,13 +5,10 @@ import com.hbm.tileentity.TileEntityLoadedBase;
 
 import api.hbm.energy.IEnergyGenerator;
 import cofh.redstoneflux.api.IEnergyReceiver;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
-public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEnergyGenerator, IEnergyReceiver, IEnergyStorage {
+public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEnergyGenerator, IEnergyReceiver {
 
 	private long subBuffer;
 	private boolean recursionBrake = false;
@@ -39,6 +36,7 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 	}
 
 	@Override
+
 	public int getMaxEnergyStored(EnumFacing from) {
 		return Integer.MAX_VALUE;
 	}
@@ -66,67 +64,5 @@ public class TileEntityConverterRfHe extends TileEntityLoadedBase implements IEn
 		recursionBrake = false;
 		
 		return (int) ((capacity - subBuffer) * GeneralConfig.rfConversionRate);
-	}
-
-	//FE
-	@Override
-	public boolean canExtract(){
-		return false;
-	}
-
-	@Override
-	public boolean canReceive(){
-		return true;
-	}
-
-	@Override
-	public int getMaxEnergyStored(){
-		return Integer.MAX_VALUE;
-	}
-
-	@Override
-	public int getEnergyStored(){
-		return 0;
-	}
-
-	@Override
-	public int extractEnergy(int maxExtract, boolean simulate){
-		return 0;
-	}
-
-	@Override
-	public int receiveEnergy(int maxReceive, boolean simulate){
-		if(recursionBrake)
-			return 0;
-		
-		if(simulate)
-			return maxReceive;
-		
-		recursionBrake = true;
-		
-		long capacity = maxReceive / GeneralConfig.rfConversionRate;
-		subBuffer = capacity;
-		
-		this.sendPower(world, pos);
-		
-		recursionBrake = false;
-		
-		return (int) ((capacity - subBuffer) * GeneralConfig.rfConversionRate);
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing){
-		if(capability == CapabilityEnergy.ENERGY){
-			return true;
-		}
-		return super.hasCapability(capability, facing);
-	}
-
-	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing){
-		if(capability == CapabilityEnergy.ENERGY){
-			return (T) this;
-		}
-		return super.getCapability(capability, facing);
 	}
 }

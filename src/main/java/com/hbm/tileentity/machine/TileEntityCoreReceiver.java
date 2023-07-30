@@ -44,10 +44,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 	public void update() {
 		if(!world.isRemote) {
 
-			if(Long.MAX_VALUE-power < joules * 5000L)
-				power = Long.MAX_VALUE;
-			else
-				power += joules * 5000L;
+			power += joules * 5000;
 
 			this.sendPower(world, pos);
 
@@ -98,10 +95,7 @@ public class TileEntityCoreReceiver extends TileEntityMachineBase implements ITi
 	public void addEnergy(long energy, EnumFacing dir) {
 		// only accept lasers from the front
 		if(dir.getOpposite().ordinal() == this.getBlockMetadata()) {
-			if(Long.MAX_VALUE - joules < energy)
-				joules = Long.MAX_VALUE;
-			else
-				joules += energy;
+			joules += energy;
 		} else {
 			world.destroyBlock(pos, false);
 			world.createExplosion(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 2.5F, true);

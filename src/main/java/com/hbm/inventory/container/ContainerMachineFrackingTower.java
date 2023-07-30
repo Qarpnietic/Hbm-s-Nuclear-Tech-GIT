@@ -1,9 +1,7 @@
 package com.hbm.inventory.container;
 
-import com.hbm.inventory.SlotUpgrade;
 import com.hbm.inventory.SlotMachineOutput;
 import com.hbm.tileentity.machine.oil.TileEntityMachineFrackingTower;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -35,12 +33,7 @@ public class ContainerMachineFrackingTower extends Container {
 		//Gas Output
 		this.addSlotToContainer(new SlotMachineOutput(tedf.inventory, 4, 134, 108));
 		//Chip
-		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 5, 8, 81));
-
-		//Upgrades
-		this.addSlotToContainer(new SlotUpgrade(tedf.inventory, 6, 8, 108));
-		this.addSlotToContainer(new SlotUpgrade(tedf.inventory, 7, 26, 108));
-		this.addSlotToContainer(new SlotUpgrade(tedf.inventory, 8, 44, 108));
+		this.addSlotToContainer(new SlotItemHandler(tedf.inventory, 5, 8, 90));
 
 		for(int i = 0; i < 3; i++)
 		{

@@ -74,7 +74,7 @@ public class ItemCapacitor extends Item {
 	
 	public static int getDura(ItemStack stack) {
 
-    	if(!stack.hasTagCompound())
+    	if(stack.getTagCompound() == null)
     		return ((ItemCapacitor)stack.getItem()).dura;
 
     	return stack.getTagCompound().getInteger("dura");
@@ -87,4 +87,5 @@ public class ItemCapacitor extends Item {
 
     	stack.getTagCompound().setInteger("dura", dura);
     }
+	
 }

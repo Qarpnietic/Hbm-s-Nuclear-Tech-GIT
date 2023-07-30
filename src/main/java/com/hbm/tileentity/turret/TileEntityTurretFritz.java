@@ -7,7 +7,6 @@ import com.hbm.forgefluid.ModForgeFluids;
 import com.hbm.handler.BulletConfigSyncingUtil;
 import com.hbm.handler.BulletConfiguration;
 import com.hbm.interfaces.ITankPacketAcceptor;
-import com.hbm.inventory.FluidCombustionRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.lib.HBMSoundHandler;
 import com.hbm.packet.AuxParticlePacketNT;
@@ -31,8 +30,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFluidHandler, ITankPacketAcceptor {
 
 	public FluidTank tank;
-
-	public static int drain = 2;
 	
 	public TileEntityTurretFritz() {
 		super();
@@ -82,11 +79,11 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 	@Override
 	public void updateFiringTick() {
 		
-		if(this.tank.getFluid() != null && FluidCombustionRecipes.hasFuelRecipe(tank.getFluid().getFluid()) && this.tank.getFluidAmount() >= drain) {
+		if(this.tank.getFluid() != null && tank.getFluid().getFluid() == ModForgeFluids.diesel && this.tank.getFluidAmount() >= 10) {
 			
 			BulletConfiguration conf = BulletConfigSyncingUtil.pullConfig(BulletConfigSyncingUtil.FLA_NORMAL);
-			this.spawnBullet(conf, FluidCombustionRecipes.getFlameEnergy(tank.getFluid().getFluid()) * 0.002F);
-			this.tank.drain(drain, true);
+			this.spawnBullet(conf);
+			this.tank.drain(10, true);
 			
 			Vec3 pos = new Vec3(this.getTurretPos());
 			Vec3 vec = Vec3.createVectorHelper(this.getBarrelLength(), 0, 0);
@@ -151,7 +148,7 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 
 	@Override
 	public int fill(FluidStack resource, boolean doFill){
-		if(resource == null || !FluidCombustionRecipes.hasFuelRecipe(resource.getFluid()))
+		if(resource == null || resource.getFluid() != ModForgeFluids.diesel)
 			return 0;
 		return tank.fill(resource, doFill);
 	}
@@ -184,4 +181,5 @@ public class TileEntityTurretFritz extends TileEntityTurretBaseNT implements IFl
 			tank.readFromNBT(tags[0]);
 		}
 	}
+
 }

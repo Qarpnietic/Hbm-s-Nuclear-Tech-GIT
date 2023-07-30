@@ -81,10 +81,6 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	//private static final int[] slots_side = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 16 };
 
 	private String customName;
-
-	private int height;
-	private int depth;
-	public int size;
 	
 	public TileEntityMachineReactorLarge() {
 		inventory = new ItemStackHandler(8){
@@ -353,6 +349,10 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 		return false;
 	}
 	
+	int height;
+	int depth;
+	public int size;
+	
 	private void caluclateSize() {
 		
 		height = 0;
@@ -404,25 +404,29 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	
 	@Override
 	public void update() {
-		if(!world.isRemote) {
-			if(checkBody()) {
+		if (!world.isRemote && checkBody()) {
 
-				age++;
-				if (age >= 20) {
-					age = 0;
-				}
-
-				caluclateSize();
-				
-				if (age == 9 || age == 19)
-					fillFluidInit(tanks[2]);
-				
-				PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, size, 0), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
-				PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tanks[0], tanks[1], tanks[2]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
-				PacketDispatcher.wrapper.sendToAllAround(new FluidTypePacketTest(pos.getX(), pos.getY(), pos.getZ(), new Fluid[]{tankTypes[2]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
+			age++;
+			if (age >= 20) {
+				age = 0;
 			}
+
+			if (age == 9 || age == 19)
+				fillFluidInit(tanks[2]);
+			
+			caluclateSize();
+			PacketDispatcher.wrapper.sendToAllAround(new AuxGaugePacket(pos, size, 0), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTankPacket(pos, new FluidTank[]{tanks[0], tanks[1], tanks[2]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
+			PacketDispatcher.wrapper.sendToAllAround(new FluidTypePacketTest(pos.getX(), pos.getY(), pos.getZ(), new Fluid[]{tankTypes[2]}), new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 15));
+		}
 		
-			maxWaste = maxFuel = fuelBase * getSize();
+		//tanks[0] = FFUtils.changeTankSize(tanks[0], waterBase * getSize());
+		//tanks[1] = FFUtils.changeTankSize(tanks[1], coolantBase * getSize());
+		//tanks[2] = FFUtils.changeTankSize(tanks[2], steamBase * getSize());
+		
+		maxWaste = maxFuel = fuelBase * getSize();
+			
+		if(!world.isRemote) {
 			
 			if(waste > maxWaste)
 				waste = maxWaste;
@@ -481,6 +485,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 						inventory.setStackInSlot(4, ItemStack.EMPTY);
 				}
 			}
+			
 			//Unload waste
 			if(getWasteAbsorbed(inventory.getStackInSlot(6).getItem(), type) > 0) {
 				
@@ -506,7 +511,7 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 				}
 				
 			}
-				
+			
 			if(rods > 0)
 				generate();
 
@@ -714,6 +719,50 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 				}
 			}
 		}
+		
+		/*if(te instanceof IInventory) {
+			
+			IInventory chest = (IInventory)te;
+			
+			if(fuel > 0) {
+				for(int i = 0; i < chest.getSizeInventory(); i++) {
+					
+					if(chest.getStackInSlot(i) != null) {
+						int cont = getFuelContent(chest.getStackInSlot(i).getItem(), type) * fuelMult;
+						
+						if(cont > 0 && fuel + cont <= maxFuel) {
+							
+							Item container =  chest.getStackInSlot(i).getItem().getContainerItem();
+							
+							chest.decrStackSize(i, 1);
+							fuel += cont;
+							
+							if(chest.getStackInSlot(i) == null && container != null)
+								chest.setInventorySlotContents(i, new ItemStack(container));
+						}
+					}
+				}
+			} else {
+				for(int i = 0; i < chest.getSizeInventory(); i++) {
+					
+					if(chest.getStackInSlot(i) != null) {
+						int cont = getFuelContent(chest.getStackInSlot(i).getItem(), getFuelType(chest.getStackInSlot(i).getItem())) * fuelMult;
+						
+						if(cont > 0 && fuel + cont <= maxFuel) {
+							
+							Item container =  chest.getStackInSlot(i).getItem().getContainerItem();
+							
+							type = getFuelType(chest.getStackInSlot(i).getItem());
+							chest.decrStackSize(i, 1);
+							fuel += cont;
+							
+							if(chest.getStackInSlot(i) == null && container != null)
+								chest.setInventorySlotContents(i, new ItemStack(container));
+						}
+					}
+				}
+			}
+		}*/
 	}
 	
 	private void generateSteam() {
@@ -819,7 +868,8 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 			FFUtils.fillFluid(this, tank, world, new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 3), 2560000);
 
 		FFUtils.fillFluid(this, tank, world, new BlockPos(pos.getX(), pos.getY() + height + 1, pos.getZ()), 2560000);
-		FFUtils.fillFluid(this, tank, world, new BlockPos(pos.getX(), pos.getY() - depth - 1, pos.getZ()), 2560000);
+		
+		FFUtils.fillFluid(this, tank, world, new BlockPos(pos.getX(), pos.getY() - depth - 1, pos.getZ() + 3), 2560000);
 	}
 
 	@Override
@@ -936,7 +986,6 @@ public class TileEntityMachineReactorLarge extends TileEntity implements ITickab
 	}
 	
 	//TODO: turn this steaming hot garbage into hashmaps
-	//Alcater: seems to be done now
 	static List<ReactorFuelEntry> fuels = new ArrayList<ReactorFuelEntry>();
 	static List<ReactorWasteEntry> wastes = new ArrayList<ReactorWasteEntry>();
 	

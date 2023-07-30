@@ -18,8 +18,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EntityMeteor extends EntityThrowable {
 
-	public boolean safe = false;
-
 	public EntityMeteor(World p_i1582_1_) {
 		super(p_i1582_1_);
 		this.ignoreFrustumCheck = true;
@@ -48,8 +46,8 @@ public class EntityMeteor extends EntityThrowable {
         if(this.world.getBlockState(new BlockPos((int)this.posX, (int)this.posY, (int)this.posZ)).getMaterial() != Material.AIR)
         {
             if(!this.world.isRemote)
-    		{	
-    			world.createExplosion(this, this.posX, this.posY, this.posZ, 5 + rand.nextFloat(), !safe);
+    		{
+    			world.createExplosion(this, this.posX, this.posY, this.posZ, 5 + rand.nextFloat(), true);
     			if(GeneralConfig.enableMeteorTails) {
     				ExplosionLarge.spawnParticles(world, posX, posY + 5, posZ, 75);
     				ExplosionLarge.spawnParticles(world, posX + 5, posY, posZ, 75);
@@ -63,7 +61,7 @@ public class EntityMeteor extends EntityThrowable {
     		this.setDead();
         }
         
-        if(GeneralConfig.enableMeteorTails && world.isRemote && world.isAreaLoaded(new BlockPos(posX, posY, posZ), 6)) {
+        if(GeneralConfig.enableMeteorTails && world.isRemote) {
 
     		NBTTagCompound data = new NBTTagCompound();
     		data.setString("type", "exhaust");
@@ -80,18 +78,21 @@ public class EntityMeteor extends EntityThrowable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public boolean isInRangeToRenderDist(double distance) {
+    public boolean isInRangeToRenderDist(double distance)
+    {
         return distance < 25000;
     }
 
     @Override
 	@SideOnly(Side.CLIENT)
-    public int getBrightnessForRender() {
+    public int getBrightnessForRender()
+    {
         return 15728880;
     }
 
     @Override
-	public float getBrightness() {
+	public float getBrightness()
+    {
         return 1.0F;
     }
 	
@@ -99,13 +100,4 @@ public class EntityMeteor extends EntityThrowable {
 	protected void onImpact(RayTraceResult result) {
 	}
 
-	@Override
-	public void readEntityFromNBT(NBTTagCompound nbt) {
-		this.safe = nbt.getBoolean("safe");
-	}
-
-	@Override
-	public void writeEntityToNBT(NBTTagCompound nbt) {
-		nbt.setBoolean("safe", safe);
-	}
 }

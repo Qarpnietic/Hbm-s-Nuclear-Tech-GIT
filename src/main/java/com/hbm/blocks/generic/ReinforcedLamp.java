@@ -98,7 +98,7 @@ public class ReinforcedLamp extends Block implements IRadResistantBlock {
 	}
 
 	@Override
-	public boolean isRadResistant(World worldIn, BlockPos blockPos){
+	public boolean isRadResistant(){
 		return true;
 	}
 }

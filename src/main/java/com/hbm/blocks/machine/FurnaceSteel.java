@@ -32,7 +32,7 @@ public class FurnaceSteel extends BlockDummyable implements ITooltipProvider {
 	
     @Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-	    return standardOpenBehavior(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);
+	     return standardOpenBehavior(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);
 	}
 
 	@Override

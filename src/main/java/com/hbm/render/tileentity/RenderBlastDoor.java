@@ -1,6 +1,5 @@
 package com.hbm.render.tileentity;
 
-import com.hbm.interfaces.IDoor;
 import org.lwjgl.opengl.GL11;
 
 import com.hbm.main.ResourceManager;
@@ -30,11 +29,11 @@ public class RenderBlastDoor extends TileEntitySpecialRenderer<TileEntityBlastDo
         if(tileEntity.getBlockMetadata() == 2 || tileEntity.getBlockMetadata() == 3)
     		GL11.glRotatef(90, 0F, 1F, 0F);
         
-        if(tileEntity.state == IDoor.DoorState.CLOSED)
+        if(tileEntity.state == 0)
         	timer = getAnimationFromSysTime(5000);
-        else if(tileEntity.state == IDoor.DoorState.OPEN)
+        else if(tileEntity.state == 2)
         	timer = 0;
-        else if(tileEntity.state == IDoor.DoorState.OPENING)
+        else if(tileEntity.isOpening)
         	timer = getAnimationFromSysTime(tileEntity.sysTime + 5000 - System.currentTimeMillis());
         else
         	timer = getAnimationFromSysTime(System.currentTimeMillis() - tileEntity.sysTime);
