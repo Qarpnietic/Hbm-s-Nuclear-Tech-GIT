@@ -12,6 +12,7 @@ import com.hbm.packet.PipeUpdatePacket;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.server.management.PlayerChunkMapEntry;
 import net.minecraft.tileentity.TileEntity;
@@ -81,14 +82,19 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 	}
 
 	@Override
-	public SPacketUpdateTileEntity getUpdatePacket() {
-		return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
+	public SPacketUpdateTileEntity getUpdatePacket(){
+		return new SPacketUpdateTileEntity(this.getPos(), 0, this.writeToNBT(new NBTTagCompound()));
 	}
 
 	@Override
 	public NBTTagCompound getUpdateTag() {
 		return this.writeToNBT(new NBTTagCompound());
 	}
+
+	@Override
+		public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+			this.readFromNBT(pkt.getNbtCompound());
+		}
 
 	@Override
 	public void handleUpdateTag(NBTTagCompound tag) {
@@ -256,32 +262,32 @@ public class TileEntityFFDuctBaseMk2 extends TileEntity implements IFluidPipeMk2
 	}
 
 	public void updateConnections() {
-		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.up(), getType()))
+		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.up(), getType(), EnumFacing.UP.getOpposite()))
 			connections[0] = EnumFacing.UP;
 		else
 			connections[0] = null;
 
-		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.down(), getType()))
+		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.down(), getType(), EnumFacing.DOWN.getOpposite()))
 			connections[1] = EnumFacing.DOWN;
 		else
 			connections[1] = null;
 
-		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.north(), getType()))
+		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.north(), getType(), EnumFacing.NORTH.getOpposite()))
 			connections[2] = EnumFacing.NORTH;
 		else
 			connections[2] = null;
 
-		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.east(), getType()))
+		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.east(), getType(), EnumFacing.EAST.getOpposite()))
 			connections[3] = EnumFacing.EAST;
 		else
 			connections[3] = null;
 
-		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.south(), getType()))
+		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.south(), getType(), EnumFacing.SOUTH.getOpposite()))
 			connections[4] = EnumFacing.SOUTH;
 		else
 			connections[4] = null;
 
-		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.west(), getType()))
+		if(FFUtils.checkFluidConnectablesMk2(this.world, pos.west(), getType(), EnumFacing.WEST.getOpposite()))
 			connections[5] = EnumFacing.WEST;
 		else
 			connections[5] = null;

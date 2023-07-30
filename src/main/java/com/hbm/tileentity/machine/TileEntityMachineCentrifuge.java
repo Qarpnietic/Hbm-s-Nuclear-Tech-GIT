@@ -30,10 +30,6 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	public static final int maxPower = 1000000;
 	public static final int processingSpeed = 200;
 	
-	private static final int[] slots_top = new int[] {0};
-	private static final int[] slots_bottom = new int[] {2, 3, 4, 5};
-	private static final int[] slots_side = new int[] {0, 1};
-	
 	public TileEntityMachineCentrifuge() {
 		super(8);
 	}
@@ -76,8 +72,7 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(EnumFacing e) {
-		int i = e.ordinal();
-		return i == 0 ? slots_bottom : (i == 1 ? slots_top : slots_side);
+		return new int[]{ 0, 1, 2, 3, 4, 5};
 	}
 	
 	@Override
@@ -87,14 +82,13 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemStack, int amount) {
-		return amount != 0 || slot != 1 || itemStack.getItem() == Items.BUCKET;
+		return slot > 1 && slot < 6;
 	}
 	
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 		compound.setLong("powerTime", power);
 		compound.setShort("progressTime", (short) progress);
-		compound.setTag("inventory", inventory.serializeNBT());
 		return super.writeToNBT(compound);
 	}
 	
@@ -102,8 +96,6 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	public void readFromNBT(NBTTagCompound compound) {
 		power = compound.getLong("powerTime");
 		progress = compound.getShort("progressTime");
-		if(compound.hasKey("inventory"))
-			inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 		super.readFromNBT(compound);
 	}
 	

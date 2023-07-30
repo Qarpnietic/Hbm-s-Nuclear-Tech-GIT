@@ -44,6 +44,7 @@ import com.hbm.interfaces.IItemHUD;
 import com.hbm.interfaces.IPostRender;
 import com.hbm.interfaces.Spaghetti;
 import com.hbm.inventory.AssemblerRecipes;
+import com.hbm.inventory.BedrockOreRegistry;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.NbtComparableStack;
 import com.hbm.inventory.gui.GUIArmorTable;
@@ -62,6 +63,7 @@ import com.hbm.items.machine.ItemRBMKPellet;
 import com.hbm.items.special.ItemHot;
 import com.hbm.items.special.ItemWasteLong;
 import com.hbm.items.special.ItemWasteShort;
+import com.hbm.items.special.ItemBedrockOre;
 import com.hbm.items.special.weapon.GunB92;
 import com.hbm.items.tool.ItemFluidCanister;
 import com.hbm.items.tool.ItemGuideBook;
@@ -107,6 +109,7 @@ import com.hbm.render.item.FluidTankBakedModel;
 import com.hbm.render.item.FluidTankRender;
 import com.hbm.render.item.ItemRenderBase;
 import com.hbm.render.item.ItemRenderLibrary;
+import com.hbm.render.item.ItemRendererBedrockOre;
 import com.hbm.render.item.TEISRBase;
 import com.hbm.render.item.weapon.B92BakedModel;
 import com.hbm.render.item.weapon.GunRevolverBakedModel;
@@ -279,6 +282,26 @@ public class ModEventHandlerClient {
 		for(Block block : ModBlocks.ALL_BLOCKS) {
 			registerBlockModel(block, 0);
 		}
+
+		registerBedrockOreModels();
+	}
+
+	public static void registerBedrockOreModels(){
+		ResourceLocation[] list = new ResourceLocation[150];
+		for(int i = 0; i < list.length; i++) {
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock, i, new ModelResourceLocation(ModItems.ore_bedrock.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_centrifuged, i, new ModelResourceLocation(ModItems.ore_bedrock_centrifuged.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_cleaned, i, new ModelResourceLocation(ModItems.ore_bedrock_cleaned.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_separated, i, new ModelResourceLocation(ModItems.ore_bedrock_separated.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_purified, i, new ModelResourceLocation(ModItems.ore_bedrock_purified.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_nitrated, i, new ModelResourceLocation(ModItems.ore_bedrock_nitrated.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_nitrocrystalline, i, new ModelResourceLocation(ModItems.ore_bedrock_nitrocrystalline.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_deepcleaned, i, new ModelResourceLocation(ModItems.ore_bedrock_deepcleaned.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_seared, i, new ModelResourceLocation(ModItems.ore_bedrock_seared.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_enriched, i, new ModelResourceLocation(ModItems.ore_bedrock_enriched.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_exquisite, i, new ModelResourceLocation(ModItems.ore_bedrock_exquisite.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(ModItems.ore_bedrock_perfect, i, new ModelResourceLocation(ModItems.ore_bedrock_perfect.getRegistryName(), "inventory"));
+		}	
 	}
 
 	private void registerBlockModel(Block block, int meta) {
@@ -328,8 +351,6 @@ public class ModEventHandlerClient {
 					ModelLoader.setCustomModelResourceLocation(item, en+xe*5, new ModelResourceLocation(item.getRegistryName() + "_e" + en + (xe > 0 ? "_xe" : ""), "inventory"));
 				}
 			}
-			//for(int i = 0; i < 10; i ++)
-			//	ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 		} else if(item instanceof ItemWasteLong){
 			for(int i = 0; i < ItemWasteLong.WasteClass.values().length; i ++){
 				ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName(), "inventory"));
@@ -347,9 +368,9 @@ public class ModEventHandlerClient {
 				ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 			}
 		} else if(item instanceof IHasCustomModel) {
-			ModelLoader.setCustomModelResourceLocation(item, 0, ((IHasCustomModel) item).getResourceLocation());
+			ModelLoader.setCustomModelResourceLocation(item, meta, ((IHasCustomModel) item).getResourceLocation());
 		} else {
-			ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+			ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(item.getRegistryName(), "inventory"));
 		}
 	}
 
@@ -376,21 +397,21 @@ public class ModEventHandlerClient {
 		// Drillgon200: Removed todo, found a better way. Now I just have to
 		// deal with all these ugly things. That can wait.
 		ResourceManager.init();
-		Object obj = evt.getModelRegistry().getObject(RedstoneSword.rsModel);
-		if(obj instanceof IBakedModel) {
-			IBakedModel model = (IBakedModel) obj;
+		Object object1 = evt.getModelRegistry().getObject(RedstoneSword.rsModel);
+		if(object1 instanceof IBakedModel) {
+			IBakedModel model = (IBakedModel) object1;
 			ItemRedstoneSwordRender.INSTANCE.itemModel = model;
 			evt.getModelRegistry().putObject(RedstoneSword.rsModel, new ItemRenderRedstoneSword());
 		}
-		Object object = evt.getModelRegistry().getObject(ItemAssemblyTemplate.location);
-		if(object instanceof IBakedModel) {
-			IBakedModel model = (IBakedModel) object;
+		Object object2 = evt.getModelRegistry().getObject(ItemAssemblyTemplate.location);
+		if(object2 instanceof IBakedModel) {
+			IBakedModel model = (IBakedModel) object2;
 			AssemblyTemplateRender.INSTANCE.itemModel = model;
 			evt.getModelRegistry().putObject(ItemAssemblyTemplate.location, new AssemblyTemplateBakedModel());
 		}
 
 		Object object3 = evt.getModelRegistry().getObject(GunB92.b92Model);
-		if(object instanceof IBakedModel) {
+		if(object3 instanceof IBakedModel) {
 			IBakedModel model = (IBakedModel) object3;
 			ItemRenderGunAnim.INSTANCE.b92ItemModel = model;
 			evt.getModelRegistry().putObject(GunB92.b92Model, new B92BakedModel());
@@ -425,19 +446,16 @@ public class ModEventHandlerClient {
 			FFIdentifierRender.INSTANCE.itemModel = model;
 			evt.getModelRegistry().putObject(ItemForgeFluidIdentifier.identifierModel, new FFIdentifierModel());
 		}
-		Object object9 = evt.getModelRegistry().getObject(new ModelResourceLocation(ModItems.gun_revolver.getRegistryName(), "inventory"));
-		if(object9 instanceof IBakedModel) {
-			IBakedModel model = (IBakedModel) object9;
-			GunRevolverRender.INSTANCE.revolverModel = model;
-			evt.getModelRegistry().putObject(new ModelResourceLocation(ModItems.gun_revolver.getRegistryName(), "inventory"), new GunRevolverBakedModel());
-		}
+
 		IRegistry<ModelResourceLocation, IBakedModel> reg = evt.getModelRegistry();
 		swapModelsNoGui(ModItems.gun_revolver_nightmare, reg);
 		swapModelsNoGui(ModItems.gun_revolver_nightmare2, reg);
-		swapModelsNoGui(ModItems.gun_revolver_iron, reg);
-		swapModelsNoGui(ModItems.gun_revolver_gold, reg);
-		swapModelsNoGui(ModItems.gun_revolver_lead, reg);
-		swapModelsNoGui(ModItems.gun_revolver_schrabidium, reg);
+		swapModels(ModItems.gun_revolver, reg);
+		swapModels(ModItems.gun_revolver_iron, reg);
+		swapModels(ModItems.gun_revolver_gold, reg);
+		swapModels(ModItems.gun_revolver_lead, reg);
+		swapModels(ModItems.gun_revolver_saturnite, reg);
+		swapModels(ModItems.gun_revolver_schrabidium, reg);
 		swapModelsNoGui(ModItems.gun_revolver_cursed, reg);
 		swapModelsNoGui(ModItems.gun_revolver_pip, reg);
 		swapModelsNoGui(ModItems.gun_revolver_nopip, reg);
@@ -476,7 +494,6 @@ public class ModEventHandlerClient {
 		swapModelsNoGui(ModItems.gun_bolt_action_saturnite, reg);
 		swapModelsNoGui(ModItems.gun_folly, reg);
 		swapModelsNoGui(ModItems.gun_dampfmaschine, reg);
-		swapModelsNoGui(ModItems.gun_revolver_saturnite, reg);
 		swapModelsNoGui(ModItems.gun_calamity, reg);
 		swapModelsNoGui(ModItems.gun_calamity_dual, reg);
 		swapModelsNoGui(ModItems.gun_minigun, reg);
@@ -550,6 +567,19 @@ public class ModEventHandlerClient {
 		swapModels(ModItems.meteorite_sword_baleful, reg);
 		swapModels(ModItems.meteorite_sword_warped, reg);
 		swapModels(ModItems.meteorite_sword_demonic, reg);
+
+		swapModels(ModItems.ore_bedrock, reg);
+		swapModels(ModItems.ore_bedrock_centrifuged, reg);
+		swapModels(ModItems.ore_bedrock_cleaned, reg);
+		swapModels(ModItems.ore_bedrock_separated, reg);
+		swapModels(ModItems.ore_bedrock_purified, reg);
+		swapModels(ModItems.ore_bedrock_nitrated, reg);
+		swapModels(ModItems.ore_bedrock_nitrocrystalline, reg);
+		swapModels(ModItems.ore_bedrock_deepcleaned, reg);
+		swapModels(ModItems.ore_bedrock_seared, reg);
+		swapModels(ModItems.ore_bedrock_enriched, reg);
+		swapModels(ModItems.ore_bedrock_exquisite, reg);
+		swapModels(ModItems.ore_bedrock_perfect, reg);
 		
 		for(Entry<Item, ItemRenderBase> entry : ItemRenderLibrary.renderers.entrySet()){
 			swapModels(entry.getKey(), reg);
@@ -557,6 +587,7 @@ public class ModEventHandlerClient {
 
 		MainRegistry.proxy.registerMissileItems(reg);
 	}
+
 
 	public static void swapModels(Item item, IRegistry<ModelResourceLocation, IBakedModel> reg) {
 		ModelResourceLocation loc = new ModelResourceLocation(item.getRegistryName(), "inventory");
@@ -566,7 +597,6 @@ public class ModEventHandlerClient {
 			((TEISRBase) render).itemModel = model;
 			reg.putObject(loc, new BakedModelCustom((TEISRBase) render));
 		}
-
 	}
 
 	public static void swapModelsNoGui(Item item, IRegistry<ModelResourceLocation, IBakedModel> reg) {
@@ -577,7 +607,6 @@ public class ModEventHandlerClient {
 			((TEISRBase) render).itemModel = model;
 			reg.putObject(loc, new BakedModelNoGui((TEISRBase) render));
 		}
-
 	}
 	
 	@SubscribeEvent
@@ -618,7 +647,11 @@ public class ModEventHandlerClient {
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/ultrahotsteam_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/coolant_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/coolant_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/hotcoolant_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/hotcoolant_flowing"));
 
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/heavywater_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/heavywater_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/deuterium_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/deuterium_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/tritium_still"));
@@ -680,6 +713,15 @@ public class ModEventHandlerClient {
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/biofuel_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/biofuel_flowing"));
 
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/ethanol_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/ethanol_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/fishoil_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/fishoil_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/sunfloweroil_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/sunfloweroil_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/colloid_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/colloid_flowing"));
+
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/nitan_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/nitan_flowing"));
 
@@ -699,6 +741,14 @@ public class ModEventHandlerClient {
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/acid_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/sulfuric_acid_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/sulfuric_acid_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/nitric_acid_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/nitric_acid_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/solvent_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/solvent_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/radiosolvent_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/radiosolvent_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/nitroglycerin_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/nitroglycerin_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/liquid_osmiridium_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/liquid_osmiridium_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/watz_still"));
@@ -730,9 +780,13 @@ public class ModEventHandlerClient {
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/plasma_xm_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/plasma_bf_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/plasma_bf_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/uu_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/uu_flowing"));
 		
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/gasoline_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/gasoline_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/experience_still"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/experience_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/spentsteam_still"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/spentsteam_flowing"));
 		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "blocks/forgefluid/pain_still"));
@@ -747,10 +801,7 @@ public class ModEventHandlerClient {
 		fog = evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "particle/fog"));
 		uv_debug = evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "misc/uv_debug"));
 
-		// evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID,
-		// "blocks/forgefluid/toxic_still"));
-		// evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID,
-		// "blocks/forgefluid/toxic_flowing"));
+		evt.getMap().registerSprite(new ResourceLocation(RefStrings.MODID, "items/ore_bedrock_layer"));
 	}
 
 	@SubscribeEvent
@@ -1106,6 +1157,7 @@ public class ModEventHandlerClient {
 		}
 	}
 	
+	//Sus
 	@SubscribeEvent
 	public void onArmorRenderEvent(RenderPlayerEvent.Pre event){
 		EntityPlayer player = event.getEntityPlayer();
@@ -1698,7 +1750,7 @@ public class ModEventHandlerClient {
 	public void preRenderPlayer(RenderPlayerEvent.Pre evt) {
 		PotionEffect invis = evt.getEntityPlayer().getActivePotionEffect(MobEffects.INVISIBILITY);
 
-		if(invis != null && invis.getAmplifier() > 0){
+		if(invis != null && invis.getAmplifier() >= 0){
 			evt.setCanceled(true);
 			return;
 		}
@@ -1728,10 +1780,7 @@ public class ModEventHandlerClient {
 
 	@SubscribeEvent
 	public void preRenderLiving(RenderLivingEvent.Pre<AbstractClientPlayer> event) {
-		//Mouse.isButtonDown(button)
-		//ForgeRegistries.ENTITIES.getKey(value);
-		//EntityMaskMan ent;
-		//EntityRegistry.getEntry(ent.getClass());
+
 		if(specialDeathEffectEntities.contains(event.getEntity())){
 			event.setCanceled(true);
 		}

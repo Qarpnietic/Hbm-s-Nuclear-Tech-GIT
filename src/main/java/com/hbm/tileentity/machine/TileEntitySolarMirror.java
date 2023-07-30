@@ -6,7 +6,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -16,6 +18,8 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 	public int tY;
 	public int tZ;
 	public boolean isOn;
+
+	public static int maxTU = 500;
 	
 	@Override
 	public String getInventoryName() {
@@ -34,9 +38,9 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 				return;
 			}
 
-			int sun = world.getLightFor(EnumSkyBlock.SKY, pos) - world.getSkylightSubtracted() - 11;
+			int sunHeat = (int)(maxTU * getBrightness(world));
 
-			if(sun <= 0 || !world.canSeeSky(pos.up())){
+			if(sunHeat <= 0 || !world.canSeeSky(pos.up())){
 				isOn = false;
 				return;
 			}
@@ -47,9 +51,21 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 
 			if(te instanceof TileEntitySolarBoiler) {
 				TileEntitySolarBoiler boiler = (TileEntitySolarBoiler)te;
-				boiler.heat += sun;
+				boiler.heatInput += sunHeat;
 			}
 		}
+	}
+
+	public static float getBrightness(World world) {
+		float starAngle = world.getCelestialAngleRadians(1F);
+		if (starAngle < (float) Math.PI) {
+			starAngle += (0F - starAngle) * 0.2F;
+		} else {
+			starAngle += (((float) Math.PI * 2F) - starAngle) * 0.2F;
+		}
+		int lightValue = EnumSkyBlock.SKY.defaultLightValue - world.getSkylightSubtracted();
+		lightValue = MathHelper.clamp(Math.round(lightValue * MathHelper.cos(starAngle)), 0, 15);
+		return lightValue / 15F;
 	}
 	
 	public void sendUpdate(){
@@ -117,5 +133,4 @@ public class TileEntitySolarMirror extends TileEntityTickingBase {
 	public double getMaxRenderDistanceSquared() {
 		return 65536.0D;
 	}
-	
 }

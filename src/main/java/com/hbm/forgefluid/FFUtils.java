@@ -2,12 +2,16 @@ package com.hbm.forgefluid;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.common.base.Predicate;
 import com.hbm.interfaces.IFluidPipe;
 import com.hbm.interfaces.IFluidPipeMk2;
 import com.hbm.interfaces.IFluidVisualConnectable;
 import com.hbm.interfaces.IItemFluidHandler;
+import com.hbm.inventory.FluidCombustionRecipes;
+import com.hbm.inventory.HeatRecipes;
 import com.hbm.inventory.gui.GuiInfoContainer;
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.JetpackBase;
@@ -19,10 +23,12 @@ import com.hbm.lib.Library;
 import com.hbm.render.RenderHelper;
 import com.hbm.tileentity.machine.TileEntityDummy;
 
+import com.hbm.util.BobMathUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -30,6 +36,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.ResourceLocation;
@@ -43,6 +50,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.lwjgl.input.Keyboard;
+
+import javax.annotation.Nullable;
 
 //Drillgon200: This is Library.java except for fluids
 //Drillgon200: Let's hope this works without bugs in 1.12.2...
@@ -73,6 +83,14 @@ public class FFUtils {
 	 *            - where the starting y of the rectangle should be on screen
 	 */
 	public static void drawLiquid(FluidTank tank, int guiLeft, int guiTop, float zLevel, int sizeX, int sizeY, int offsetX, int offsetY){
+		drawLiquid(tank, guiLeft, guiTop, zLevel, sizeX, sizeY, offsetX, offsetY, false);
+	}
+
+	public static void drawLogLiquid(FluidTank tank, int guiLeft, int guiTop, float zLevel, int sizeX, int sizeY, int offsetX, int offsetY){
+		drawLiquid(tank, guiLeft, guiTop, zLevel, sizeX, sizeY, offsetX, offsetY, true);
+	}
+
+	public static void drawLiquid(FluidTank tank, int guiLeft, int guiTop, float zLevel, int sizeX, int sizeY, int offsetX, int offsetY, boolean log){
 		// This is retarded, but it would be too much of a pain to fix it
 		offsetY -= 44;
 		RenderHelper.bindBlockTexture();
@@ -81,7 +99,14 @@ public class FFUtils {
 			TextureAtlasSprite liquidIcon = getTextureFromFluid(tank.getFluid().getFluid());
 
 			if(liquidIcon != null) {
-				int level = (int)(((double)tank.getFluidAmount() / (double)tank.getCapacity()) * sizeY);
+				int level = 0;
+				if(log){
+					if(tank.getFluidAmount() > 0){
+						level = (int)(sizeY * (Math.log(tank.getFluidAmount()) / Math.log(tank.getCapacity())));
+					}
+				} else{
+					level = (int)(((double)tank.getFluidAmount() / (double)tank.getCapacity()) * sizeY);
+				}
 
 				drawFull(tank.getFluid().getFluid(), guiLeft, guiTop, zLevel, liquidIcon, level, sizeX, offsetX, offsetY, sizeY);
 			}
@@ -125,30 +150,10 @@ public class FFUtils {
 			for(int j = 0; j < sizeX; j += 16) {
 				int drawX = Math.min(16, sizeX - j);
 				int drawY = Math.min(16, level - i);
-				drawScaledTexture(liquidIcon, guiLeft + offsetX + j, guiTop + offsetY - i + (16 - drawY), drawX, drawY, zLevel);
+				RenderHelper.drawScaledTexture(liquidIcon, guiLeft + offsetX + j, guiTop + offsetY - i + (16 - drawY), drawX, drawY, zLevel);
 			}
 		}
 		RenderHelper.draw();
-	}
-
-	private static void drawScaledTexture(TextureAtlasSprite icon, int posX, int posY, int sizeX, int sizeY, float zLevel){
-		if(sizeX < 0)
-			sizeX = 0;
-		if(sizeX > 16)
-			sizeX = 16;
-		if(sizeY < 0)
-			sizeY = 0;
-		if(sizeY > 16)
-			sizeY = 16;
-		float up = icon.getInterpolatedV(16);
-		float down = icon.getInterpolatedV(16 - sizeY);
-		float left = icon.getInterpolatedU(0);
-		float right = icon.getInterpolatedU(sizeX);
-		RenderHelper.addVertexWithUV(posX, posY + sizeY, zLevel, left, up);
-		RenderHelper.addVertexWithUV(posX + sizeX, posY + sizeY, zLevel, right, up);
-		RenderHelper.addVertexWithUV(posX + sizeX, posY, zLevel, right, down);
-		RenderHelper.addVertexWithUV(posX, posY, zLevel, left, down);
-
 	}
 
 	/**
@@ -173,37 +178,127 @@ public class FFUtils {
 	 *            - the tank to render info of
 	 */
 	public static void renderTankInfo(GuiInfoContainer gui, int mouseX, int mouseY, int x, int y, int width, int height, FluidTank fluidTank){
-		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY) {
-			if(fluidTank.getFluid() != null) {
-				Fluid fluid = fluidTank.getFluid().getFluid();
-				if(fluid.getTemperature() == 300) {
-					gui.drawFluidInfo(new String[] { "" + (fluid.getLocalizedName(new FluidStack(fluid, 1))), fluidTank.getFluidAmount() + "/" + fluidTank.getCapacity() + "mB" }, mouseX, mouseY);
-				} else {
-					gui.drawFluidInfo(new String[] { "" + (fluid.getLocalizedName(new FluidStack(fluid, 1))), fluidTank.getFluidAmount() + "/" + fluidTank.getCapacity() + "mB", TextFormatting.RED + "" + (fluid.getTemperature()-273) + "°C" }, mouseX, mouseY);
-				}
-			} else {
-				gui.drawFluidInfo(new String[] { net.minecraft.client.resources.I18n.format("None"), fluidTank.getFluidAmount() + "/" + fluidTank.getCapacity() + "mB" }, mouseX, mouseY);
-			}
-		}
+		renderTankInfo(gui, mouseX, mouseY, x, y, width, height, fluidTank, null);
 	}
 
 	public static void renderTankInfo(GuiInfoContainer gui, int mouseX, int mouseY, int x, int y, int width, int height, FluidTank fluidTank, Fluid fluid){
 		if(fluidTank.getFluid() != null) {
-			renderTankInfo(gui, mouseX, mouseY, x, y, width, height, fluidTank);
-			return;
+			renderFluidInfo(gui, mouseX, mouseY, x, y, width, height, fluidTank.getFluid().getFluid(), fluidTank.getFluidAmount(), fluidTank.getCapacity());
+		} else {
+			renderFluidInfo(gui, mouseX, mouseY, x, y, width, height, fluid, 0, fluidTank.getCapacity());
 		}
-		if(x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY) {
-			if(fluid != null) {
-				if(fluid.getTemperature() == 300) {
-					gui.drawFluidInfo(new String[] { "" + (fluid.getLocalizedName(new FluidStack(fluid, 1))), fluidTank.getFluidAmount() + "/" + fluidTank.getCapacity() + "mB" }, mouseX, mouseY);
-				} else {
-					gui.drawFluidInfo(new String[] { "" + (fluid.getLocalizedName(new FluidStack(fluid, 1))), fluidTank.getFluidAmount() + "/" + fluidTank.getCapacity() + "mB", TextFormatting.RED + "" + (fluid.getTemperature()-273) + "°C" }, mouseX, mouseY);
-				}
+	}
 
+	public static void addFluidInfo(Fluid fluid, List<String> texts){
+		int temp = fluid.getTemperature()-273;
+		if(temp != 27){
+			String tempColor = "";
+			if(temp < -130) {
+				tempColor = "§3";
+			} else if(temp < 0) {
+				tempColor = "§b";
+			} else if(temp < 100) {
+				tempColor = "§e";
+			} else if(temp < 300) {
+				tempColor = "§6";
+			} else if(temp < 1000) {
+				tempColor = "§c";
+			} else if(temp < 3000) {
+				tempColor = "§4";
+			} else if(temp < 20000) {
+				tempColor = "§5";
 			} else {
-				gui.drawFluidInfo(new String[] { net.minecraft.client.resources.I18n.format("None"), fluidTank.getFluidAmount() + "/" + fluidTank.getCapacity() + "mB" }, mouseX, mouseY);
+				tempColor = "§d";
 			}
+			texts.add(String.format("%s%d°C", tempColor, temp));
 		}
+		boolean hasInfo = false;
+		boolean isKeyPressed = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT);
+
+		if (FluidTypeHandler.isAntimatter(fluid)) {
+			if(isKeyPressed){
+				texts.add("§4["+I18n.format("trait.antimatter")+"]");
+			}
+			hasInfo = true;
+		}
+
+		if (FluidTypeHandler.isCorrosivePlastic(fluid)) {
+			if (FluidTypeHandler.isCorrosiveIron(fluid)) {
+				if(isKeyPressed){
+					texts.add("§2["+I18n.format("trait.corrosiveIron")+"]");
+				}
+			} else if(isKeyPressed){
+				texts.add("§a["+I18n.format("trait.corrosivePlastic")+"]");
+			}
+			hasInfo = true;
+		}
+
+		if (FluidCombustionRecipes.hasFuelRecipe(fluid)) {
+			if(isKeyPressed){
+				String energy = Library.getShortNumber(FluidCombustionRecipes.getFlameEnergy(fluid) * 1000L);
+				texts.add("§6["+I18n.format("trait.flammable")+"]");
+				texts.add(" "+I18n.format("trait.flammable.desc", energy));
+			}
+			hasInfo = true;
+		}
+
+		if (HeatRecipes.hasCoolRecipe(fluid)) {
+			if(isKeyPressed){
+				String heat = Library.getShortNumber(HeatRecipes.getResultingHeat(fluid) * 1000 / HeatRecipes.getInputAmountCold(fluid));
+				texts.add("§4["+I18n.format("trait.coolable")+"]");
+				texts.add(" "+I18n.format("trait.coolable.desc", heat));
+			}
+			hasInfo = true;
+		}
+
+		if (HeatRecipes.hasBoilRecipe(fluid)) {
+			if(isKeyPressed){
+				String heat = Library.getShortNumber(HeatRecipes.getRequiredHeat(fluid) * 1000 / HeatRecipes.getInputAmountHot(fluid));
+				texts.add("§3["+I18n.format("trait.boilable")+"]");
+				texts.add(" "+I18n.format("trait.boilable.desc", heat));
+			}
+			hasInfo = true;
+		}
+
+		float dfcEff = FluidTypeHandler.getDFCEfficiency(fluid);
+
+		if(dfcEff >= 1){
+			if(isKeyPressed){
+				texts.add("§5["+I18n.format("trait.dfcFuel")+"]");
+				dfcEff = (dfcEff-1F);
+				texts.add(" "+I18n.format("trait.dfcFuel.desc", dfcEff >= 0 ? "+"+Library.getPercentage(dfcEff) : Library.getPercentage(dfcEff)));
+			}
+			hasInfo = true;
+		}
+
+		if (hasInfo && !isKeyPressed) {
+			texts.add(TextFormatting.DARK_GRAY + "" + TextFormatting.ITALIC +"Hold <" +
+					TextFormatting.YELLOW + "" + TextFormatting.ITALIC + "LSHIFT" +
+					TextFormatting.DARK_GRAY + "" + TextFormatting.ITALIC + "> to display more info");
+		}
+	}
+
+	private static void renderFluidInfo(GuiInfoContainer gui, int mouseX, int mouseY, int x, int y, int width, int height, Fluid fluid, int amount, int capacity) {
+		if (x <= mouseX && x + width > mouseX && y < mouseY && y + height >= mouseY) {
+			List<String> texts = new ArrayList<>();
+			if (fluid != null) {
+				texts.add(fluid.getLocalizedName(new FluidStack(fluid, 1)));
+				texts.add(amount + "/" + capacity + "mB");
+				addFluidInfo(fluid, texts);
+			} else {
+				texts.add(I18n.format("None"));
+				texts.add(amount + "/" + capacity + "mB");
+			}
+
+			gui.drawFluidInfo(texts, mouseX, mouseY);
+		}
+	}
+
+	public static boolean hasEnoughFluid(FluidTank t, FluidStack f){
+		if(f == null || f.amount == 0) return true;
+		if(t == null || t.getFluid() == null) return false;
+		if(t.getFluid().isFluidEqual(f) && t.getFluidAmount() >= f.amount) return true;
+		return false;
 	}
 
 	/**
@@ -747,20 +842,7 @@ public class FFUtils {
 	}
 
 	public static int getColorFromFluid(Fluid f){
-		if(f == null) {
-			return 0;
-		}
-		try{
-			BufferedImage image = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation(f.getStill().getResourceDomain(), "textures/"+f.getStill().getResourcePath()+".png")).getInputStream());
-			return getRGBfromARGB(image.getRGB(image.getWidth()>>1, image.getHeight()>>1));
-		} catch(Exception e) {
-			e.printStackTrace(); 
-			return 0xFFFFFF;
-		}
-	}
-
-	public static int getRGBfromARGB(int pixel){
-		return pixel & 0x00ffffff;
+		return Library.getColorFromResourceLocation(new ResourceLocation(f.getStill().getResourceDomain(), "textures/"+f.getStill().getResourcePath()+".png"));
 	}
 
 	public static void setColorFromFluid(Fluid f){
@@ -849,22 +931,21 @@ public class FFUtils {
 		return new FluidTank(tank.getFluid() != null ? tank.getFluid().copy() : null, tank.getCapacity());
 	}
 
-	public static boolean checkFluidConnectables(World world, BlockPos pos, FFPipeNetwork net){
+	public static boolean checkFluidConnectables(World world, BlockPos pos, FFPipeNetwork net, @Nullable EnumFacing facing){
 		TileEntity tileentity = world.getTileEntity(pos);
 		if(tileentity != null && tileentity instanceof IFluidPipe && ((IFluidPipe)tileentity).getNetworkTrue() == net)
 			return true;
-		if(tileentity != null && !(tileentity instanceof IFluidPipe) && tileentity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-
+		if(tileentity != null && !(tileentity instanceof IFluidPipe) && tileentity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing)) {
 			return true;
 		}
 		return false;
 	}
 
-	public static boolean checkFluidConnectablesMk2(World world, BlockPos pos, Fluid type){
+	public static boolean checkFluidConnectablesMk2(World world, BlockPos pos, Fluid type, @Nullable EnumFacing facing){
 		TileEntity tileentity = world.getTileEntity(pos);
 		if(tileentity instanceof IFluidPipeMk2 && ((IFluidPipeMk2)tileentity).getType() == type)
 			return true;
-		if(tileentity != null && !(tileentity instanceof IFluidPipeMk2) && tileentity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+		if(tileentity != null && !(tileentity instanceof IFluidPipeMk2) && tileentity.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing)) {
 			return true;
 		}
 		Block block = world.getBlockState(pos).getBlock();

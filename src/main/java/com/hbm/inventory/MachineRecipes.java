@@ -1,6 +1,7 @@
 package com.hbm.inventory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.hbm.inventory.OreDictManager.*;
@@ -27,6 +28,10 @@ import net.minecraftforge.oredict.OreDictionary;
 //Alcater: on it
 @Spaghetti("everything")
 public class MachineRecipes {
+
+	/**
+	 * HashMap of fluids suitable for burning in fluid burner, where key is fluid and value is TU per bucket.
+	 */
 	public static List<Item> stamps_flat = new ArrayList<Item>() {
 		/**
 		 * I don't even know what this serial version thing is.
@@ -299,35 +304,16 @@ public class MachineRecipes {
 		return null;
 	}
 
-	// return: FluidType, amount produced, amount required, heat required (°C * 100)
-	public static Object[] getBoilerOutput(Fluid type) {
-
-		if (type == FluidRegistry.WATER) {
-			return new Object[] { ModForgeFluids.steam, 500, 5, 10000 };
-		} else if (type == ModForgeFluids.steam) {
-			return new Object[] { ModForgeFluids.hotsteam, 5, 50, 30000 };
-		} else if (type == ModForgeFluids.hotsteam) {
-			return new Object[] { ModForgeFluids.superhotsteam, 5, 50, 45000 };
-		} else if (type == ModForgeFluids.oil) {
-			return new Object[] { ModForgeFluids.hotoil, 5, 5, 35000 };
-		} else if (type == ModForgeFluids.crackoil) {
-			return new Object[] { ModForgeFluids.hotcrackoil, 5, 5, 35000 };
-		} else {
-			return null;
-		}
-
-	}
-	
 	public static List<GasCentOutput> getGasCentOutput(Fluid fluid) {
 		
 		List<GasCentOutput> list = new ArrayList<GasCentOutput>();
 		if(fluid == null){
 			return null;
 		} else if(fluid == ModForgeFluids.uf6){
-			list.add(new GasCentOutput(4, new ItemStack(ModItems.nugget_u238), 1));
-			list.add(new GasCentOutput(4, new ItemStack(ModItems.nugget_u238), 2));
-			list.add(new GasCentOutput(1, new ItemStack(ModItems.nugget_u235), 3));
-			list.add(new GasCentOutput(1, new ItemStack(ModItems.fluorite), 4));
+			list.add(new GasCentOutput(1, new ItemStack(ModItems.nugget_u235), 1));
+			list.add(new GasCentOutput(19, new ItemStack(ModItems.nugget_u238), 2));
+			list.add(new GasCentOutput(7, new ItemStack(ModItems.nugget_uranium_fuel), 3));
+			list.add(new GasCentOutput(9, new ItemStack(ModItems.fluorite), 4));
 			return list;
 		} else if(fluid == ModForgeFluids.puf6){
 			list.add(new GasCentOutput(3, new ItemStack(ModItems.nugget_pu238), 1));
@@ -367,9 +353,9 @@ public class MachineRecipes {
 			return list;
 		} else if(fluid == ModForgeFluids.liquid_osmiridium){
 			list.add(new GasCentOutput(1, new ItemStack(ModItems.powder_impure_osmiridium), 1));
-			list.add(new GasCentOutput(1, new ItemStack(ModItems.powder_meteorite), 2));
-			list.add(new GasCentOutput(1, new ItemStack(ModItems.powder_meteorite_tiny), 2));
-			list.add(new GasCentOutput(1, new ItemStack(ModItems.powder_paleogenite_tiny), 1));
+			list.add(new GasCentOutput(2, new ItemStack(ModItems.powder_meteorite), 2));
+			list.add(new GasCentOutput(4, new ItemStack(ModItems.powder_meteorite_tiny), 3));
+			list.add(new GasCentOutput(1, new ItemStack(ModItems.powder_paleogenite_tiny), 4));
 			return list;
 		}
 		
@@ -413,225 +399,4 @@ public class MachineRecipes {
 		else
 			return 0;
 	}
-	
-	public static ItemStack getCyclotronOutput(ItemStack part, ItemStack item) {
-
-		if(part == null || item == null)
-			return null;
-		
-		//LITHIUM
-		if (part.getItem() == ModItems.part_lithium) {
-			if(item.getItem() == ModItems.niter)
-				return new ItemStack(ModItems.fluorite, 1);
-			if(item.getItem() == ModItems.powder_coal)
-				return new ItemStack(ModItems.fluorite, 1);
-			if(mODE(item, IRON.dust()))
-				return new ItemStack(ModItems.powder_cobalt, 1);
-			if(mODE(item, GOLD.dust()))
-				return new ItemStack(ModItems.powder_lead, 1);
-			if(mODE(item, NETHERQUARTZ.dust()))
-				return new ItemStack(ModItems.sulfur, 1);
-			if(mODE(item, U.dust()))
-				return new ItemStack(ModItems.powder_plutonium, 1);
-			if(mODE(item, AL.dust()))
-				return new ItemStack(ModItems.powder_quartz, 1);
-			if(mODE(item, BE.dust()))
-				return new ItemStack(ModItems.powder_coal, 1);
-			if(item.getItem() == ModItems.powder_schrabidium)
-				return new ItemStack(ModItems.powder_reiium, 1);
-			if(item.getItem() == ModItems.powder_lithium)
-				return new ItemStack(ModItems.powder_coal, 1);
-			if(item.getItem() == ModItems.powder_iodine)
-				return new ItemStack(ModItems.powder_caesium, 1);
-			if(item.getItem() == ModItems.powder_thorium)
-				return new ItemStack(ModItems.powder_uranium, 1);
-			if(item.getItem() == ModItems.powder_caesium)
-				return new ItemStack(ModItems.powder_lanthanium, 1);
-			if(item.getItem() == ModItems.powder_reiium)
-				return new ItemStack(ModItems.powder_weidanium, 1);
-			if(mODE(item, CO.dust()))
-				return new ItemStack(ModItems.powder_copper, 1);
-			if(item.getItem() == ModItems.powder_cerium)
-				return new ItemStack(ModItems.powder_neodymium, 1);
-			if(item.getItem() == ModItems.powder_actinium)
-				return new ItemStack(ModItems.powder_thorium, 1);
-			if(item.getItem() == ModItems.powder_lanthanium)
-				return new ItemStack(ModItems.powder_cerium, 1);
-		}
-		
-		//BERYLLIUM
-		if (part.getItem() == ModItems.part_beryllium) {
-			if(mODE(item, S.dust()))
-				return new ItemStack(ModItems.powder_titanium, 1);
-			if(item.getItem() == ModItems.fluorite)
-				return new ItemStack(ModItems.powder_aluminium, 1);
-			if(mODE(item, IRON.dust()))
-				return new ItemStack(ModItems.powder_copper, 1);
-			if(mODE(item, NETHERQUARTZ.dust()))
-				return new ItemStack(ModItems.powder_titanium, 1);
-			if(mODE(item, TI.dust()))
-				return new ItemStack(ModItems.powder_iron, 1);
-			if(mODE(item, CU.dust()))
-				return new ItemStack(ModItems.powder_bromine, 1);
-			if(mODE(item, W.dust()))
-				return new ItemStack(ModItems.powder_gold, 1);
-			if(mODE(item, AL.dust()))
-				return new ItemStack(ModItems.sulfur, 1);
-			if(mODE(item, PB.dust()))
-				return new ItemStack(ModItems.powder_astatine, 1);
-			if(mODE(item, BE.dust()))
-				return new ItemStack(ModItems.niter, 1);
-			if(mODE(item, LI.dust()))
-				return new ItemStack(ModItems.niter, 1);
-			if(item.getItem() == ModItems.powder_iodine)
-				return new ItemStack(ModItems.powder_cerium, 1);
-			if(item.getItem() == ModItems.powder_thorium)
-				return new ItemStack(ModItems.powder_neptunium, 1);
-			if(item.getItem() == ModItems.powder_astatine)
-				return new ItemStack(ModItems.powder_actinium, 1);
-			if(item.getItem() == ModItems.powder_caesium)
-				return new ItemStack(ModItems.powder_neodymium, 1);
-			if(item.getItem() == ModItems.powder_weidanium)
-				return new ItemStack(ModItems.powder_australium, 1);
-			if(item.getItem() == ModItems.powder_strontium)
-				return new ItemStack(ModItems.powder_niobium, 1);
-			if(item.getItem() == ModItems.powder_bromine)
-				return new ItemStack(ModItems.powder_strontium, 1);
-			if(item.getItem() == ModItems.powder_actinium)
-				return new ItemStack(ModItems.powder_uranium, 1);
-			if(item.getItem() == ModItems.powder_lanthanium)
-				return new ItemStack(ModItems.powder_neodymium, 1);
-		}
-		
-		//CARBON
-		if (part.getItem() == ModItems.part_carbon) {
-			if(mODE(item, S.dust()))
-				return new ItemStack(ModItems.powder_iron, 1);
-			if(item.getItem() == ModItems.niter)
-				return new ItemStack(ModItems.powder_aluminium, 1);
-			if(item.getItem() == ModItems.fluorite)
-				return new ItemStack(ModItems.sulfur, 1);
-			if(mODE(item, COAL.dust()))
-				return new ItemStack(ModItems.powder_aluminium, 1);
-			if(mODE(item, IRON.dust()))
-				return new ItemStack(ModItems.powder_bromine, 1);
-			if(mODE(item, GOLD.dust()))
-				return new ItemStack(ModItems.powder_astatine, 1);
-			if(mODE(item, NETHERQUARTZ.dust()))
-				return new ItemStack(ModItems.powder_iron, 1);
-			if(item.getItem() == ModItems.powder_plutonium)
-				return new ItemStack(ModItems.powder_tennessine, 1);
-			if(item.getItem() == ModItems.powder_neptunium)
-				return new ItemStack(ModItems.powder_tennessine, 1);
-			if(mODE(item, TI.dust()))
-				return new ItemStack(ModItems.powder_bromine, 1);
-			if(mODE(item, CU.dust()))
-				return new ItemStack(ModItems.powder_strontium, 1);
-			if(mODE(item, W.dust()))
-				return new ItemStack(ModItems.powder_lead, 1);
-			if(mODE(item, AL.dust()))
-				return new ItemStack(ModItems.powder_titanium, 1);
-			if(mODE(item, PB.dust()))
-				return new ItemStack(ModItems.powder_thorium, 1);
-			if(mODE(item, BE.dust()))
-				return new ItemStack(ModItems.fluorite, 1);
-			if(mODE(item, LI.dust()))
-				return new ItemStack(ModItems.fluorite, 1);
-			if(item.getItem() == ModItems.powder_iodine)
-				return new ItemStack(ModItems.powder_tungsten, 1);
-			if(item.getItem() == ModItems.powder_neodymium)
-				return new ItemStack(ModItems.powder_tungsten, 1);
-			if(item.getItem() == ModItems.powder_australium)
-				return new ItemStack(ModItems.powder_verticium, 1);
-			if(item.getItem() == ModItems.powder_strontium)
-				return new ItemStack(ModItems.powder_iodine, 1);
-			if(mODE(item, CO.dust()))
-				return new ItemStack(ModItems.powder_strontium, 1);
-			if(item.getItem() == ModItems.powder_bromine)
-				return new ItemStack(ModItems.powder_niobium, 1);
-			if(item.getItem() == ModItems.powder_niobium)
-				return new ItemStack(ModItems.powder_iodine, 1);
-			if(item.getItem() == ModItems.powder_tennessine)
-				return new ItemStack(ModItems.powder_schrabidium, 1);
-			if(item.getItem() == ModItems.powder_cerium)
-				return new ItemStack(ModItems.powder_tungsten, 1);
-		}
-		
-		//COPPER
-		if (part.getItem() == ModItems.part_copper) {
-			if(mODE(item, S.dust()))
-				return new ItemStack(ModItems.powder_bromine, 1);
-			if(item.getItem() == ModItems.niter)
-				return new ItemStack(ModItems.powder_cobalt, 1);
-			if(item.getItem() == ModItems.fluorite)
-				return new ItemStack(ModItems.powder_iron, 1);
-			if(mODE(item, COAL.dust()))
-				return new ItemStack(ModItems.powder_iron, 1);
-			if(mODE(item, IRON.dust()))
-				return new ItemStack(ModItems.powder_niobium, 1);
-			if(mODE(item, GOLD.dust()))
-				return new ItemStack(ModItems.powder_lanthanium, 1);
-			if(mODE(item, NETHERQUARTZ.dust()))
-				return new ItemStack(ModItems.powder_bromine, 1);
-			if(mODE(item, U.dust()))
-				return new ItemStack(ModItems.powder_tennessine, 1);
-			if(mODE(item, TI.dust()))
-				return new ItemStack(ModItems.powder_strontium, 1);
-			if(mODE(item, CU.dust()))
-				return new ItemStack(ModItems.powder_niobium, 1);
-			if(mODE(item, W.dust()))
-				return new ItemStack(ModItems.powder_actinium, 1);
-			if(mODE(item, AL.dust()))
-				return new ItemStack(ModItems.powder_bromine, 1);
-			if(mODE(item, PB.dust()))
-				return new ItemStack(ModItems.powder_tennessine, 1);
-			if(mODE(item, BE.dust()))
-				return new ItemStack(ModItems.powder_bromine, 1);
-			if(mODE(item, LI.dust()))
-				return new ItemStack(ModItems.powder_bromine, 1);
-			if(item.getItem() == ModItems.powder_iodine)
-				return new ItemStack(ModItems.powder_astatine, 1);
-			if(item.getItem() == ModItems.powder_thorium)
-				return new ItemStack(ModItems.powder_tennessine, 1);
-			if(item.getItem() == ModItems.powder_neodymium)
-				return new ItemStack(ModItems.powder_lead, 1);
-			if(item.getItem() == ModItems.powder_astatine)
-				return new ItemStack(ModItems.powder_plutonium, 1);
-			if(item.getItem() == ModItems.powder_caesium)
-				return new ItemStack(ModItems.powder_tungsten, 1);
-			if(item.getItem() == ModItems.powder_verticium)
-				return new ItemStack(ModItems.powder_unobtainium, 1);
-			if(mODE(item, CO.dust()))
-				return new ItemStack(ModItems.powder_iodine, 1);
-			if(item.getItem() == ModItems.powder_bromine)
-				return new ItemStack(ModItems.powder_caesium, 1);
-			if(item.getItem() == ModItems.powder_niobium)
-				return new ItemStack(ModItems.powder_cerium, 1);
-			if(item.getItem() == ModItems.powder_tennessine)
-				return new ItemStack(ModItems.powder_reiium, 1);
-			if(item.getItem() == ModItems.powder_cerium)
-				return new ItemStack(ModItems.powder_lead, 1);
-			if(item.getItem() == ModItems.powder_actinium)
-				return new ItemStack(ModItems.powder_tennessine, 1);
-			if(item.getItem() == ModItems.powder_lanthanium)
-				return new ItemStack(ModItems.powder_astatine, 1);
-		}
-		
-		//PLUTONIUM
-		if (part.getItem() == ModItems.part_plutonium) {
-			if(mODE(item, U.dust()))
-				return new ItemStack(ModItems.powder_schrabidium, 1);
-			if(item.getItem() == ModItems.powder_plutonium)
-				return new ItemStack(ModItems.powder_schrabidium, 1);
-			if(item.getItem() == ModItems.powder_neptunium)
-				return new ItemStack(ModItems.powder_schrabidium, 1);
-			if(item.getItem() == ModItems.powder_unobtainium)
-				return new ItemStack(ModItems.powder_daffergon, 1);
-			if(ItemCell.isFullCell(item, ModForgeFluids.amat))
-				return ItemCell.getFullCell(ModForgeFluids.aschrab);
-		}
-
-		return null;
-	}
-	
 }

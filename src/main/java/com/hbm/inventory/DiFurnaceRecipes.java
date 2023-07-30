@@ -36,10 +36,10 @@ public class DiFurnaceRecipes {
 		addRecipe(new OreDictStack(W.ingot()), new OreDictStack(COAL.gem()), new ItemStack(ModItems.neutron_reflector, 2));
 		addRecipe(new OreDictStack(W.dust()), new OreDictStack(COAL.gem()), new ItemStack(ModItems.neutron_reflector, 2));
 
-		addRecipe(new OreDictStack(CU.ingot()), new OreDictStack(PB.ingot()), new ItemStack(ModItems.neutron_reflector, 4));
-		addRecipe(new OreDictStack(CU.dust()), new OreDictStack(PB.ingot()), new ItemStack(ModItems.neutron_reflector, 4));
-		addRecipe(new OreDictStack(CU.ingot()), new OreDictStack(PB.dust()), new ItemStack(ModItems.neutron_reflector, 4));
-		addRecipe(new OreDictStack(CU.dust()), new OreDictStack(PB.dust()), new ItemStack(ModItems.neutron_reflector, 4));
+		addRecipe(new OreDictStack(CU.ingot()), new OreDictStack(PB.ingot()), new ItemStack(ModItems.neutron_reflector, 1));
+		addRecipe(new OreDictStack(CU.dust()), new OreDictStack(PB.ingot()), new ItemStack(ModItems.neutron_reflector, 1));
+		addRecipe(new OreDictStack(CU.ingot()), new OreDictStack(PB.dust()), new ItemStack(ModItems.neutron_reflector, 1));
+		addRecipe(new OreDictStack(CU.dust()), new OreDictStack(PB.dust()), new ItemStack(ModItems.neutron_reflector, 1));
 
 		addRecipe(new OreDictStack(CU.plate()), new OreDictStack(PB.plate()), new ItemStack(ModItems.neutron_reflector, 1));
 
@@ -48,6 +48,9 @@ public class DiFurnaceRecipes {
 		addRecipe(new OreDictStack(IRON.ingot()), new OreDictStack(COAL.dust()), new ItemStack(ModItems.ingot_steel, 2));
 		addRecipe(new OreDictStack(IRON.dust()), new OreDictStack(COAL.dust()), new ItemStack(ModItems.ingot_steel, 2));
 
+		addRecipe(new OreDictStack(U238.ingot()), new OreDictStack(STEEL.ingot()), new ItemStack(ModItems.ingot_ferrouranium, 1));
+		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(U238.ingot()), new ItemStack(ModItems.ingot_ferrouranium, 1));
+		
 		addRecipe(new OreDictStack(CU.ingot()), new OreDictStack(REDSTONE.dust()), new ItemStack(ModItems.ingot_red_copper, 2));
 		addRecipe(new OreDictStack(CU.dust()), new OreDictStack(REDSTONE.dust()), new ItemStack(ModItems.ingot_red_copper, 2));
 
@@ -77,6 +80,9 @@ public class DiFurnaceRecipes {
 
 		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(TC99.nugget()), new ItemStack(ModItems.ingot_tcalloy, 1));
 		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(TC99.nugget()), new ItemStack(ModItems.ingot_tcalloy, 1));
+
+		addRecipe(new OreDictStack(STEEL.ingot()), new OreDictStack(CD.nugget()), new ItemStack(ModItems.ingot_cdalloy, 1));
+		addRecipe(new OreDictStack(STEEL.dust()), new OreDictStack(CD.nugget()), new ItemStack(ModItems.ingot_cdalloy, 1));
 
 		addRecipe(new ComparableStack(Item.getItemFromBlock(ModBlocks.block_meteor)), new OreDictStack(CO.ingot()), new ItemStack(ModItems.ingot_meteorite));
 		addRecipe(new ComparableStack(Item.getItemFromBlock(ModBlocks.block_meteor)), new OreDictStack(CO.dust()), new ItemStack(ModItems.ingot_meteorite));
@@ -178,6 +184,18 @@ public class DiFurnaceRecipes {
 				
 			}
 			haveTriedAllID2 = true;
+		}
+
+		for(int id2 = 0; id2 < ids2.length; id2++) {
+			OreDictStack oreStack2 = new OreDictStack(OreDictionary.getOreName(ids2[id2]));
+			if(!haveTriedAllID2){
+				outputItem = diRecipes.get(new Pair(new ComparableStack(item1), oreStack2));
+				if(outputItem != null)
+					return outputItem;
+				outputItem = diRecipes.get(new Pair(new NbtComparableStack(item1), oreStack2));
+				if(outputItem != null)
+					return outputItem;
+			}
 		}
 		return null;
 	}

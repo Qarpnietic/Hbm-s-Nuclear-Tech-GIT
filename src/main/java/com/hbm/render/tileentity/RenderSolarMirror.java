@@ -52,6 +52,8 @@ public class RenderSolarMirror extends TileEntitySpecialRenderer<TileEntitySolar
         ResourceManager.solar_mirror.renderPart("Mirror");
 
         if(mirror.isOn) {
+			float min = 0.008F;
+	        float max = 0.008F;
 
 	        Tessellator tess = Tessellator.getInstance();
 	        BufferBuilder buf = tess.getBuffer();
@@ -64,8 +66,6 @@ public class RenderSolarMirror extends TileEntitySpecialRenderer<TileEntitySolar
 			GlStateManager.alphaFunc(GL11.GL_GREATER, 0);
 			GlStateManager.depthMask(false);
 
-	        float min = 0.005F;
-	        float max = 0.01F;
 
 	        buf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
 	        buf.pos(0.5, 1.0625, 0.5).color(1F, 1F, 1F, max).endVertex();

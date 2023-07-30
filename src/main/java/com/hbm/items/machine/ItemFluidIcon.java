@@ -3,6 +3,7 @@ package com.hbm.items.machine;
 import java.util.List;
 
 import com.hbm.items.ModItems;
+import com.hbm.forgefluid.FFUtils;
 
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -31,9 +32,11 @@ public class ItemFluidIcon extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-		if(tab == this.getCreativeTab())
-			for(Fluid f : FluidRegistry.getRegisteredFluids().values())
+		if(tab == this.getCreativeTab()){
+			for(Fluid f : FluidRegistry.getRegisteredFluids().values()){
 				items.add(getStack(f));
+			}
+		}
 	}
 	
 	@Override
@@ -41,6 +44,8 @@ public class ItemFluidIcon extends Item {
 		if(stack.hasTagCompound())
 			if(stack.getTagCompound().getInteger("fill") > 0)
 				tooltip.add(stack.getTagCompound().getInteger("fill") + "mB");
+		Fluid f = getFluid(stack);
+        if(f != null) FFUtils.addFluidInfo(f, tooltip);
 	}
 	
 	@Override
